@@ -171,9 +171,6 @@ out/
 # Simulation GUI and other tools window save file
 networktables.json
 simgui.json
-simgui-ds.json
-glass.json
-outlineviewer.json
 *-window.json
 
 # Simulation data log directory
