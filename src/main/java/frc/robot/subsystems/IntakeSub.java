@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.IntakeConstants;
 
+
 public class IntakeSub extends SubsystemBase {
   /* Init motor vars */
   private final TalonFX motor1 = new TalonFX(IntakeConstants.INTAKE_MOTOR_1_CANID);
