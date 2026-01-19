@@ -47,10 +47,10 @@ public class IntakeSub extends SubsystemBase {
     motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     motorConfig.Feedback.SensorToMechanismRatio = 1;
     /* Untested PID values */
-    motorConfig.Slot0.kP = 0;
+    motorConfig.Slot0.kP = 1;
     motorConfig.Slot0.kI = 0;
     motorConfig.Slot0.kD = 0;
-    motorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     motor1.getConfigurator().apply(motorConfig);
 
