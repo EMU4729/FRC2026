@@ -71,7 +71,7 @@ public class RobotContainer {
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
     
-    OI.pilot.a().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(IntakeConstants.MOTOR_VELOCITY)));
+    OI.pilot.a().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(ActivateIntakeCommand.MOTOR_SPEED)));
 
   }
 

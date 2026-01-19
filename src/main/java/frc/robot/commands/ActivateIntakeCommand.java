@@ -12,6 +12,7 @@ import frc.robot.subsystems.IntakeSub;
 
 public class ActivateIntakeCommand extends Command{
     private LinearVelocity speed;
+    public static final double MOTOR_SPEED = 1.0;
     IntakeSub intake = Subsystems.intake;
     public ActivateIntakeCommand(LinearVelocity speed){
         this.speed = speed;
