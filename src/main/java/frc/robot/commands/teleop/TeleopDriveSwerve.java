@@ -13,6 +13,9 @@ import frc.robot.OI;
 import frc.robot.Subsystems;
 import frc.robot.utils.rangemath.DriveBaseFit;
 import frc.robot.constants.DriveConstants;
+import frc.robot.constants.TurretConstants;
+import frc.robot.subsystems.TurretFeederSub;
+import frc.robot.subsystems.TurretSub;
 
 public class TeleopDriveSwerve extends Command {
   private final DriveBaseFit settings;
@@ -50,6 +53,14 @@ public class TeleopDriveSwerve extends Command {
 
     final var speeds = new ChassisSpeeds(x, y, r);
     Subsystems.drive.drive(speeds, fieldRelative, true);
+
+    boolean shooterToggle = OI.copilot.getHID().getAButton();
+    if (shooterToggle){
+      Subsystems.turret.setSpeed(MetersPerSecond.of(TurretConstants.MIN_MOTOR_SPEED));
+      Subsystems.TurretFeeder.PopFuel();
+    }else{
+      Subsystems.turret.setSpeed(MetersPerSecond.of(0));
+    }
   }
 
   @Override
