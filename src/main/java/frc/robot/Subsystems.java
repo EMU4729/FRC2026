@@ -3,6 +3,8 @@ package frc.robot;
 import frc.robot.subsystems.DriveSub;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.NavigationSub;
+import frc.robot.subsystems.TurretFeederSub;
+import frc.robot.subsystems.TurretSub;
 import frc.robot.subsystems.IntakeSub;
 
 /**
@@ -13,4 +15,6 @@ public class Subsystems {
   public static final NavigationSub nav = new NavigationSub();
   public static final LEDSubsystem led = new LEDSubsystem();
   public static final IntakeSub intake = new IntakeSub();
+  public static final TurretSub turret = new TurretSub();
+  public static final TurretFeederSub TurretFeeder = new TurretFeederSub();
 }
