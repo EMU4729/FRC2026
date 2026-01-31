@@ -119,6 +119,7 @@ public class PhotonCameraPoseEstimator {
     Optional<PhotonPipelineResult> latestResult = getLatestResult();
 
     if (latestResult.isEmpty()) return Optional.empty();
+    
     Transform3d robotToCamTemp = robotToCam;
     if (turretToCam.isPresent()) {
       Transform3d rotationTransform = new Transform3d(new Translation3d(), turretAngle);
