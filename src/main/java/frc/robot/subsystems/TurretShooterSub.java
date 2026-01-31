@@ -23,11 +23,11 @@ import frc.robot.Robot;
 import frc.robot.constants.TurretConstants;
 import frc.robot.constants.TurretFeederConstants;
 
-public class TurretSub extends SubsystemBase{
+public class TurretShooterSub extends SubsystemBase{
     private final TalonFX motor1 = new TalonFX(TurretConstants.TURRENT_MOTOR_1_CANID);
     private final TalonFX motor2 = new TalonFX(TurretConstants.TURRENT_MOTOR_2_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
-    private final VelocityVoltage feederController2 = new VelocityVoltage(0).withSlot(0);
+    //private final VelocityVoltage feederController2 = new VelocityVoltage(0).withSlot(0);
     
 
     private final Distance wheelRadius = Meters.of(Units.inchesToMeters(4)); // meters, unknown at the moment
@@ -41,7 +41,7 @@ public class TurretSub extends SubsystemBase{
     private double simSpeedTarget = 0;
     private final double simAccel = 0.5;
     
-    public TurretSub(){
+    public TurretShooterSub(){
         TalonFXConfiguration motorConfig = new TalonFXConfiguration();
         motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         motorConfig.Feedback.SensorToMechanismRatio = 1;
@@ -66,7 +66,7 @@ public class TurretSub extends SubsystemBase{
             speed.in(MetersPerSecond) * ratio /wheelRadius.in(Meters));
 
             motor1.setControl(feederController1.withVelocity(aSpeed));
-            motor2.setControl(feederController2.withVelocity(aSpeed));
+            //motor2.setControl(feederController2.withVelocity(aSpeed));
 
             if (Robot.isSimulation()) {
                 simSpeedTarget = aSpeed.in(RadiansPerSecond);

@@ -25,7 +25,7 @@ public class TurretFeederSub extends SubsystemBase{
     /* Initial motor variables */
     private final TalonFX motor1 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
-    TurretSub turretSub = new TurretSub();
+    TurretShooterSub turretSub = new TurretShooterSub();
 
     
 
