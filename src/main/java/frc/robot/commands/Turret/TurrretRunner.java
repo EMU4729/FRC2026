@@ -3,6 +3,7 @@ package frc.robot.commands.Turret;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.OI;
@@ -69,7 +70,7 @@ public class TurrretRunner extends Command{
            } else {
             return FieldArea.TheirAlliance;
            }
-          }
+        }
 
         if (inBounds(navPose, AimingConstants.BLUE_Alliance_BOUNDS) && inBounds(turretPose, AimingConstants.BLUE_Alliance_BOUNDS))  {
             if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
@@ -78,19 +79,48 @@ public class TurrretRunner extends Command{
                 return FieldArea.TheirAlliance;
             }
         } 
+
         if (inBounds(navPose, AimingConstants.NEUTRAL_BOUNDS) && inBounds(turretPose, AimingConstants.NEUTRAL_BOUNDS)){
             return FieldArea.Neutral;
-         }
-            return FieldArea.Blocked;
         }
+
+        return FieldArea.Blocked;
+    }
+
+
+
+    private HubOrder BlueAciveFirst(){
+        if (DriverStation.getAlliance().isEmpty()){
+            return HubOrder.TBD;
+        }
+        String gameData;
+        gameData = DriverStation.getGameSpecificMessage();
+        if(gameData.length() > 0) {
+            switch (gameData.charAt(0)){
+            case 'B' :
+                return DriverStation.getAlliance().get() == Alliance.Blue ? HubOrder.UsFirst : HubOrder.ThemFirst;
+            case 'R' :
+                return DriverStation.getAlliance().get() == Alliance.Red ? HubOrder.UsFirst : HubOrder.ThemFirst;
+            default :
+                return HubOrder.TBD;
+            }
+        } else {
+            return HubOrder.TBD;
+        }
+    }
+
+    enum HubOrder {
+        UsFirst,
+        ThemFirst,
+        TBD,
+    }
 
     private boolean inBounds(Pose2d boundsPosition, Translation2d[] boundsList) {
          return (boundsPosition.getX() >= boundsList[0].getX() &&
                  boundsPosition.getX() <= boundsList[1].getX() &&
                  boundsPosition.getY() >= boundsList[0].getY() &&
                  boundsPosition.getY() <= boundsList[1].getY() );
-         }
-
+    }
 
     enum FieldArea {
         OurAlliance,
