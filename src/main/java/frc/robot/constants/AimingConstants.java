@@ -43,6 +43,10 @@ public class AimingConstants {
     Angle hoodAngle,
 
     Distance distance){
+
+      public TurretState toTurretState(Angle turretAngle){
+        return new TurretState(turretAngle, this.power(), this.hoodAngle);
+      }
       
   }
 
@@ -52,4 +56,6 @@ public class AimingConstants {
     Angle hoodAngle){
       
   }
+
+  
 }
