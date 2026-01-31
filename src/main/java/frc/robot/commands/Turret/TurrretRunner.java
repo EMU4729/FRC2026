@@ -5,7 +5,16 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.OI;
 import frc.robot.Subsystems;
+import frc.robot.constants.AimingConstants;
+import frc.robot.utils.TurretAiming;
+
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;;
+
 
 public class TurrretRunner extends Command{
     //TODO
@@ -19,34 +28,69 @@ public class TurrretRunner extends Command{
 
     }
 
-    @Override
-    public void initialize() {
-        //CommandScheduler.getInstance().schedule(Command...)
-        // TODO Auto-generated method stub
-        super.initialize();
-    }
 
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        super.execute();
+        FieldArea fieldArea = getFieldArea();
+        if(OI.pilot.a().getAsBoolean()){
+            CommandScheduler.getInstance().schedule(new TurretAimAtTag());
+            return;
+        }
+        
+        if (fieldArea == FieldArea.OurAlliance) {
+            CommandScheduler.getInstance().schedule(new TurretShootAtHub());
+        } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
+            CommandScheduler.getInstance().schedule(new TurretPassToHome());
+        } else {
+            //aim at tag
+            CommandScheduler.getInstance().schedule(new TurretAimAtTag());
+        }
+
+
     }
 
-    @Override
-    public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
-        super.end(interrupted);
-    }
-    
 
     private FieldArea getFieldArea(){
+        if(DriverStation.getAlliance().isEmpty()) {
+            return FieldArea.Blocked;
+        }
         //TODO
         // using AimingConstants.RED_Alliance_BOUNDS etc compared to TurretAiming.getTurretPose2d and Subsystems.nav.getPose
         // find and return the area both are in
         // or return blocked
         //DriverStation.getAlliance() == DriverStation.Alliance.Red;
-        return FieldArea.Blocked;
-    }
+        Pose2d turretPose = TurretAiming.getTurretPose2d();
+        Pose2d navPose =  Subsystems.nav.getPose();
+
+        if (inBounds(navPose, AimingConstants.RED_Alliance_BOUNDS) && inBounds(turretPose, AimingConstants.RED_Alliance_BOUNDS) )   {
+           if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            return FieldArea.OurAlliance;
+           } else {
+            return FieldArea.TheirAlliance;
+           }
+          }
+
+        if (inBounds(navPose, AimingConstants.BLUE_Alliance_BOUNDS) && inBounds(turretPose, AimingConstants.BLUE_Alliance_BOUNDS))  {
+            if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+                return FieldArea.OurAlliance;
+            } else {
+                return FieldArea.TheirAlliance;
+            }
+        } 
+        if (inBounds(navPose, AimingConstants.NEUTRAL_BOUNDS) && inBounds(turretPose, AimingConstants.NEUTRAL_BOUNDS)){
+            return FieldArea.Neutral;
+         }
+            return FieldArea.Blocked;
+        }
+
+    private boolean inBounds(Pose2d boundsPosition, Translation2d[] boundsList) {
+         return (boundsPosition.getX() >= boundsList[0].getX() &&
+                 boundsPosition.getX() <= boundsList[1].getX() &&
+                 boundsPosition.getY() >= boundsList[0].getY() &&
+                 boundsPosition.getY() <= boundsList[1].getY() );
+         }
+
 
     enum FieldArea {
         OurAlliance,
