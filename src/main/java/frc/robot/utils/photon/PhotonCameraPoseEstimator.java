@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.Radians;
 
 import java.util.Optional;
 
+import javax.xml.crypto.dsig.Transform;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -16,7 +18,10 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -37,6 +42,8 @@ public class PhotonCameraPoseEstimator {
   private static final double heightTolBase = 0.2;
   private static final double heightTolStep = 0/2;
   private static double heightTol = heightTolBase;
+  private final Transform3d robotToCam;
+  private final Optional<Transform3d> turretToCam;
 
   private static final Angle pitchTol = Degrees.of(15);
   private static final Angle rolTol = Degrees.of(15);
@@ -53,6 +60,15 @@ public class PhotonCameraPoseEstimator {
       Transform3d robotToCam,
       AprilTagFieldLayout fieldLayout,
       SimCameraProperties camProps) {
+        this(cameraName, robotToCam,Optional.empty(), fieldLayout, camProps);
+      }
+
+  public PhotonCameraPoseEstimator(
+      String cameraName,
+      Transform3d robotToCam,
+      Optional<Transform3d> turretToCam,
+      AprilTagFieldLayout fieldLayout,
+      SimCameraProperties camProps) {
   
     DataLog datalog = DataLogManager.getLog();
     LogPoseX = new DoubleLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/X")));
@@ -62,6 +78,9 @@ public class PhotonCameraPoseEstimator {
     LogTargets = new StringLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/Targets")));
     LogFiltered = new StringLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/FilterResult")));
 
+        this.robotToCam = robotToCam;
+        this.turretToCam = turretToCam;
+        
     cam = new PhotonCamera(cameraName);
     camSim = new PhotonCameraSim(cam, camProps);
     camSim.enableProcessedStream(RobotBase.isSimulation());
@@ -70,6 +89,7 @@ public class PhotonCameraPoseEstimator {
         fieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         robotToCam);
+      
     poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
   }
 
@@ -84,11 +104,30 @@ public class PhotonCameraPoseEstimator {
    * 
    * @return the new currently estimated pose
    */
-  public Optional<EstimatedRobotPose> getEstimatedPose() {
+
+    /**
+   * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
+   * vision result. Should be called once per robot tick.
+   * 
+   * @return the new currently estimated pose
+   */
+    public Optional<EstimatedRobotPose> getEstimatedPose() {
+          return getEstimatedPose(new Rotation3d());
+    }
+
+    public Optional<EstimatedRobotPose> getEstimatedPose(Rotation3d turretAngle) {
     Optional<PhotonPipelineResult> latestResult = getLatestResult();
 
     if (latestResult.isEmpty()) return Optional.empty();
-    
+    Transform3d robotToCamTemp = robotToCam;
+    if (turretToCam.isPresent()) {
+      Transform3d rotationTransform = new Transform3d(new Translation3d(), turretAngle);
+      Transform3d turretTotransform = turretToCam.get().plus(rotationTransform);
+      robotToCamTemp = turretToCam.get().plus(turretTotransform);
+    }
+    poseEstimator.setRobotToCameraTransform(robotToCamTemp);
+
+
     Optional<EstimatedRobotPose> res = filter(log(latestResult.flatMap(poseEstimator::update)));
     if (res.isEmpty()){increaseTollerance();}
     else {decreaseTollerance();}
