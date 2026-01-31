@@ -88,7 +88,7 @@ double t = (targetMeters - lowDist) / (highDist - lowDist);
 
 double interpolatedPower = MathUtil.interpolate(lower.power().in(DegreesPerSecond), upper.power().in(DegreesPerSecond), t);
 
-double interpolatedHood = MathUtil.interpolate(lower.hoodAngle().in(Degrees), upper.hoodAngle().in(Degrees), distance.in(Meters));
+double interpolatedHood = MathUtil.interpolate(lower.hoodAngle().in(Degrees), upper.hoodAngle().in(Degrees), t);
 
         // search the list for the next largest/smallest distance
         // use interpolation 'MathUtil.interpolate(0, 0, 0);' to find the best power / angle to shoot
