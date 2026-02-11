@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation2d;;
 
 
 public class TurrretRunner extends Command{
+    private TurretAimAtTag aimAtTag;
     //TODO
     // always running
     // if we are in our alliance zone and the hub is active : shoot at it
