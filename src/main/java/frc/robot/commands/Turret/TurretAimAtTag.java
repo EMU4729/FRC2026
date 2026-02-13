@@ -1,5 +1,7 @@
 package frc.robot.commands.Turret;
 
+import static edu.wpi.first.units.Units.Radians;
+
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTag;
@@ -52,7 +54,7 @@ public class TurretAimAtTag  extends Command{
             Rotation2d robotRelativeAngle = fieldAngle.minus(robotPose.getRotation());
 
             // 3. Command the turret
-            Subsystems.turretFeeder.setTargetAngle(robotRelativeAngle);
+            Subsystems.turretAiming.setSlewTarget(Radians.of(robotRelativeAngle.getRadians()));
         }
         super.execute();
     }
@@ -75,7 +77,7 @@ public class TurretAimAtTag  extends Command{
     @Override
     public void end(boolean interrupted) {
      
-        Subsystems.turretFeeder.stop();
+        Subsystems.turretAiming.stop();
         super.end(interrupted);
     }
 }

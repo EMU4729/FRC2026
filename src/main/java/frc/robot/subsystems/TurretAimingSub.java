@@ -30,13 +30,18 @@ public class TurretAimingSub extends SubsystemBase {
     
 
 
-    public void SetSlewTarget(Angle targetSlewAngle){
+    public void setSlewTarget(Angle targetSlewAngle){
         //TODO
         // sets the field relative yaw the turret should aim at
     }
 
-    public void SetHoodTarget(Angle targetHoodAngle){
+    public void setHoodTarget(Angle targetHoodAngle){
         //TODO
         // sets the angle the hood should go to
+    }
+
+    public void stop(){
+        //TODO
+        // stops all movement
     }
 }
