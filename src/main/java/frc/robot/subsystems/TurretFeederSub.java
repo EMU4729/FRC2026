@@ -67,7 +67,9 @@ public class TurretFeederSub extends SubsystemBase{
                 simSpeedTarget = aSpeed.in(RadiansPerSecond);
             }
     }
-
+    public void stop(){
+        setSpeed(MetersPerSecond.of(0));
+    }
     public void PopFuel(){
         if(turretSub.atspeed()){
             setSpeed(TurretFeederConstants.FEEDER_SPEED);

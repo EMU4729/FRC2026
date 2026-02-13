@@ -10,6 +10,7 @@ import java.util.List;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Subsystems;
@@ -22,10 +23,10 @@ public class TurretAiming {
 
 
 
-    public static TurretState calcState(List<DistanceSample> sampleList, Pose2d target){
+    public static TurretState calcState(List<DistanceSample> sampleList, Translation2d target){
         
         //1. Define Euclidean Geometry of the Target
-        double target_transform = target.getTranslation().getNorm();
+        double target_transform = target.getNorm();
         double target_angle = target.getRotation().getDegrees();
 
         DistanceSample LowerBounds = null;

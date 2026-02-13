@@ -3,6 +3,7 @@ package frc.robot.constants;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 
 public class AimingConstants {
   public static final Transform2d robotToTurret = new Transform2d(0,0, new Rotation2d(0));
@@ -31,15 +33,15 @@ public class AimingConstants {
     
 
   public static final List<DistanceSample> ShootingSamples = Arrays.asList(
-      new DistanceSample(DegreesPerSecond.of(0), Degrees.of(0), Meters.of(0)),
-      new DistanceSample(DegreesPerSecond.of(0), Degrees.of(0), Meters.of(100))
+      new DistanceSample(MetersPerSecond.of(0), Degrees.of(0), Meters.of(0)),
+      new DistanceSample(MetersPerSecond.of(0), Degrees.of(0), Meters.of(100))
     );
   public static final List<DistanceSample> PassingSamples = Arrays.asList(
-      new DistanceSample(DegreesPerSecond.of(0), Degrees.of(0), Meters.of(0)),
-      new DistanceSample(DegreesPerSecond.of(100), Degrees.of(0), Meters.of(100))
+      new DistanceSample(MetersPerSecond.of(0), Degrees.of(0), Meters.of(0)),
+      new DistanceSample(MetersPerSecond.of(100), Degrees.of(0), Meters.of(100))
     );
   public static record DistanceSample(
-    AngularVelocity power,
+    LinearVelocity power,
     Angle hoodAngle,
 
     Distance distance){
@@ -52,7 +54,7 @@ public class AimingConstants {
 
   public static record TurretState(
     Angle turretAngle,
-    AngularVelocity power,
+    LinearVelocity power,
     Angle hoodAngle){
       
   }

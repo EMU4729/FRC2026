@@ -73,6 +73,9 @@ public class TurretShooterSub extends SubsystemBase{
             }
     }
 
+    public void stop(){
+        setSpeed(MetersPerSecond.of(0));
+    }
 
     public LinearVelocity getSpeed() {
         AngularVelocity aSpeed = motor1.getVelocity().getValue(); // in rotations per second
