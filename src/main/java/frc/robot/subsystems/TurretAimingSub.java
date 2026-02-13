@@ -16,6 +16,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -27,4 +28,15 @@ import frc.robot.constants.TurretFeederConstants;
 public class TurretAimingSub extends SubsystemBase {
     private final TalonFX aiming_motor = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
     
+
+
+    public void SetSlewTarget(Angle targetSlewAngle){
+        //TODO
+        // sets the field relative yaw the turret should aim at
+    }
+
+    public void SetHoodTarget(Angle targetHoodAngle){
+        //TODO
+        // sets the angle the hood should go to
+    }
 }
