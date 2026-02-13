@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -23,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSub extends SubsystemBase {
+  private final SwerveDrivePoseEstimator poseEstimator;
   private final ClosedSlewRateLimiter xLimiter = new ClosedSlewRateLimiter(
       DriveConstants.MAX_ACCELERATION.in(MetersPerSecondPerSecond),
       DriveConstants.MAX_DECELERATION.in(MetersPerSecondPerSecond));
@@ -40,9 +43,17 @@ public class DriveSub extends SubsystemBase {
 
   private final PIDController holdYawPid = new PIDController(0.8, 0, 0);
 
+
+  
   /** Creates a new DriveSubsystem. */
   public DriveSub() {
     setupSmartDash();
+    poseEstimator = new SwerveDrivePoseEstimator(
+        DriveConstants.DRIVE_KINEMATICS,
+        Subsystems.nav.getHeadingR2D(), 
+        getModulePositions(),
+        new Pose2d() // Starts at 0,0
+    );
   }
 
   public void driveAtAngle(ChassisSpeeds speeds, boolean fieldRelative, Rotation2d yawAngle) { // TODO
@@ -74,6 +85,9 @@ public class DriveSub extends SubsystemBase {
 
     final var states = DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(speeds);
     setModuleStates(states);
+  }
+public Pose2d getPose() {
+    return poseEstimator.getEstimatedPosition();
   }
 
   private short logRateCounter = 0;

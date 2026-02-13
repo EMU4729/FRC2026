@@ -23,7 +23,7 @@ public class TurretAiming {
 
 
     public static TurretState calcState(List<DistanceSample> sampleList, Pose2d target){
-        //TODO
+        
         //1. Define Euclidean Geometry of the Target
         double target_transform = target.getTranslation().getNorm();
         double target_angle = target.getRotation().getDegrees();
@@ -31,7 +31,8 @@ public class TurretAiming {
         DistanceSample LowerBounds = null;
         DistanceSample UpperBounds = null;
         
-        for (DistanceSample sample :sampleList){
+        for (DistanceSample sample :sampleList)
+        {
             if (sample.distance().in(Meters)<= target_transform){
                      if (LowerBounds == null || sample.distance().in(Meters) > LowerBounds.distance().in(Meters)){
                         LowerBounds = sample;
@@ -47,7 +48,7 @@ public class TurretAiming {
         Angle AngleToTarget = Degrees.of(target_angle);
         if (LowerBounds ==null) return UpperBounds.toTurretState(AngleToTarget);
         if (UpperBounds == null) return LowerBounds.toTurretState(AngleToTarget);
-    if (LowerBounds == UpperBounds) return LowerBounds.toTurretState(AngleToTarget);
+        if (LowerBounds == UpperBounds) return LowerBounds.toTurretState(AngleToTarget);
       
     double t = (target_transform - LowerBounds.distance().in(Meters))/ (UpperBounds.distance().in(Meters) - LowerBounds.distance().in(Meters));
     double interpolatedPower = LowerBounds.power().in(DegreesPerSecond) + t * (UpperBounds.power().in(DegreesPerSecond) - LowerBounds.power().in(DegreesPerSecond));
@@ -59,26 +60,26 @@ public class TurretAiming {
 
     private static DistanceSample interpolateDistance(List<DistanceSample> sampleList, Distance distance){
         //TODO 
-double targetMeters = distance.in(Meters);
+    double targetMeters = distance.in(Meters);
 
-if (sampleList.isEmpty()) return new DistanceSample(null, null, distance);
-if (sampleList.size() == 1) return sampleList.get(0);
+    if (sampleList.isEmpty()) return new DistanceSample(null, null, distance);
+    if (sampleList.size() == 1) return sampleList.get(0);
 
-DistanceSample lower = sampleList.get(0);
-DistanceSample upper = sampleList.get((sampleList.size() -1));
+    DistanceSample lower = sampleList.get(0);
+    DistanceSample upper = sampleList.get((sampleList.size() -1));
 
 
-if (targetMeters <= lower.distance().in(Meters)) return lower;
-if (targetMeters <= upper.distance().in(Meters)) return upper;
+    if (targetMeters <= lower.distance().in(Meters)) return lower;
+    if (targetMeters <= upper.distance().in(Meters)) return upper;
 
-for (int i =0; i< sampleList.size() -1; i++){
-    if (targetMeters>= sampleList.get(i).distance().in(Meters) &&
-    targetMeters <= sampleList.get(i+1).distance().in(Meters)){
-            lower = sampleList.get(i);
-            upper = sampleList.get(i+1);
-            break;
-    }
-}
+    for (int i =0; i< sampleList.size() -1; i++){
+         if (targetMeters>= sampleList.get(i).distance().in(Meters) &&
+             targetMeters <= sampleList.get(i+1).distance().in(Meters)){
+                    lower = sampleList.get(i);
+                    upper = sampleList.get(i+1);
+                    break;
+            }
+        }   
 
 
 double lowDist = lower.distance().in(Meters);
@@ -90,10 +91,6 @@ double interpolatedPower = MathUtil.interpolate(lower.power().in(DegreesPerSecon
 
 double interpolatedHood = MathUtil.interpolate(lower.hoodAngle().in(Degrees), upper.hoodAngle().in(Degrees), t);
 
-        // search the list for the next largest/smallest distance
-        // use interpolation 'MathUtil.interpolate(0, 0, 0);' to find the best power / angle to shoot
-        // t = (x - smaller) / (larger - smaller)
-        // return
         return new DistanceSample(DegreesPerSecond.of(interpolatedPower), Degrees.of(interpolatedHood), distance); 
         
     }
