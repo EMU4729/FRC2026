@@ -13,6 +13,8 @@ import frc.robot.utils.TurretAiming;
 
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;;
 
@@ -87,7 +89,35 @@ public class TurrretRunner extends Command{
         return FieldArea.Blocked;
     }
 
+    public boolean OurHubActive() {
+        double matchTime = DriverStation.getMatchTime();
+        HubOrder WhoActiveFirst = BlueAciveFirst();
+        if (HubOrder.TBD == WhoActiveFirst) {
+            return true;
+         }
 
+        if (matchTime > 130 - AimingConstants.TimerOffset) {
+         // Transition shift, hub is active.
+            return true;
+        }  else if (matchTime > 105 - AimingConstants.TimerOffset) {
+         // Shift 1
+            return WhoActiveFirst == HubOrder.UsFirst;
+        } else if (matchTime > 80 - AimingConstants.TimerOffset) {
+            // Shift 2
+            return WhoActiveFirst == HubOrder.ThemFirst;
+        } else if (matchTime > 55 - AimingConstants.TimerOffset) {
+        // Shift 3
+            return WhoActiveFirst == HubOrder.UsFirst;
+        } else if (matchTime > 30 - AimingConstants.TimerOffset) {
+            // Shift 4
+            return WhoActiveFirst == HubOrder.ThemFirst;
+        } else {
+        // End game, hub always active.
+            return true;
+        }
+    }
+
+        
 
     private HubOrder BlueAciveFirst(){
         if (DriverStation.getAlliance().isEmpty()){

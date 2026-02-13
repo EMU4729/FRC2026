@@ -57,5 +57,5 @@ public class AimingConstants {
       
   }
 
-  
+  public static final double TimerOffset = 2;
 }
