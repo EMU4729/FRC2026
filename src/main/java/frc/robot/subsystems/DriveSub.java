@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSub extends SubsystemBase {
-  private final SwerveDrivePoseEstimator poseEstimator;
+
   private final ClosedSlewRateLimiter xLimiter = new ClosedSlewRateLimiter(
       DriveConstants.MAX_ACCELERATION.in(MetersPerSecondPerSecond),
       DriveConstants.MAX_DECELERATION.in(MetersPerSecondPerSecond));
@@ -86,9 +86,7 @@ public class DriveSub extends SubsystemBase {
     final var states = DriveConstants.DRIVE_KINEMATICS.toSwerveModuleStates(speeds);
     setModuleStates(states);
   }
-public Pose2d getPose() {
-    return poseEstimator.getEstimatedPosition();
-  }
+
 
   private short logRateCounter = 0;
   @Override

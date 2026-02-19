@@ -32,6 +32,8 @@ public class TurretAimingSub extends SubsystemBase {
 
     public void setSlewTarget(Angle targetSlewAngle){
         //TODO
+
+
         // sets the field relative yaw the turret should aim at
     }
 
@@ -42,6 +44,7 @@ public class TurretAimingSub extends SubsystemBase {
 
     public void stop(){
         //TODO
+        aiming_motor.stopMotor();
         // stops all movement
     }
 }
