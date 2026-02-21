@@ -48,12 +48,7 @@ public class DriveSub extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
   public DriveSub() {
     setupSmartDash();
-    poseEstimator = new SwerveDrivePoseEstimator(
-        DriveConstants.DRIVE_KINEMATICS,
-        Subsystems.nav.getHeadingR2D(), 
-        getModulePositions(),
-        new Pose2d() // Starts at 0,0
-    );
+   
   }
 
   public void driveAtAngle(ChassisSpeeds speeds, boolean fieldRelative, Rotation2d yawAngle) { // TODO
