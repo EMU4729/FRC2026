@@ -2,6 +2,8 @@ package frc.robot.commands.Turret;
 
 import java.util.List;
 import java.util.Optional;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,6 +18,7 @@ import frc.robot.constants.AimingConstants;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
 
 public class TurretPassToHome  extends Command{
     
@@ -35,7 +38,7 @@ public class TurretPassToHome  extends Command{
 
     @Override
     public void execute() {
-      Pose2d robotPose = Subsystems.drive.getPose();
+      Pose2d robotPose = Subsystems.nav.getPose();
     Translation2d targetPos = getPassingTarget(robotPose);
     
     double distanceToTarget = robotPose.getTranslation().getDistance(targetPos);
@@ -45,13 +48,13 @@ public class TurretPassToHome  extends Command{
     Rotation2d robotRelativeAngle = fieldAngle.minus(robotPose.getRotation());
 
     // 2. Get interpolated AngularVelocity (Power) from your DistanceSample list
-    AngularVelocity targetPower = getInterpolatedPower(distanceToTarget);
+    LinearVelocity targetPower = getInterpolatedPower(distanceToTarget);
 
     // 3. Command Subsystem
-    Subsystems.turretFeeder.setTargetAngle(robotRelativeAngle);
+    Subsystems.turretAiming.setSlewTarget(Radians.of(robotRelativeAngle.getRadians()));
     
     
-    Subsystems.turretFeeder.setSpeedFromAngular(targetPower);
+    Subsystems.turretShooter.setSpeed(targetPower);
         super.execute();
     }
 
@@ -60,10 +63,10 @@ public class TurretPassToHome  extends Command{
         Subsystems.turretFeeder.stop();
         super.end(interrupted);
     }
-private AngularVelocity getInterpolatedPower(double distance) {
+private LinearVelocity getInterpolatedPower(double distance) {
     List<AimingConstants.DistanceSample> samples = AimingConstants.PassingSamples;
     
-    if (samples.isEmpty()) return DegreesPerSecond.of(0);
+    if (samples.isEmpty()) return MetersPerSecond.of(0);
     if (samples.size() == 1) return samples.get(0).power();
 
     // Find bounding samples
@@ -85,10 +88,8 @@ private AngularVelocity getInterpolatedPower(double distance) {
     double range = highDist - lowDist;
     double fraction = (range == 0) ? 0 : (distance - lowDist) / range;
 
-    double lerpedPower = low.power().in(DegreesPerSecond) + 
-        fraction * (high.power().in(DegreesPerSecond) - low.power().in(DegreesPerSecond));
-
-    return DegreesPerSecond.of(lerpedPower);
+    double lerpedPower = MathUtil.interpolate(low.power().in(MetersPerSecond), high.power().in(MetersPerSecond), fraction);
+    return MetersPerSecond.of(lerpedPower);
 }
     private Translation2d getPassingTarget(Pose2d robotPose) {
        // 1. Determine which array of targets to use based on Alliance

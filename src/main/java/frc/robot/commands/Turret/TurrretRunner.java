@@ -4,6 +4,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.OI;
@@ -20,7 +21,6 @@ import edu.wpi.first.math.geometry.Translation2d;;
 
 
 public class TurrretRunner extends Command{
-    private TurretAimAtTag aimAtTag;
     //TODO
     // always running
     // if we are in our alliance zone and the hub is active : shoot at it
@@ -39,16 +39,21 @@ public class TurrretRunner extends Command{
         FieldArea fieldArea = getFieldArea();
         if(OI.pilot.a().getAsBoolean()){
             CommandScheduler.getInstance().schedule(new TurretAimAtTag());
+            SmartDashboard.putString("Turret Inhibit", "Turret Aiming At Tag");
             return;
+        } else {
+            SmartDashboard.putString("Turret Inhibit", "Not Shooting AT Tag");
         }
-        
-        if (fieldArea == FieldArea.OurAlliance) {
+        if (fieldArea == FieldArea.OurAlliance && OurHubActive()) {     
             CommandScheduler.getInstance().schedule(new TurretShootAtHub());
+            SmartDashboard.putString("Shooting Stage", "We Are Shooting At Hub");
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
             CommandScheduler.getInstance().schedule(new TurretPassToHome());
+             SmartDashboard.putString("Shooting Stage", "We Are Passing To Home");
         } else {
             //aim at tag
             CommandScheduler.getInstance().schedule(new TurretAimAtTag());
+             SmartDashboard.putString("Shooting Stage", "We Are Aiming at Tag");
         }
 
 

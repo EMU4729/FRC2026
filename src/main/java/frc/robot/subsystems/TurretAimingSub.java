@@ -155,11 +155,6 @@ HoodMotor.setControl(hoodController.withPosition(calculatedTargetHood.in(Rotatio
         return HoodMotor.getPosition().getValue();
     }
 
-    public void setMotorSpeed(double speed) {
-        aimingMotor.set(speed);
-    }
-
-
     public void setSlewTarget(Angle targetSlewAngle){
         //TODO
             this.manualSlewTarget = Rotation2d.fromDegrees(targetSlewAngle.in(Degrees));
