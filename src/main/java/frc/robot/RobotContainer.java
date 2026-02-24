@@ -4,11 +4,9 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -20,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.auto.AutoProvider;
 import frc.robot.commands.teleop.TeleopProvider;
-import frc.robot.constants.IntakeConstants;
-import frc.robot.subsystems.IntakeSub;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

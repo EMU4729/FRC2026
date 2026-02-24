@@ -2,8 +2,6 @@ package frc.robot.utils.photon;
 
 import java.util.Optional;
 
-import javax.xml.transform.Transformer;
-
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 

@@ -13,9 +13,6 @@ import frc.robot.OI;
 import frc.robot.Subsystems;
 import frc.robot.utils.rangemath.DriveBaseFit;
 import frc.robot.constants.DriveConstants;
-import frc.robot.constants.TurretConstants;
-import frc.robot.subsystems.TurretFeederSub;
-import frc.robot.subsystems.TurretShooterSub;
 
 public class TeleopDriveSwerve extends Command {
   private final DriveBaseFit settings;
