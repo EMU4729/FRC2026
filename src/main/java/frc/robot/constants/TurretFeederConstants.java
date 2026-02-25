@@ -7,4 +7,5 @@ import edu.wpi.first.units.measure.LinearVelocity;
 public class TurretFeederConstants {
     public static final int FEEDER_MOTOR_CANID = 14;
     public static final LinearVelocity FEEDER_SPEED = MetersPerSecond.of(100); //TO-DO
+    public static final int TURRENT_MOTOR_1_CANID = 1; //TODO change this
 }
