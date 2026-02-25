@@ -168,7 +168,7 @@ HoodMotor.setControl(hoodController.withPosition(calculatedTargetHood.in(Rotatio
     }
 
     public void setHoodTarget(Angle targetHoodAngle){
-    
+        HoodMotor.setControl(new PositionVoltage(targetHoodAngle.div(360)));
     }
 
     public void stop(){
