@@ -1,13 +1,10 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
-import frc.robot.constants.IntakeConstants;
 import frc.robot.subsystems.IntakeSub;
 
 public class ActivateIntakeCommand extends Command{

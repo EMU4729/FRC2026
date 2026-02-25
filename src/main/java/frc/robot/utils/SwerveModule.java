@@ -1,6 +1,5 @@
 package frc.robot.utils;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -17,12 +16,13 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.FeedForwardConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
@@ -33,12 +33,9 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.util.Color;
@@ -107,11 +104,11 @@ public class SwerveModule {
         .positionConversionFactor(DriveConstants.TURNING_ENCODER_POSITION_FACTOR)
         .velocityConversionFactor(DriveConstants.TURNING_ENCODER_VELOCITY_FACTOR);
     turnMotorConfig.closedLoop
-        .pidf(
+        .pid(
             DriveConstants.TURNING_P,
             DriveConstants.TURNING_I,
-            DriveConstants.TURNING_D,
-            DriveConstants.TURNING_FF)
+            DriveConstants.TURNING_D)
+        .apply(new FeedForwardConfig().kV(DriveConstants.TURNING_FF))
         .iZone(DriveConstants.TURNING_I_ZONE.in(Radians))
         .positionWrappingEnabled(true)
         .positionWrappingInputRange(DriveConstants.TURNING_ENCODER_POSITION_PID_MIN_INPUT,
@@ -263,7 +260,7 @@ public class SwerveModule {
     driveMotor.setControl(
         driveController.withVelocity(
             desiredState.speedMetersPerSecond / DriveConstants.WHEEL_CIRCUMFERENCE.in(Meters)));
-    turnController.setReference(
+    turnController.setSetpoint(
         desiredState.angle.plus(details.angularOffset()).getRadians(),
         ControlType.kPosition);
   }

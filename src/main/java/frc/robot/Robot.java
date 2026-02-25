@@ -4,10 +4,7 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
 import edu.wpi.first.net.WebServer;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.util.datalog.IntegerLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -15,7 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.IntakeSub;
+import frc.robot.commands.Turret.TurrretRunner;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,6 +44,7 @@ public class Robot extends TimedRobot {
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
 
     SmartDashboard.putData(CommandScheduler.getInstance());
+    CommandScheduler.getInstance().schedule(new TurrretRunner());
   }
 
   /**

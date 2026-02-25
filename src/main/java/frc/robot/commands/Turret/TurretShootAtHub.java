@@ -2,6 +2,8 @@ package frc.robot.commands.Turret;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -23,25 +25,22 @@ public class TurretShootAtHub  extends Command{
     private Translation2d OurHub = AimingConstants.Red_Hub;
 
     public TurretShootAtHub(){
-        
+        addRequirements(Subsystems.turretAiming, Subsystems.turretFeeder, Subsystems.turretShooter);
     }
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
-        super.initialize();
         Optional<Alliance> PresentAlliance = DriverStation.getAlliance();
         if (PresentAlliance.isPresent() && PresentAlliance.get() == DriverStation.Alliance.Red) {
             OurHub = AimingConstants.Red_Hub;
         } else {
             OurHub = AimingConstants.Blue_Hub;
         }
+        Subsystems.nav.drawFieldObject("TurretTarget", new Pose2d(OurHub, new Rotation2d()), false);
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        super.execute();
         TurretState HubCalc = TurretAiming.calcState(AimingConstants.ShootingSamples, OurHub);
         Subsystems.turretAiming.setHoodTarget(HubCalc.hoodAngle());
         Subsystems.turretAiming.setSlewTarget(HubCalc.turretAngle());
@@ -51,8 +50,6 @@ public class TurretShootAtHub  extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        // TODO Auto-generated method stub
-        super.end(interrupted);
         Subsystems.turretAiming.stop();
         Subsystems.turretShooter.stop();
         Subsystems.turretFeeder.stop();

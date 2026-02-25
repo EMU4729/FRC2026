@@ -1,11 +1,10 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.Radians;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -23,13 +22,12 @@ import frc.robot.constants.TurretFeederConstants;
 
 public class TurretFeederSub extends SubsystemBase{
     /* Initial motor variables */
-    private final TalonFX motor1 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
+    private final TalonFX motor1 = new TalonFX(TurretFeederConstants.FEEDER_MOTOR_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
     TurretShooterSub turretSub = new TurretShooterSub();
 
-    
 
-    private final Distance wheelRadius = Meters.of(1/100); // meters, unknown at the moment
+    private final Distance wheelRadius = Inches.of(1/2); // meters, unknown at the moment
 
     //sim
     private final double ratio = 1; 
@@ -59,17 +57,19 @@ public class TurretFeederSub extends SubsystemBase{
     public void setSpeed(LinearVelocity speed) {
 
         AngularVelocity aSpeed = RadiansPerSecond.of(
-            speed.in(MetersPerSecond) * ratio /wheelRadius.in(Meters));
+                speed.in(MetersPerSecond) * ratio / wheelRadius.in(Meters));
 
-            motor1.setControl(feederController1.withVelocity(aSpeed));
+        motor1.setControl(feederController1.withVelocity(aSpeed));
 
-            if (Robot.isSimulation()) {
-                simSpeedTarget = aSpeed.in(RadiansPerSecond);
-            }
+        if (Robot.isSimulation()) {
+            simSpeedTarget = aSpeed.in(RadiansPerSecond);
+        }
     }
+    
     public void stop(){
         setSpeed(MetersPerSecond.of(0));
     }
+
     public void PopFuel(){
         if(turretSub.atspeed()){
             setSpeed(TurretFeederConstants.FEEDER_SPEED);
@@ -84,24 +84,23 @@ public class TurretFeederSub extends SubsystemBase{
         return MetersPerSecond.of(aSpeed.in(RotationsPerSecond) / ratio * (2*Math.PI*wheelRadius.in(Meters)));
     }
 
-     @Override 
+    @Override 
     public void periodic() {
         LinearVelocity speeds = getSpeed();
         SmartDashboard.putNumber("TurretFeeder/motorSpeed", speeds.in(MetersPerSecond));
     }
 
     
-      @Override
+    @Override
     public void simulationPeriodic() { 
-         if (simSpeed > simSpeedTarget) {
-        simSpeed -= simAccel;
-    }   else if (simSpeed < simSpeedTarget) {
-         simSpeed += simAccel;
-    }
+        if (simSpeed > simSpeedTarget) {
+            simSpeed -= simAccel;
+        }   else if (simSpeed < simSpeedTarget) {
+            simSpeed += simAccel;
+        }
 
         motor1Sim.setRotorVelocity(simSpeed);
-  
-  }
+    }
 
 
 }
