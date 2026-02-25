@@ -12,6 +12,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
@@ -52,8 +53,9 @@ public class TurretFeederSub extends SubsystemBase{
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        motor1.getConfigurator().apply(motorConfig);
-        motor2.setControl(new Follower(0, null));
+    motor1.getConfigurator().apply(motorConfig);
+    // Make motor2 follow motor1. Use motor1's device ID and align the motor signals.
+    motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
         
         motor1Sim = motor1.getSimState();
       

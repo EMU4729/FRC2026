@@ -1,0 +1,6 @@
+{
+  "name": "FRC2026-pathplanner-placeholder",
+  "robotConfigVersion": 1,
+  "maxVelocity": 1.0,
+  "maxAcceleration": 1.0
+}

@@ -45,7 +45,7 @@ public class TurretShootAtHub  extends Command{
         Subsystems.turretAiming.setHoodTarget(HubCalc.hoodAngle());
         Subsystems.turretAiming.setSlewTarget(HubCalc.turretAngle());
         Subsystems.turretShooter.setSpeed(HubCalc.power());
-        Subsystems.turretFeeder.PopFuel();
+        //Subsystems.turretFeeder.PopFuel();
     }
 
     @Override

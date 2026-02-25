@@ -33,17 +33,17 @@ public class AutoProvider {
     @SuppressWarnings("unused")
     final var _nav = Subsystems.nav;
 
-    loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
-    loadPathPlannerAuto("Right Starting Position", "Right Starting Position");
-    loadPathPlannerAuto("Mid Starting Position", "Mid Starting Position");
-    loadPathPlannerAuto("Newtest", "Newtest");
+   // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
+   // loadPathPlannerAuto("Right Starting Position", "Right Starting Position");
+   // loadPathPlannerAuto("Mid Starting Position", "Mid Starting Position");
+   // loadPathPlannerAuto("Newtest", "Newtest");
 
-    chooser.addOption(
-        "Pathfind to Pose Test",
-        AutoBuilderFix.pathfindToPose(new Pose2d(1, 1, Rotation2d.k180deg), DriveConstants.PATH_CONSTRAINTS));
-    chooser.addOption("Lateral Speed Analysis", new LateralSpeedAnalysis());
-    chooser.addOption("Angular Speed Analysis", new AngularSpeedAnalysis());
-    chooser.addOption("System Test", Subsystems.drive.testFunction());
+   // chooser.addOption(
+   //     "Pathfind to Pose Test",
+   //     AutoBuilderFix.pathfindToPose(new Pose2d(1, 1, Rotation2d.k180deg), DriveConstants.PATH_CONSTRAINTS));
+   // chooser.addOption("Lateral Speed Analysis", new LateralSpeedAnalysis());
+   // chooser.addOption("Angular Speed Analysis", new AngularSpeedAnalysis());
+   // chooser.addOption("System Test", Subsystems.drive.testFunction());
 
     SmartDashboard.putData("Auto Chooser", chooser);
 
