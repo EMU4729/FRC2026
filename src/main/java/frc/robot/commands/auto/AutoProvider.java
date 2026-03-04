@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,9 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
+import frc.robot.commands.ActivateHopperCommand;
+import frc.robot.commands.Turret.IntakeCommand;
 import frc.robot.commands.analysis.AngularSpeedAnalysis;
 import frc.robot.commands.analysis.LateralSpeedAnalysis;
 import frc.robot.constants.DriveConstants;
+import frc.robot.subsystems.IntakeSub;
+import frc.robot.subsystems.TurretFeederSub;
 import frc.robot.utils.pathplanner.AutoBuilderFix;
 
 /**
@@ -26,12 +31,16 @@ public class AutoProvider {
   private AutoProvider() {
     chooser = new SendableChooser<>(); // pub for shuffle board
 
+
     // This is here to ensure PathPlanner is configured before we attempt to call
     // anything AutoBuilder-related, since static classes are lazily constructed.
     // I now see why WPILib's docs recommend dependency-injecting subsystems rather
     // than global static access. - Neel
     @SuppressWarnings("unused")
     final var _nav = Subsystems.nav;
+    loadPathPlannerAuto("Right Side Auto", "Right Side Auto");
+    loadPathPlannerAuto("Left Side Auto", "Left Side Auto");
+
 
    // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
    // loadPathPlannerAuto("Right Starting Position", "Right Starting Position");
@@ -46,6 +55,10 @@ public class AutoProvider {
    // chooser.addOption("System Test", Subsystems.drive.testFunction());
 
     SmartDashboard.putData("Auto Chooser", chooser);
+    NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
+    NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
+
+
 
   }
 

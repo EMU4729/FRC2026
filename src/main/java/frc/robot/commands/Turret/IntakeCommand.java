@@ -14,32 +14,45 @@ import frc.robot.subsystems.IntakeSub;
  * Turret commands package (keeps compatibility with existing button wiring if used).
  */
 public class IntakeCommand extends Command {
-	private final LinearVelocity speed;
-	private final IntakeSub intake = Subsystems.intake;
-	public static final double MOTOR_SPEED = 1.0;
-
-	public IntakeCommand(LinearVelocity speed) {
-		this.speed = speed;
-		addRequirements(intake);
-
-	}
-
-	@Override
-	public void initialize() {
-		intake.setSpeed(MetersPerSecond.of(0));
-	}
-
-	@Override
-	public void execute() {
+	private static LinearVelocity speed;
+			private final static IntakeSub intake = Subsystems.intake;
+				public static final double MOTOR_SPEED = 1.0;
+			
+				public IntakeCommand(LinearVelocity speed) {
+					IntakeCommand.speed = speed;
+				addRequirements(intake);
 		
-        if (OI.pilot.y().getAsBoolean()){
-            intake.setSpeed(speed);
+			}
+		
+			@Override
+			public void initialize() {
+				intake.setSpeed(MetersPerSecond.of(0));
+			}
+		
+			@Override
+			public void execute() {
+				
+				if (OI.pilot.y().getAsBoolean()){
+					intake.setSpeed(speed);
+				}
+		
+			}
+			// Add this factory method to IntakeCommand, or make a separate AutoIntakeCommand
+		
+		
+			@Override
+			public void end(boolean interrupted) {
+				intake.setSpeed(MetersPerSecond.of(0));
+			}
+			public static IntakeCommand forAuto() {
+			return new IntakeCommand(MetersPerSecond.of(MOTOR_SPEED)) {
+				@Override
+				public void execute() {
+					intake.setSpeed(speed); // no button check
         }
-
-	}
-
-	@Override
-	public void end(boolean interrupted) {
-		intake.setSpeed(MetersPerSecond.of(0));
-	}
+    };
 }
+}
+
+
+
