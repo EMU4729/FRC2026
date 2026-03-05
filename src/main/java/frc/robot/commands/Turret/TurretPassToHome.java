@@ -17,14 +17,6 @@ import frc.robot.utils.TurretAiming;
 public class TurretPassToHome  extends Command{
     
     private Translation2d[] targets;
-    
-    //TODO
-    // while triggered
-    // select the left or right target
-    // calc to shoot there
-    // do it
-
-    //AimingConstants.PassingSamples
 
     public TurretPassToHome(){
         addRequirements(Subsystems.turretAiming, Subsystems.turretFeeder, Subsystems.turretShooter);
@@ -43,8 +35,7 @@ public class TurretPassToHome  extends Command{
 
     @Override
     public void execute() {
-        Pose2d robotPose = Subsystems.nav.getPose();
-        Translation2d targetPos = getPassingTarget(robotPose);
+        Translation2d targetPos = getPassingTarget(Subsystems.nav.getPose().getTranslation());
         Subsystems.nav.drawFieldObject("TurretTarget", new Pose2d(targetPos, new Rotation2d()), false);
 
         TurretState targetState = TurretAiming.calcState(AimingConstants.PassingSamples, targetPos);
@@ -61,25 +52,18 @@ public class TurretPassToHome  extends Command{
         super.end(interrupted);
     }
 
-    private Translation2d getPassingTarget(Pose2d robotPose) {
-        // 1. Determine which array of targets to use based on Alliance
-        
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == Alliance.Red) {
-            targets = AimingConstants.Red_Pass_To_Targets;
-        } else {
-            // Default to Blue if no alliance is found or if it is Blue
-            targets = AimingConstants.Blue_Pass_To_Targets;
-        }
-
-        // 2. Find the closest target in the selected array
+    private Translation2d getPassingTarget(Translation2d robotPos) {
         Translation2d bestTarget = targets[0]; // Start with the first one as a baseline
-        double closestDistance = robotPose.getTranslation().getDistance(bestTarget);
+        double dx = robotPos.getX() - bestTarget.getX();
+        double dy = robotPos.getY() - bestTarget.getY();
+        double closestDistanceSq = dx * dx + dy * dy;
 
         for (Translation2d target : targets) {
-            double distance = robotPose.getTranslation().getDistance(target);
-            if (distance < closestDistance) {
-                closestDistance = distance;
+            double targetDx = robotPos.getX() - target.getX();
+            double targetDy = robotPos.getY() - target.getY();
+            double distanceSq = targetDx * targetDx + targetDy * targetDy;
+            if (distanceSq < closestDistanceSq) {
+                closestDistanceSq = distanceSq;
                 bestTarget = target;
             }
         }

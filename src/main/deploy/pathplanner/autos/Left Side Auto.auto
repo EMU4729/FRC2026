@@ -21,6 +21,18 @@
           "data": {
             "pathName": "Left Return"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collect Depot Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot To Shooting"
+          }
         }
       ]
     }

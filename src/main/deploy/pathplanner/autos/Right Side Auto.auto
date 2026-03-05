@@ -21,6 +21,18 @@
           "data": {
             "pathName": "Right Return"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collect Depot Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Depot To Shooting"
+          }
         }
       ]
     }
