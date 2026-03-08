@@ -30,7 +30,7 @@ public class IntakeSub extends SubsystemBase {
   private final TalonFX motor2 = new TalonFX(IntakeConstants.INTAKE_DEPLOY_MOTOR_CANID);
   private final PositionVoltage feedercontroller2;
 
-  private  Angle extendTargetAngle = IntakeConstants.RETRACT_ANGLE;
+  private Angle extendTargetAngle = IntakeConstants.RETRACT_ANGLE;
 
   private final double wheelRadius = 1.65/100; // m
   private final double ratio = 5; // input | output
