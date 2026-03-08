@@ -47,12 +47,7 @@ public class AimingConstants {
     LinearVelocity power,
     Angle hoodAngle,
 
-    Distance distance){
-
-      public TurretState toTurretState(Angle turretAngle){
-        return new TurretState(turretAngle, this.power(), this.hoodAngle);
-      }
-      
+    Distance distance){      
   }
 
   public static record TurretState(

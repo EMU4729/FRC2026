@@ -15,6 +15,7 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -95,6 +96,8 @@ public class TurretAimingSub extends SubsystemBase {
                 .withPosition(calculatedTargetHood));
 
         updateTelemetry(calculatedTargetRot);
+        Subsystems.nav.photon.cams[0].setRobotToCameraTransform(
+                new Rotation3d(0,0,getTurretAngle().in(Degrees)));
     }
 
     public Angle getTurretAngle() {

@@ -117,6 +117,7 @@ public class IntakeSub extends SubsystemBase {
     LinearVelocity speeds = getSpeed();
     SmartDashboard.putNumber("Intake/motorSpeed", speeds.in(MetersPerSecond));
     motor2.setControl(feedercontroller2.withPosition(extendTargetAngle));
+    SmartDashboard.putNumber("Intake/Angle", motor2.getPosition().getValueAsDouble());
   }
 
   @Override

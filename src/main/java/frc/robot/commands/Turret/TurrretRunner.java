@@ -48,13 +48,15 @@ public class TurrretRunner extends Command{
         if (fieldArea == FieldArea.OurAlliance && OurHubActive()) {
             CommandScheduler.getInstance().schedule(ShootAt);
             SmartDashboard.putString("Shooting Stage", "Shooting At Hub");
+
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
             CommandScheduler.getInstance().schedule(PassTo);
-             SmartDashboard.putString("Shooting Stage", "Passing To Home");
+            SmartDashboard.putString("Shooting Stage", "Passing To Home");
+            
         } else {
             //aim at tag
             CommandScheduler.getInstance().schedule(AimAt);
-             SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
+            SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
         }
 
 

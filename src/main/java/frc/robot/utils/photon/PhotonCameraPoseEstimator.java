@@ -108,23 +108,11 @@ public class PhotonCameraPoseEstimator {
    * 
    * @return the new currently estimated pose
    */
-    public Optional<EstimatedRobotPose> getEstimatedPose() {
-          return getEstimatedPose(new Rotation3d());
-    }
-
-    public Optional<EstimatedRobotPose> getEstimatedPose(Rotation3d turretAngle) {
+  public Optional<EstimatedRobotPose> getEstimatedPose() {
     Optional<PhotonPipelineResult> latestResult = getLatestResult();
 
     if (latestResult.isEmpty()) return Optional.empty();
     
-    Transform3d robotToCamTemp = robotToCam;
-    if (turretToCam.isPresent()) {
-      Transform3d rotationTransform = new Transform3d(new Translation3d(), turretAngle);
-      Transform3d turretTotransform = turretToCam.get().plus(rotationTransform);
-      robotToCamTemp = turretToCam.get().plus(turretTotransform);
-    }
-    poseEstimator.setRobotToCameraTransform(robotToCamTemp);
-
 
     Optional<EstimatedRobotPose> res = filter(log(latestResult.flatMap(poseEstimator::update)));
     if (res.isEmpty()){increaseTollerance();}
@@ -133,6 +121,15 @@ public class PhotonCameraPoseEstimator {
     return res;
   }
 
+  public void setRobotToCameraTransform(Rotation3d turretAngle){
+    Transform3d robotToCamTemp = robotToCam;
+    Transform3d rotationTransform = new Transform3d(new Translation3d(), turretAngle);
+    Transform3d turretTotransform = turretToCam.get().plus(rotationTransform);
+    robotToCamTemp = turretToCam.get().plus(turretTotransform);
+
+    poseEstimator.setRobotToCameraTransform(robotToCamTemp);
+  }
+  
   public double getDistanceTol(){
     return distanceTol;
   }
