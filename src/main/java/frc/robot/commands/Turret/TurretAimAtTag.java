@@ -1,5 +1,7 @@
 package frc.robot.commands.Turret;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTag;
@@ -11,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.TurretConstants;
 import frc.robot.constants.AimingConstants.TurretState;
 import frc.robot.utils.TurretAiming;
 
@@ -57,8 +60,8 @@ public class TurretAimAtTag extends Command {
 
         // Command the turret and shooter
         Subsystems.turretAiming.setSlewTarget(state.turretAngle());
-        Subsystems.turretAiming.setHoodTarget(state.hoodAngle());
-        Subsystems.turretShooter.setSpeed(state.power());
+        Subsystems.turretAiming.setHoodTarget(Degrees.of(80));
+        Subsystems.turretShooter.setSpeed(TurretConstants.ShooterIdleSpeed);
 
         super.execute();
     }

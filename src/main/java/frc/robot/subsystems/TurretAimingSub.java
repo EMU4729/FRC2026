@@ -43,9 +43,9 @@ public class TurretAimingSub extends SubsystemBase {
        // --- Turret Configuration ---
         TalonFXConfiguration aimingConfig = new TalonFXConfiguration();
         aimingConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        aimingConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.5;
+        aimingConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.25;
         aimingConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        aimingConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -0.5;
+        aimingConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -0.25;
         aimingConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         aimingConfig.Feedback.SensorToMechanismRatio = TurretConstants.rotatorMotorRatio; // DriveConstants.DRIVE_GEAR_RATIO;
         aimingConfig.Slot0.kP = TurretConstants.ROTATOR_P;
@@ -59,6 +59,10 @@ public class TurretAimingSub extends SubsystemBase {
         hoodMotorConfig = new TalonFXConfiguration();
         hoodMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         hoodMotorConfig.Feedback.SensorToMechanismRatio = TurretConstants.hoodMotorRatio;
+        hoodMotorConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        hoodMotorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.25;
+        hoodMotorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        hoodMotorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -0.25;
         hoodMotorConfig.Slot0.kP = TurretConstants.HOOD_P;
         hoodMotorConfig.Slot0.kI = TurretConstants.HOOD_I;
         hoodMotorConfig.Slot0.kD = TurretConstants.HOOD_D;
