@@ -21,6 +21,11 @@ public class TurrretRunner extends Command{
     // if the driver is holding the lockout button (say 'a') : aim at the best tag
     // if we are not in any zone aim at the best tag
 
+    private final Command AimAt = new TurretAimAtTag();
+    private final Command ShootAt = new TurretShootAtHub();
+    private final Command PassTo = new TurretPassToHome();
+
+
     public TurrretRunner(){
 
     }
@@ -33,23 +38,25 @@ public class TurrretRunner extends Command{
         // TODO Auto-generated method stub
         FieldArea fieldArea = getFieldArea();
         if(OI.pilot.a().getAsBoolean()){
-            CommandScheduler.getInstance().schedule(new TurretAimAtTag());
+            CommandScheduler.getInstance().schedule(AimAt);
             SmartDashboard.putBoolean("Turret Inhibit", true);
             return;
         } else {
             SmartDashboard.putBoolean("Turret Inhibit", false);
         }
 
-        if (fieldArea == FieldArea.OurAlliance && OurHubActive()) {     
-            CommandScheduler.getInstance().schedule(new TurretShootAtHub());
+        if (fieldArea == FieldArea.OurAlliance && OurHubActive()) {
+            CommandScheduler.getInstance().schedule(ShootAt);
             SmartDashboard.putString("Shooting Stage", "Shooting At Hub");
+
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
-            CommandScheduler.getInstance().schedule(new TurretPassToHome());
-             SmartDashboard.putString("Shooting Stage", "Passing To Home");
+            CommandScheduler.getInstance().schedule(PassTo);
+            SmartDashboard.putString("Shooting Stage", "Passing To Home");
+            
         } else {
             //aim at tag
-            CommandScheduler.getInstance().schedule(new TurretAimAtTag());
-             SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
+            CommandScheduler.getInstance().schedule(AimAt);
+            SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
         }
 
 

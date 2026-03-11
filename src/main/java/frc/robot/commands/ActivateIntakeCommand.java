@@ -8,25 +8,23 @@ import frc.robot.Subsystems;
 import frc.robot.subsystems.IntakeSub;
 
 public class ActivateIntakeCommand extends Command{
-    private LinearVelocity speed;
     public static final double MOTOR_SPEED = 1.0;
     IntakeSub intake = Subsystems.intake;
-    public ActivateIntakeCommand(LinearVelocity speed){
-        this.speed = speed;
+    public ActivateIntakeCommand(){
         addRequirements(intake);
     }
     @Override
     public void initialize() {
-        intake.setSpeed(MetersPerSecond.of(0));
+        intake.setExtendAngle();
     }
 
     @Override
     public void execute() {
-        intake.setSpeed(speed);
+        
     }
 
     @Override
     public void end(boolean interrupted){
-        intake.setSpeed(MetersPerSecond.of(0));
+        intake.setRetractedAngle();
     }
 }

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.commands.ActivateHopperCommand;
-import frc.robot.commands.Turret.IntakeCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.analysis.AngularSpeedAnalysis;
 import frc.robot.commands.analysis.LateralSpeedAnalysis;
 import frc.robot.constants.DriveConstants;
