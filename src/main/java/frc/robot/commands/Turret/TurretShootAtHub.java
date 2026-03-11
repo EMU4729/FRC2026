@@ -5,6 +5,8 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import static edu.wpi.first.units.Units.Radians;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,8 +44,11 @@ public class TurretShootAtHub  extends Command{
     @Override
     public void execute() {
         TurretState HubCalc = TurretAiming.calcState(AimingConstants.ShootingSamples, OurHub);
+        // Rotate robot to face the hub target instead of rotating the turret
+        Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+                Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
+
         Subsystems.turretAiming.setHoodTarget(HubCalc.hoodAngle());
-        Subsystems.turretAiming.setSlewTarget(HubCalc.turretAngle());
         Subsystems.turretShooter.setSpeed(HubCalc.power());
         //Subsystems.turretFeeder.PopFuel();
     }

@@ -5,6 +5,8 @@ import java.util.Optional;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import static edu.wpi.first.units.Units.Radians;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -55,17 +57,21 @@ public class TurretAimAtTag extends Command {
         // Compute turret state (angle, power, hood)
         TurretState state = TurretAiming.calcState(AimingConstants.ShootingSamples, tagPos);
 
-        // Command the turret and shooter
-        Subsystems.turretAiming.setSlewTarget(state.turretAngle());
-        Subsystems.turretAiming.setHoodTarget(state.hoodAngle());
-        Subsystems.turretShooter.setSpeed(state.power());
+    // Rotate the robot so the front faces the target (simple-shooter mode)
+    Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+        Rotation2d.fromRadians(state.turretAngle().in(Radians)));
+
+    // Configure hood and shooter power as before
+    Subsystems.turretAiming.setHoodTarget(state.hoodAngle());
+    Subsystems.turretShooter.setSpeed(state.power());
 
         super.execute();
     }
 
     @Override
     public void end(boolean interrupted) {
-     
+        // Stop motion and motors when command ends
+        Subsystems.drive.setX();
         Subsystems.turretAiming.stop();
         Subsystems.turretFeeder.stop();
         Subsystems.turretShooter.stop();

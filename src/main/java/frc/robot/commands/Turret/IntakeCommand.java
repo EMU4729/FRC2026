@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.OI;
 import frc.robot.Subsystems;
 import frc.robot.subsystems.IntakeSub;
@@ -51,6 +52,10 @@ public class IntakeCommand extends Command {
 					intake.setSpeed(speed); // no button check
         }
     };
+}
+
+public static Command forAutoOff() {
+    return new InstantCommand(() -> intake.setSpeed(MetersPerSecond.of(0)), intake);
 }
 }
 

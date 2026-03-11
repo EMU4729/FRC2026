@@ -11,27 +11,53 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "NOM3 vertical toptbot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HOPPER ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "NOM3 vertical toptbot"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Left Return"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake OFF"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Return"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Collect Depot Left"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Depot To Shooting"
+            "name": null
           }
         }
       ]

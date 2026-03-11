@@ -7,6 +7,8 @@ package frc.robot;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -39,6 +41,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    // NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
+    //NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
     if(Robot.isSimulation()){
       DriverStation.silenceJoystickConnectionWarning(true);
     }

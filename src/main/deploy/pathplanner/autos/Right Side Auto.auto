@@ -11,27 +11,34 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Bottom NOM3"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HOPPER ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Bottom NOM3"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Right Return"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Collect Depot Right"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Depot To Shooting"
           }
         }
       ]

@@ -29,7 +29,10 @@ public class AutoProvider {
   private final SendableChooser<Command> chooser;
 
   private AutoProvider() {
-    chooser = new SendableChooser<>(); // pub for shuffle board
+    chooser = new SendableChooser<>(); 
+        NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
+             NamedCommands.registerCommand("Intake OFF", IntakeCommand.forAutoOff());
+    NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());// pub for shuffle board
 
 
     // This is here to ensure PathPlanner is configured before we attempt to call
@@ -55,8 +58,7 @@ public class AutoProvider {
    // chooser.addOption("System Test", Subsystems.drive.testFunction());
 
     SmartDashboard.putData("Auto Chooser", chooser);
-    NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
-    NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
+
 
 
 
