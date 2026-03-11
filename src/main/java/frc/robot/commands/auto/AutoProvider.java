@@ -31,7 +31,7 @@ public class AutoProvider {
   private AutoProvider() {
     chooser = new SendableChooser<>(); 
         NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
-             NamedCommands.registerCommand("Intake OFF", IntakeCommand.forAutoOff());
+    NamedCommands.registerCommand("Intake OFF", IntakeCommand.forAutoOff());
     NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());// pub for shuffle board
 
 
