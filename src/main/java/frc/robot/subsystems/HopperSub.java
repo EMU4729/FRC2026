@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -70,7 +69,6 @@ public class HopperSub extends SubsystemBase {
 	}
 
 	public void stop() {
-		simSpeedTarget = 0;
 		motor.stopMotor();
 		activated = false;
 	}

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.commands.ActivateHopperCommand;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.Turret.TurretShootAtHub;
 import frc.robot.commands.analysis.AngularSpeedAnalysis;
 import frc.robot.commands.analysis.LateralSpeedAnalysis;
 import frc.robot.constants.DriveConstants;
@@ -33,7 +34,7 @@ public class AutoProvider {
         NamedCommands.registerCommand("Intake ON", ActivateIntakeCommand.forAuto());
     NamedCommands.registerCommand("Intake OFF", ActivateIntakeCommand.forAutoOff());
     NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());// pub for shuffle board
-
+    NamedCommands.registerCommand("SHOOT HUB", TurretShootAtHub.forAuto());
 
     // This is here to ensure PathPlanner is configured before we attempt to call
     // anything AutoBuilder-related, since static classes are lazily constructed.

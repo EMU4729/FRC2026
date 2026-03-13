@@ -60,5 +60,8 @@ public class TurretShootAtHub  extends Command{
         Subsystems.turretShooter.stop();
         Subsystems.turretFeeder.stop();
     }   
+        public static TurretShootAtHub forAuto() {
+        return new TurretShootAtHub();
+    }
     
 }

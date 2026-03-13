@@ -1,9 +1,7 @@
 package frc.robot.constants;
 
-import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.LinearVelocity;
 
 public class TurretConstants {
@@ -22,10 +20,6 @@ public class TurretConstants {
     public static final double HOOD_D = 0;
     public static final double HOOD_I = 0;
     public static final double hoodMotorRatio = 1;
-
-
-    public static final Angle MaxSlew = Degrees.of(100);
-    public static final Angle MinSlew = Degrees.of(-100);
 
     
 }

@@ -74,7 +74,7 @@ public class RobotContainer {
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
     
-    OI.pilot.x().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(ActivateIntakeCommand.MOTOR_SPEED)));
+    OI.pilot.a().whileTrue(new ActivateIntakeCommand());
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
     //OI.pilot.y().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));

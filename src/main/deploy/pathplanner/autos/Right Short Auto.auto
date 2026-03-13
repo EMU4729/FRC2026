@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "TopL to Ready"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -29,7 +23,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "NOM3 vertical toptbot"
+                  "pathName": "TopR To Ready"
                 }
               }
             ]
@@ -42,13 +36,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake OFF"
+                  "name": "Intake ON"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Return"
+                  "pathName": "BotR Return"
                 }
               }
             ]
@@ -57,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "SHOOT HUB"
           }
         }
       ]
