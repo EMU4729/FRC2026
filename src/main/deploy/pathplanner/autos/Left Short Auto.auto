@@ -5,9 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Right Start"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TopL to Ready"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "HOPPER ON"
+                }
+              }
+            ]
           }
         },
         {
@@ -21,24 +40,18 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "Bottom NOM3"
+                  "pathName": "Left Return"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Right Return"
+            "name": "SHOOT HUB"
           }
         }
       ]
