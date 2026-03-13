@@ -43,8 +43,8 @@ public class TurretPassToHome  extends Command{
     TurretState targetState = TurretAiming.calcState(AimingConstants.PassingSamples, targetPos);
 
     // Rotate robot to face the passing target
-    Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
-        Rotation2d.fromRadians(targetState.turretAngle().in(Radians)));
+    //Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+    //    Rotation2d.fromRadians(targetState.turretAngle().in(Radians)));
 
     Subsystems.turretAiming.setHoodTarget(targetState.hoodAngle());
     Subsystems.turretShooter.setSpeed(targetState.power());

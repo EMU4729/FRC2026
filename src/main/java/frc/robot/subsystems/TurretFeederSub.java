@@ -74,22 +74,22 @@ public class TurretFeederSub extends SubsystemBase{
             }
     }
     public void setTargetAngle(Rotation2d angle) {
-       double gearRatio = 1.0; //TODO CHANGE THIS LATER
-    motor1.setControl(positionControl.withPosition(angle.getRotations() * gearRatio));
+        double gearRatio = 1.0; //TODO CHANGE THIS LATER
+        motor1.setControl(positionControl.withPosition(angle.getRotations() * gearRatio));
     }
     public void stop() {
         motor1.stopMotor();
         motor2.stopMotor();
     }
     public void setSpeedFromAngular(AngularVelocity speed) {
-    // motor1.setControl(feederController1.withVelocity(speed));
-    // If using CTRE VelocityVoltage, it usually expects Rotations per Second
-    motor1.setControl(feederController1.withVelocity(speed.in(RotationsPerSecond)));
+        // motor1.setControl(feederController1.withVelocity(speed));
+        // If using CTRE VelocityVoltage, it usually expects Rotations per Second
+        motor1.setControl(feederController1.withVelocity(speed.in(RotationsPerSecond)));
 
-    if (Robot.isSimulation()) {
-        simSpeedTarget = speed.in(RadiansPerSecond);
+        if (Robot.isSimulation()) {
+            simSpeedTarget = speed.in(RadiansPerSecond);
+        }
     }
-}
 
 
     public LinearVelocity getSpeed() {

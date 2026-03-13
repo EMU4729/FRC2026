@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -50,10 +51,10 @@ public class DriveSub extends SubsystemBase {
   }
 
   public void driveAtAngle(ChassisSpeeds speeds, boolean fieldRelative, Rotation2d yawAngle) { // TODO
-    Rotation2d currentYaw = Subsystems.nav.getHeadingR2D();
-    Rotation2d err = currentYaw.minus(yawAngle);
-    speeds.omegaRadiansPerSecond = holdYawPid.calculate(err.getDegrees());
-    drive(speeds, fieldRelative, true);
+    //Rotation2d currentYaw = Subsystems.nav.getHeadingR2D();
+    //Rotation2d err = currentYaw.minus(yawAngle);
+    //speeds.omegaRadiansPerSecond = holdYawPid.calculate(MathUtil.applyDeadband(err.getDegrees(), 5));
+    //drive(speeds, fieldRelative, true);
   }
 
   /**
