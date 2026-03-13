@@ -15,15 +15,15 @@
                 }
               },
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Start"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "HOPPER ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TopR To Ready"
                 }
               }
             ]
@@ -34,9 +34,15 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "Top Right Return"
+                  "pathName": "BotR Return"
                 }
               }
             ]
