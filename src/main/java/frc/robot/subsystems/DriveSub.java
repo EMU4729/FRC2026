@@ -198,5 +198,27 @@ public class DriveSub extends SubsystemBase {
             () -> Subsystems.nav != null ? Subsystems.nav.getHeading().in(Radians) : 0, null);
       }
     });
+    SmartDashboard.putData("Swerve Drive Sub Des", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDesiredState().getSpeed().in(MetersPerSecond), null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> frontRight.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDesiredState().getSpeed().in(MetersPerSecond),
+            null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> backLeft.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDesiredState().getSpeed().in(MetersPerSecond), null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> backRight.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDesiredState().getSpeed().in(MetersPerSecond), null);
+
+        builder.addDoubleProperty("Robot Angle",
+            () -> Subsystems.nav != null ? Subsystems.nav.getHeading().in(Radians) : 0, null);
+      }
+    });
   }
 }

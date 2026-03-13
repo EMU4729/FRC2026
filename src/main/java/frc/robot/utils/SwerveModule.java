@@ -94,7 +94,7 @@ public class SwerveModule {
     if (moduleDetails.invertDrive()) {
       driveMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     }
-    driveMotor.getConfigurator().apply(driveMotorConfig);
+    //driveMotor.getConfigurator().apply(driveMotorConfig);
 
     driveController = new VelocityVoltage(0).withFeedForward(DriveConstants.DRIVING_FF).withSlot(0);
 
@@ -236,10 +236,10 @@ public class SwerveModule {
       }
     }
 
-    state.optimize(
+    /*state.optimize(
         getTurnAngle(), getTurnVelocity(),
         RadiansPerSecond.of(3), RadiansPerSecondPerSecond.of(24), // TODO wrong constants
-        desiredState);
+        desiredState);*/
     desiredState = state;
     applyState();
   }

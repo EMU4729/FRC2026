@@ -8,6 +8,7 @@ import java.util.Optional;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
 import frc.robot.Subsystems;
@@ -38,6 +39,10 @@ public class TeleopDriveSwerve extends Command {
         booster,
         limiter);
 
+    SmartDashboard.putNumber("Controller/y",  OI.pilot.getLeftY());
+    SmartDashboard.putNumber("Controller/x",  OI.pilot.getLeftX());
+    SmartDashboard.putNumber("Controller/r",  -OI.pilot.getRightX());
+
     var x = -control[0] * DriveConstants.MAX_SPEED.in(MetersPerSecond);
     var y = -control[1] * DriveConstants.MAX_SPEED.in(MetersPerSecond);
     var r = control[2] * DriveConstants.MAX_ANGULAR_SPEED.in(RadiansPerSecond);
@@ -47,6 +52,10 @@ public class TeleopDriveSwerve extends Command {
         x = -x;
         y = -y;
     };
+
+    SmartDashboard.putNumber("Controller/xo",  x);
+    SmartDashboard.putNumber("Controller/yo",  y);
+    SmartDashboard.putNumber("Controller/ro",  r);
 
     final var speeds = new ChassisSpeeds(x, y, r);
     Subsystems.drive.drive(speeds, fieldRelative, true);

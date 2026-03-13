@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -58,7 +59,7 @@ public class IntakeSub extends SubsystemBase {
     motorConfig.Slot0.kD = 0;
     motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    motor1.getConfigurator().apply(motorConfig);
+    //motor1.getConfigurator().apply(motorConfig);
 
 
     feederController1 = new VelocityVoltage(0).withSlot(0);
@@ -69,14 +70,14 @@ public class IntakeSub extends SubsystemBase {
     TalonFXConfiguration motorDeployConfig = new TalonFXConfiguration();
     /* Setup MotorConfig */
     motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    motorConfig.Feedback.SensorToMechanismRatio = 1;
+    motorConfig.Feedback.SensorToMechanismRatio = 25;
     /* Untested PID values */
     motorConfig.Slot0.kP = 1;
     motorConfig.Slot0.kI = 0;
     motorConfig.Slot0.kD = 0;
     motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    motor2.getConfigurator().apply(motorConfig);
+    //motor2.getConfigurator().apply(motorConfig);
 
 
     feedercontroller2 = new PositionVoltage(0).withSlot(0);
@@ -97,6 +98,11 @@ public class IntakeSub extends SubsystemBase {
     if (Robot.isSimulation()) {
       simSpeedTarget = aSpeed.in(RadiansPerSecond);
     }
+  }
+
+  public void stop(){
+    
+    motor1.setControl(new DutyCycleOut(0));
   }
 
   public LinearVelocity getSpeed() {

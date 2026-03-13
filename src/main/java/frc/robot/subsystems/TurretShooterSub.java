@@ -7,6 +7,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -52,14 +53,14 @@ public class TurretShooterSub extends SubsystemBase{
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        motor1.getConfigurator().apply(motorConfig);
+        //motor1.getConfigurator().apply(motorConfig);
 
         
         motor1Sim = motor1.getSimState();
         motor2Sim = motor2.getSimState();
         motor3Sim = motor3.getSimState();
-        motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
-        motor3.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
+        motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Opposed));
+        motor3.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Opposed));
 
         stop();
     }
@@ -79,7 +80,8 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public void stop(){
-        setSpeed(TurretConstants.ShooterIdleSpeed);
+        //setSpeed(TurretConstants.ShooterIdleSpeed);
+        motor1.setControl(new DutyCycleOut(0));
     }
 
     public LinearVelocity getSpeed() {

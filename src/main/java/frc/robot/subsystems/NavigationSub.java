@@ -37,7 +37,7 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.utils.pathplanner.AutoBuilderFix;
 
 public class NavigationSub extends SubsystemBase {
-  private final static ADIS16470_IMU imu = new ADIS16470_IMU(IMUAxis.kX, IMUAxis.kY, IMUAxis.kZ);
+  private final static ADIS16470_IMU imu = new ADIS16470_IMU(IMUAxis.kY, IMUAxis.kX, IMUAxis.kZ);
   private final Field2d field = new Field2d();
   private final ADIS16470_IMUSim imuSim = new ADIS16470_IMUSim(imu);
   private Pose2d poseSim = new Pose2d();

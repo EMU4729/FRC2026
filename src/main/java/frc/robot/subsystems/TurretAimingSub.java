@@ -53,7 +53,7 @@ public class TurretAimingSub extends SubsystemBase {
         aimingConfig.Slot0.kI = TurretConstants.ROTATOR_I;
         aimingConfig.Slot0.kD = TurretConstants.ROTATOR_D;
         aimingConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        slewMotor.getConfigurator().apply(aimingConfig);
+        //slewMotor.getConfigurator().apply(aimingConfig);
  
 
         TalonFXConfiguration hoodMotorConfig;
@@ -68,7 +68,7 @@ public class TurretAimingSub extends SubsystemBase {
         hoodMotorConfig.Slot0.kI = TurretConstants.HOOD_I;
         hoodMotorConfig.Slot0.kD = TurretConstants.HOOD_D;
         hoodMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        hoodMotor.getConfigurator().apply(hoodMotorConfig);
+        //hoodMotor.getConfigurator().apply(hoodMotorConfig);
 
 
         slewMotorSim = slewMotor.getSimState();

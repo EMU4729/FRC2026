@@ -46,7 +46,7 @@ public class HopperSub extends SubsystemBase {
 		cfg.Slot0.kD = 0;
 		cfg.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-		motor.getConfigurator().apply(cfg);
+		//motor.getConfigurator().apply(cfg);
 
 		motorSim = motor.getSimState();
 	}
