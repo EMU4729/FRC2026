@@ -28,11 +28,11 @@ public class ActivateIntakeCommand extends Command {
     @Override
     public void initialize() {
         intake.setExtendAngle();
+        intake.setSpeed(speed);
     }
 
     @Override
     public void execute() {
-        intake.setSpeed(speed);
     }
 
     @Override

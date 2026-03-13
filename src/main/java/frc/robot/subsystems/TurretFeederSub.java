@@ -23,6 +23,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.Subsystems;
 import frc.robot.constants.TurretFeederConstants;
 
 public class TurretFeederSub extends SubsystemBase{
@@ -88,6 +89,14 @@ public class TurretFeederSub extends SubsystemBase{
 
         if (Robot.isSimulation()) {
             simSpeedTarget = speed.in(RadiansPerSecond);
+        }
+    }
+
+    public void popFuel(LinearVelocity speed){
+        if (Subsystems.turretShooter.atspeed()){
+            setSpeed(speed);
+        } else {
+            stop();
         }
     }
 

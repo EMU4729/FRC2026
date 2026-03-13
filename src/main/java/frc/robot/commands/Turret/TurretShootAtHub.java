@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.TurretFeederConstants;
 import frc.robot.constants.AimingConstants.TurretState;
 import frc.robot.utils.TurretAiming;
 
@@ -50,7 +51,7 @@ public class TurretShootAtHub  extends Command{
 
         Subsystems.turretAiming.setHoodTarget(HubCalc.hoodAngle());
         Subsystems.turretShooter.setSpeed(HubCalc.power());
-        //Subsystems.turretFeeder.PopFuel();
+        Subsystems.turretFeeder.popFuel(TurretFeederConstants.TARGET_SPEED);
     }
 
     @Override

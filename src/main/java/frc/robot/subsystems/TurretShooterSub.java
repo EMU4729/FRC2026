@@ -25,7 +25,7 @@ import frc.robot.constants.TurretConstants;
 public class TurretShooterSub extends SubsystemBase{
     private final TalonFX motor1 = new TalonFX(TurretConstants.SHOOTER_MOTOR_1_CANID);
     private final TalonFX motor2 = new TalonFX(TurretConstants.SHOOTER_MOTOR_2_CANID);
-    private final TalonFX motor3 = new TalonFX(TurretConstants.SHOOTER_MOTOR_2_CANID);
+    private final TalonFX motor3 = new TalonFX(TurretConstants.SHOOTER_MOTOR_3_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
     //private final VelocityVoltage feederController2 = new VelocityVoltage(0).withSlot(0);
     
@@ -88,7 +88,7 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public boolean atspeed(){
-        if (getSpeed().in(MetersPerSecond) >= TurretConstants.MIN_MOTOR_SPEED){
+        if (getSpeed().gt(TurretConstants.ShooterIdleSpeed)){
             return true;
         } else {
             return false;
