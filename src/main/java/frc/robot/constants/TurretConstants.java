@@ -9,6 +9,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 public class TurretConstants {
     public static final int SHOOTER_MOTOR_1_CANID = 12;
     public static final int SHOOTER_MOTOR_2_CANID = 13;
+    public static final int SHOOTER_MOTOR_3_CANID = 14;
     public static final int HOOD_MOTOR_CANID = 10;
 
     public static final int MIN_MOTOR_SPEED = 200; // TO-DO

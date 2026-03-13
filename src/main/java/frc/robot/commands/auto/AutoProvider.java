@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.commands.ActivateHopperCommand;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.analysis.AngularSpeedAnalysis;
 import frc.robot.commands.analysis.LateralSpeedAnalysis;
 import frc.robot.constants.DriveConstants;
@@ -30,8 +30,8 @@ public class AutoProvider {
 
   private AutoProvider() {
     chooser = new SendableChooser<>(); 
-        NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
-    NamedCommands.registerCommand("Intake OFF", IntakeCommand.forAutoOff());
+        NamedCommands.registerCommand("Intake ON", ActivateIntakeCommand.forAuto());
+    NamedCommands.registerCommand("Intake OFF", ActivateIntakeCommand.forAutoOff());
     NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());// pub for shuffle board
 
 
