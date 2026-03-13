@@ -23,6 +23,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.Subsystems;
 import frc.robot.constants.TurretFeederConstants;
 
 public class TurretFeederSub extends SubsystemBase{
@@ -74,22 +75,30 @@ public class TurretFeederSub extends SubsystemBase{
             }
     }
     public void setTargetAngle(Rotation2d angle) {
-       double gearRatio = 1.0; //TODO CHANGE THIS LATER
-    motor1.setControl(positionControl.withPosition(angle.getRotations() * gearRatio));
+        double gearRatio = 1.0; //TODO CHANGE THIS LATER
+        motor1.setControl(positionControl.withPosition(angle.getRotations() * gearRatio));
     }
     public void stop() {
         motor1.stopMotor();
         motor2.stopMotor();
     }
     public void setSpeedFromAngular(AngularVelocity speed) {
-    // motor1.setControl(feederController1.withVelocity(speed));
-    // If using CTRE VelocityVoltage, it usually expects Rotations per Second
-    motor1.setControl(feederController1.withVelocity(speed.in(RotationsPerSecond)));
+        // motor1.setControl(feederController1.withVelocity(speed));
+        // If using CTRE VelocityVoltage, it usually expects Rotations per Second
+        motor1.setControl(feederController1.withVelocity(speed.in(RotationsPerSecond)));
 
-    if (Robot.isSimulation()) {
-        simSpeedTarget = speed.in(RadiansPerSecond);
+        if (Robot.isSimulation()) {
+            simSpeedTarget = speed.in(RadiansPerSecond);
+        }
     }
-}
+
+    public void popFuel(LinearVelocity speed){
+        if (Subsystems.turretShooter.atspeed()){
+            setSpeed(speed);
+        } else {
+            stop();
+        }
+    }
 
 
     public LinearVelocity getSpeed() {

@@ -25,6 +25,7 @@ import frc.robot.constants.TurretConstants;
 public class TurretShooterSub extends SubsystemBase{
     private final TalonFX motor1 = new TalonFX(TurretConstants.SHOOTER_MOTOR_1_CANID);
     private final TalonFX motor2 = new TalonFX(TurretConstants.SHOOTER_MOTOR_2_CANID);
+    private final TalonFX motor3 = new TalonFX(TurretConstants.SHOOTER_MOTOR_3_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
     //private final VelocityVoltage feederController2 = new VelocityVoltage(0).withSlot(0);
     
@@ -36,6 +37,7 @@ public class TurretShooterSub extends SubsystemBase{
 
     private final TalonFXSimState motor1Sim;
     private final TalonFXSimState motor2Sim;
+    private final TalonFXSimState motor3Sim;
     private double simSpeed = 0;
     private double simSpeedTarget = 0;
     private final double simAccel = 0.5;
@@ -55,7 +57,9 @@ public class TurretShooterSub extends SubsystemBase{
         
         motor1Sim = motor1.getSimState();
         motor2Sim = motor2.getSimState();
+        motor3Sim = motor3.getSimState();
         motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
+        motor3.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
 
         stop();
     }
@@ -84,7 +88,7 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public boolean atspeed(){
-        if (getSpeed().in(MetersPerSecond) >= TurretConstants.MIN_MOTOR_SPEED){
+        if (getSpeed().gt(TurretConstants.ShooterIdleSpeed)){
             return true;
         } else {
             return false;
@@ -108,6 +112,7 @@ public class TurretShooterSub extends SubsystemBase{
 
         motor1Sim.setRotorVelocity(simSpeed);
         motor2Sim.setRotorVelocity(simSpeed);
+        motor3Sim.setRotorVelocity(simSpeed);
   
     }
 }

@@ -5,6 +5,8 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import static edu.wpi.first.units.Units.Radians;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,11 +40,14 @@ public class TurretPassToHome  extends Command{
         Translation2d targetPos = getPassingTarget(Subsystems.nav.getPose().getTranslation());
         Subsystems.nav.drawFieldObject("TurretTarget", new Pose2d(targetPos, new Rotation2d()), false);
 
-        TurretState targetState = TurretAiming.calcState(AimingConstants.PassingSamples, targetPos);
+    TurretState targetState = TurretAiming.calcState(AimingConstants.PassingSamples, targetPos);
 
-        Subsystems.turretAiming.setSlewTarget(targetState.turretAngle());
-        Subsystems.turretAiming.setHoodTarget(targetState.hoodAngle());
-        Subsystems.turretShooter.setSpeed(targetState.power());
+    // Rotate robot to face the passing target
+    //Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+    //    Rotation2d.fromRadians(targetState.turretAngle().in(Radians)));
+
+    Subsystems.turretAiming.setHoodTarget(targetState.hoodAngle());
+    Subsystems.turretShooter.setSpeed(targetState.power());
         super.execute();
     }
 

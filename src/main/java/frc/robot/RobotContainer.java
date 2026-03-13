@@ -7,6 +7,8 @@ package frc.robot;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.LEDPattern;
@@ -16,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
-import frc.robot.commands.IntakeCommand;
+
 import frc.robot.commands.ActivateHopperCommand;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
@@ -39,6 +41,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    // NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
+    //NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
     if(Robot.isSimulation()){
       DriverStation.silenceJoystickConnectionWarning(true);
     }
@@ -73,10 +77,10 @@ public class RobotContainer {
     OI.pilot.a().whileTrue(new ActivateIntakeCommand());
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
-    OI.pilot.y().whileTrue(new IntakeCommand(MetersPerSecond.of(ActivateIntakeCommand.MOTOR_SPEED)));
+    //OI.pilot.y().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
 
     // Bind pilot B (east) to the hopper activation command while held
-    OI.pilot.b().whileTrue(new ActivateHopperCommand(HopperConstants.HOPPER_DEFAULT_SPEED));
+    //OI.pilot.b().whileTrue(new ActivateHopperCommand(HopperConstants.HOPPER_DEFAULT_SPEED));
 
   
   }
