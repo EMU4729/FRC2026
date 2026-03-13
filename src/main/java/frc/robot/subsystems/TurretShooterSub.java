@@ -112,6 +112,7 @@ public class TurretShooterSub extends SubsystemBase{
 
         motor1Sim.setRotorVelocity(simSpeed);
         motor2Sim.setRotorVelocity(simSpeed);
+        motor3Sim.setRotorVelocity(simSpeed);
   
     }
 }
