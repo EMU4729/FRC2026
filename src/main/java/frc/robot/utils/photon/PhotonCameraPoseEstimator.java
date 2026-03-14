@@ -142,7 +142,7 @@ public class PhotonCameraPoseEstimator {
   public Optional<PhotonPipelineResult> getLatestResult() {
     if (!cam.isConnected()) {
       if(wasConnected){
-        DataLogManager.log("PhotonBridge: Error: Camera not connected");
+        ///*//////DataLogManager.log("PhotonBridge: Error: Camera not connected");
       }
       return Optional.empty();
     } else {
