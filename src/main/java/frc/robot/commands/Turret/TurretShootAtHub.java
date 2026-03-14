@@ -80,10 +80,7 @@ public class TurretShootAtHub extends Command {
         }
     }
 
-    @Override
-    public boolean isFinished() {
-        return false; // never self-terminates — forAuto() uses .until(() -> done)
-    }
+   
 
     @Override
     public void end(boolean interrupted) {
