@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
+            "pathName": "Defensive Right Return"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
             "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT HUB"
           }
         }
       ]

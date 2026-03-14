@@ -42,8 +42,9 @@ public class AutoProvider {
     // than global static access. - Neel
     @SuppressWarnings("unused")
     final var _nav = Subsystems.nav;
-    loadPathPlannerAuto("Right Side Auto", "Right Side Auto");
-    loadPathPlannerAuto("Left Side Auto", "Left Side Auto");
+    loadPathPlannerAuto("Right Long Auto", "Right Long Auto");
+    loadPathPlannerAuto("Left Long Auto", "Left Long Auto");
+    loadPathPlannerAuto("New Auto", "New Auto");
 
 
    // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");

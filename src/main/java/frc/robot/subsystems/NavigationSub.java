@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -34,7 +35,6 @@ import frc.robot.Robot;
 import frc.robot.Subsystems;
 import frc.robot.utils.photon.PhotonBridge;
 import frc.robot.constants.DriveConstants;
-import frc.robot.utils.pathplanner.AutoBuilderFix;
 
 public class NavigationSub extends SubsystemBase {
   private final static ADIS16470_IMU imu = new ADIS16470_IMU(IMUAxis.kY, IMUAxis.kX, IMUAxis.kZ);
@@ -75,8 +75,7 @@ public class NavigationSub extends SubsystemBase {
   private void initPathPlanner() {
     try {
       final var config = RobotConfig.fromGUISettings();
-      AutoBuilderFix.configure(
-          true,
+      AutoBuilder.configure(
           this::getPose,
           this::resetOdometry,
           this::getChassisSpeeds,
