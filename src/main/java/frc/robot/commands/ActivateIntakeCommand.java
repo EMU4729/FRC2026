@@ -3,6 +3,7 @@ package frc.robot.commands;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.subsystems.IntakeSub;
@@ -10,9 +11,12 @@ import frc.robot.subsystems.IntakeSub;
 public class ActivateIntakeCommand extends Command {
 
     public static final double MOTOR_SPEED = 1.0;
+    public static final double AUTO_INTAKE_SECONDS = 2.0;
 
     private final IntakeSub intake = Subsystems.intake;
     private final LinearVelocity speed;
+
+    private final Timer timeOutIntake;
 
     /**
      * Creates an ActivateIntakeCommand with a given speed.
@@ -21,6 +25,7 @@ public class ActivateIntakeCommand extends Command {
      * @param speed The linear speed to run the intake wheels at.
      */
     public ActivateIntakeCommand(LinearVelocity speed) {
+        timeOutIntake = new Timer();
         this.speed = speed;
         addRequirements(intake);
     }
@@ -50,8 +55,8 @@ public class ActivateIntakeCommand extends Command {
      * Factory for use in PathPlanner named commands.
      * Runs the intake at full speed.
      */
-    public static ActivateIntakeCommand forAuto() {
-        return new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED));
+    public static Command forAuto() {
+        return new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)).withTimeout(AUTO_INTAKE_SECONDS);
     }
 
     /**

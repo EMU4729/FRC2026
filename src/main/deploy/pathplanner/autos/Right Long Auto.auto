@@ -5,25 +5,32 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Right Start"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "HOPPER ON"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake ON"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Right Start"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -43,9 +50,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "SHOOT HUB"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "SHOOT HUB"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 7.0
+                }
+              }
+            ]
           }
         }
       ]

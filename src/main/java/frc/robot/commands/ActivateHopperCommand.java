@@ -36,12 +36,12 @@ public class ActivateHopperCommand extends Command {
                 hopper.setActivated(false);
                 hopper.stop();
             }
-            public static ActivateHopperCommand forAuto() {
-                    return new ActivateHopperCommand(HopperConstants.HOPPER_DEFAULT_SPEED){
-                        @Override
-                        public void execute() {
-                            hopper.setSpeed(speed); // no button check
-        }
-    };
-}
+    public static Command forAuto() {
+            return new ActivateHopperCommand(HopperConstants.HOPPER_DEFAULT_SPEED){
+                @Override
+                public void execute() {
+                    hopper.setSpeed(speed); // no button check
+                }
+            }.withTimeout(3.0);
+    }
 }
