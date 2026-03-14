@@ -1,0 +1,57 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "HOPPER ON"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Modified Left Start"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Modified Left Return"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
