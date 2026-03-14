@@ -113,6 +113,14 @@ public class IntakeSub extends SubsystemBase {
   public void setExtendAngle(){
     extendTargetAngle = IntakeConstants.EXTEND_ANGLE;
   }
+  public void setShootExtendAngle(){
+    if (extendTargetAngle.lt(IntakeConstants.SHOOT_ANGLE)) { return; }
+    extendTargetAngle = IntakeConstants.SHOOT_ANGLE;
+  }
+  public void setShootRetractAngle(){
+    if (extendTargetAngle.gt(IntakeConstants.SHOOT_ANGLE)) { return; }
+    extendTargetAngle = IntakeConstants.RETRACT_ANGLE;
+  }
 
   public void setRetractedAngle(){
     extendTargetAngle = IntakeConstants.RETRACT_ANGLE;

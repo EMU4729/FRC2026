@@ -66,7 +66,7 @@ public class TurretAimAtTag extends Command {
 
     // Configure hood and shooter power as before
     //Subsystems.turretAiming.setHoodTarget(state.hoodAngle());
-    Subsystems.turretShooter.setSpeed(state.power());
+    Subsystems.turretShooter.stop();
 
         super.execute();
     }

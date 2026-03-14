@@ -28,7 +28,7 @@ import frc.robot.constants.TurretFeederConstants;
 
 public class TurretFeederSub extends SubsystemBase{
     /* Initial motor variables */
-    private final TalonFX motor1 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
+    private final TalonFX motor1 = new TalonFX(TurretFeederConstants.FEEDER_MOTOR_CANID);
     private final TalonFX motor2 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
    
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);;
@@ -53,6 +53,7 @@ public class TurretFeederSub extends SubsystemBase{
         motorConfig.Slot0.kI = 0;
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
 
     //motor1.getConfigurator().apply(motorConfig);
     // Make motor2 follow motor1. Use motor1's device ID and align the motor signals.
@@ -110,6 +111,7 @@ public class TurretFeederSub extends SubsystemBase{
     public void periodic() {
         LinearVelocity speeds = getSpeed();
         SmartDashboard.putNumber("TurretFeeder/motorSpeed", speeds.in(MetersPerSecond));
+        SmartDashboard.putBoolean("Turret/AtSpeed", Subsystems.turretShooter.atspeed());
     }
 
     

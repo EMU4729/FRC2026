@@ -90,7 +90,7 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public boolean atspeed(){
-        if (getSpeed().gt(TurretConstants.ShooterIdleSpeed)){
+        if (getSpeed().gt(MetersPerSecond.of(18))){
             return true;
         } else {
             return false;

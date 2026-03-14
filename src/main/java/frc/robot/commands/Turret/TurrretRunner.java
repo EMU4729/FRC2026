@@ -38,7 +38,7 @@ public class TurrretRunner extends Command{
 
         // TODO Auto-generated method stub
         FieldArea fieldArea = getFieldArea();
-        if(OI.pilot.a().getAsBoolean()){
+        if(!OI.pilot.a().getAsBoolean()){
             CommandScheduler.getInstance().schedule(AimAt);
             SmartDashboard.putBoolean("Turret Inhibit", true);
             return;
@@ -46,7 +46,11 @@ public class TurrretRunner extends Command{
             SmartDashboard.putBoolean("Turret Inhibit", false);
         }
 
-        if (fieldArea == FieldArea.OurAlliance && OurHubActive()) {
+        boolean active = OurHubActive();
+        SmartDashboard.putBoolean("Turret/HubActive", active);
+        SmartDashboard.putString("Turret/Area", fieldArea.toString());
+
+        if (/*fieldArea == FieldArea.OurAlliance && */active) {
             CommandScheduler.getInstance().schedule(ShootAt);
             SmartDashboard.putString("Shooting Stage", "Shooting At Hub");
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {

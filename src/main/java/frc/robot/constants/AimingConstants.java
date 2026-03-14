@@ -34,9 +34,9 @@ public class AimingConstants {
     
 
   public static final List<DistanceSample> ShootingSamples = Arrays.asList(
-      new DistanceSample(MetersPerSecond.of(100), Degrees.of(80), Meters.of(0)),
-      new DistanceSample(MetersPerSecond.of(100), Degrees.of(45), Meters.of(20)),
-      new DistanceSample(MetersPerSecond.of(100), Degrees.of(45), Meters.of(100))
+      new DistanceSample(MetersPerSecond.of(18), Degrees.of(80), Meters.of(0)),
+      new DistanceSample(MetersPerSecond.of(18), Degrees.of(45), Meters.of(20)),
+      new DistanceSample(MetersPerSecond.of(18), Degrees.of(45), Meters.of(100))
     );
   public static final List<DistanceSample> PassingSamples = Arrays.asList(
       new DistanceSample(MetersPerSecond.of(0), Degrees.of(30), Meters.of(0)),

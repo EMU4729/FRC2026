@@ -9,7 +9,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import static edu.wpi.first.units.Units.Radians;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.TurretFeederConstants;
@@ -52,6 +54,7 @@ public class TurretShootAtHub  extends Command{
         Subsystems.turretAiming.setHoodTarget(HubCalc.hoodAngle());
         Subsystems.turretShooter.setSpeed(HubCalc.power());
         Subsystems.turretFeeder.popFuel(TurretFeederConstants.TARGET_SPEED);
+        Subsystems.intake.setShootExtendAngle();
     }
 
     @Override
@@ -59,6 +62,8 @@ public class TurretShootAtHub  extends Command{
         Subsystems.turretAiming.stop();
         Subsystems.turretShooter.stop();
         Subsystems.turretFeeder.stop();
+        Subsystems.intake.setShootRetractAngle();
+        
     }   
         public static TurretShootAtHub forAuto() {
         return new TurretShootAtHub();
