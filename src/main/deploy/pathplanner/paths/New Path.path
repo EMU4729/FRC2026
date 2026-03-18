@@ -24,7 +24,7 @@
         "y": 3.966718741460302
       },
       "nextControl": null,
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     }
   ],
