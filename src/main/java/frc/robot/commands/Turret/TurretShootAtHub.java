@@ -45,8 +45,8 @@ public class TurretShootAtHub  extends Command{
     public void execute() {
         TurretState HubCalc = TurretAiming.calcState(AimingConstants.ShootingSamples, OurHub);
         // Rotate robot to face the hub target instead of rotating the turret
-        Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
-                Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
+       // Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+       //         Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
 
         Subsystems.turretAiming.setHoodTarget(HubCalc.hoodAngle());
         Subsystems.turretShooter.setSpeed(HubCalc.power());
