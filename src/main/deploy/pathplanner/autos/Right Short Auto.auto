@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Right Start"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -29,16 +23,35 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Bottom NOM3"
+                  "pathName": "TopR To Ready"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Right Return"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "BotR Return"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT HUB"
           }
         }
       ]

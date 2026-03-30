@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -58,7 +59,7 @@ public class IntakeSub extends SubsystemBase {
     motorConfig.Slot0.kD = 0;
     motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    motor1.getConfigurator().apply(motorConfig);
+    //motor1.getConfigurator().apply(motorConfig);
 
 
     feederController1 = new VelocityVoltage(0).withSlot(0);
@@ -69,14 +70,14 @@ public class IntakeSub extends SubsystemBase {
     TalonFXConfiguration motorDeployConfig = new TalonFXConfiguration();
     /* Setup MotorConfig */
     motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    motorConfig.Feedback.SensorToMechanismRatio = 1;
+    motorConfig.Feedback.SensorToMechanismRatio = 25;
     /* Untested PID values */
     motorConfig.Slot0.kP = 1;
     motorConfig.Slot0.kI = 0;
     motorConfig.Slot0.kD = 0;
     motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    motor2.getConfigurator().apply(motorConfig);
+    //motor2.getConfigurator().apply(motorConfig);
 
 
     feedercontroller2 = new PositionVoltage(0).withSlot(0);
@@ -99,6 +100,11 @@ public class IntakeSub extends SubsystemBase {
     }
   }
 
+  public void stop(){
+    
+    motor1.setControl(new DutyCycleOut(0));
+  }
+
   public LinearVelocity getSpeed() {
     AngularVelocity aSpeed = motor1.getVelocity().getValue(); // in rotations per second
     return MetersPerSecond.of(aSpeed.in(RotationsPerSecond) / ratio * (2*Math.PI*wheelRadius));
@@ -106,6 +112,14 @@ public class IntakeSub extends SubsystemBase {
 
   public void setExtendAngle(){
     extendTargetAngle = IntakeConstants.EXTEND_ANGLE;
+  }
+  public void setShootExtendAngle(){
+    if (extendTargetAngle.lt(IntakeConstants.SHOOT_ANGLE)) { return; }
+    extendTargetAngle = IntakeConstants.SHOOT_ANGLE;
+  }
+  public void setShootRetractAngle(){
+    if (extendTargetAngle.gt(IntakeConstants.SHOOT_ANGLE)) { return; }
+    extendTargetAngle = IntakeConstants.RETRACT_ANGLE;
   }
 
   public void setRetractedAngle(){
@@ -117,7 +131,6 @@ public class IntakeSub extends SubsystemBase {
     LinearVelocity speeds = getSpeed();
     SmartDashboard.putNumber("Intake/motorSpeed", speeds.in(MetersPerSecond));
     motor2.setControl(feedercontroller2.withPosition(extendTargetAngle));
-    SmartDashboard.putNumber("Intake/Angle", motor2.getPosition().getValueAsDouble());
   }
 
   @Override

@@ -43,7 +43,7 @@ public class IntakeCommand extends Command {
 	
 	@Override
 	public void end(boolean interrupted) {
-			intake.setSpeed(MetersPerSecond.of(0));
+		intake.stop();
 	}
 
 	public static IntakeCommand forAuto() {

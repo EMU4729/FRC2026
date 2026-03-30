@@ -94,15 +94,15 @@ public class SwerveModule {
     if (moduleDetails.invertDrive()) {
       driveMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     }
-    driveMotor.getConfigurator().apply(driveMotorConfig);
+    //driveMotor.getConfigurator().apply(driveMotorConfig);
 
     driveController = new VelocityVoltage(0).withFeedForward(DriveConstants.DRIVING_FF).withSlot(0);
 
     // TURNING MOTOR CONFIG
     SparkMaxConfig turnMotorConfig = new SparkMaxConfig();
-    turnMotorConfig.absoluteEncoder
-        .positionConversionFactor(DriveConstants.TURNING_ENCODER_POSITION_FACTOR)
-        .velocityConversionFactor(DriveConstants.TURNING_ENCODER_VELOCITY_FACTOR);
+    //turnMotorConfig.absoluteEncoder
+    //    .positionConversionFactor(DriveConstants.TURNING_ENCODER_POSITION_FACTOR)
+    //    .velocityConversionFactor(DriveConstants.TURNING_ENCODER_VELOCITY_FACTOR);
     turnMotorConfig.closedLoop
         .pid(
             DriveConstants.TURNING_P,
@@ -229,11 +229,11 @@ public class SwerveModule {
     // target angle we can just stop the motors to prevent motor weirdness
     if (Math.abs(state.speedMetersPerSecond) < 0.001) {
       state.speedMetersPerSecond = 0;
+      stop();
       if (Math.abs((state.angle.minus(getTurnRotation2d()).getRadians()) % 2 * Math.PI) < Math.PI / 16) { // ~11 degrees
         desiredState = state;
-        stop();
-        return;
       }
+      return;
     }
 
     state.optimize(
@@ -284,7 +284,8 @@ public class SwerveModule {
 
   /** @return a command that tests several motions of the swerve module */
   public SequentialCommandGroup testFunction() {
-    return new SequentialCommandGroup(
+    return new SequentialCommandGroup();
+    /* new SequentialCommandGroup(
         // turn to 0 degrees and check
         new InstantCommand(
             () -> setDesiredState(new OptimisedSwerveModuleState(MetersPerSecond.of(0), Rotation2d.kZero))),
@@ -328,7 +329,7 @@ public class SwerveModule {
         new InstantCommand(
             () -> setDesiredState(new OptimisedSwerveModuleState(MetersPerSecond.of(0), Rotation2d.kZero)))
 
-    );
+    );*/
   }
 
   public void log(){

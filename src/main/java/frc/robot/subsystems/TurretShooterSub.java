@@ -7,6 +7,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -25,6 +26,7 @@ import frc.robot.constants.TurretConstants;
 public class TurretShooterSub extends SubsystemBase{
     private final TalonFX motor1 = new TalonFX(TurretConstants.SHOOTER_MOTOR_1_CANID);
     private final TalonFX motor2 = new TalonFX(TurretConstants.SHOOTER_MOTOR_2_CANID);
+    private final TalonFX motor3 = new TalonFX(TurretConstants.SHOOTER_MOTOR_3_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
     //private final VelocityVoltage feederController2 = new VelocityVoltage(0).withSlot(0);
     
@@ -36,6 +38,7 @@ public class TurretShooterSub extends SubsystemBase{
 
     private final TalonFXSimState motor1Sim;
     private final TalonFXSimState motor2Sim;
+    private final TalonFXSimState motor3Sim;
     private double simSpeed = 0;
     private double simSpeedTarget = 0;
     private final double simAccel = 0.5;
@@ -50,12 +53,14 @@ public class TurretShooterSub extends SubsystemBase{
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        motor1.getConfigurator().apply(motorConfig);
+        //motor1.getConfigurator().apply(motorConfig);
 
         
         motor1Sim = motor1.getSimState();
         motor2Sim = motor2.getSimState();
-        motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
+        motor3Sim = motor3.getSimState();
+        motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Opposed));
+        motor3.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Opposed));
 
         stop();
     }
@@ -75,7 +80,8 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public void stop(){
-        setSpeed(TurretConstants.ShooterIdleSpeed);
+        //setSpeed(TurretConstants.ShooterIdleSpeed);
+        motor1.setControl(new DutyCycleOut(0));
     }
 
     public LinearVelocity getSpeed() {
@@ -84,7 +90,7 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public boolean atspeed(){
-        if (getSpeed().in(MetersPerSecond) >= TurretConstants.MIN_MOTOR_SPEED){
+        if (getSpeed().gt(MetersPerSecond.of(18))){
             return true;
         } else {
             return false;
@@ -108,6 +114,7 @@ public class TurretShooterSub extends SubsystemBase{
 
         motor1Sim.setRotorVelocity(simSpeed);
         motor2Sim.setRotorVelocity(simSpeed);
+        motor3Sim.setRotorVelocity(simSpeed);
   
     }
 }

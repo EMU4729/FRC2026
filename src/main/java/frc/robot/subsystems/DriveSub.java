@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.RadiansPerSecondPerSecond;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -50,10 +51,10 @@ public class DriveSub extends SubsystemBase {
   }
 
   public void driveAtAngle(ChassisSpeeds speeds, boolean fieldRelative, Rotation2d yawAngle) { // TODO
-    Rotation2d currentYaw = Subsystems.nav.getHeadingR2D();
-    Rotation2d err = currentYaw.minus(yawAngle);
-    speeds.omegaRadiansPerSecond = holdYawPid.calculate(err.getDegrees());
-    drive(speeds, fieldRelative, true);
+    //Rotation2d currentYaw = Subsystems.nav.getHeadingR2D();
+    //Rotation2d err = currentYaw.minus(yawAngle);
+    //speeds.omegaRadiansPerSecond = holdYawPid.calculate(MathUtil.applyDeadband(err.getDegrees(), 5));
+    //drive(speeds, fieldRelative, true);
   }
 
   /**
@@ -93,10 +94,10 @@ public class DriveSub extends SubsystemBase {
    * Sets the wheels into an X formation to prevent movement.
    */
   public void setX() {
-    frontLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    frontRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
+   // frontLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    //frontRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    //backLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+    //backRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
   }
 
   /**
@@ -192,6 +193,28 @@ public class DriveSub extends SubsystemBase {
 
         builder.addDoubleProperty("Back Right Angle", () -> backRight.getTurnAngle().in(Radians), null);
         builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity().in(MetersPerSecond), null);
+
+        builder.addDoubleProperty("Robot Angle",
+            () -> Subsystems.nav != null ? Subsystems.nav.getHeading().in(Radians) : 0, null);
+      }
+    });
+    SmartDashboard.putData("Swerve Drive Sub Des", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDesiredState().getSpeed().in(MetersPerSecond), null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> frontRight.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDesiredState().getSpeed().in(MetersPerSecond),
+            null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> backLeft.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDesiredState().getSpeed().in(MetersPerSecond), null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> backRight.getDesiredState().getAngle().in(Radians), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDesiredState().getSpeed().in(MetersPerSecond), null);
 
         builder.addDoubleProperty("Robot Angle",
             () -> Subsystems.nav != null ? Subsystems.nav.getHeading().in(Radians) : 0, null);

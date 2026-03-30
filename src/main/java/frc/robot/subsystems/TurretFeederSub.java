@@ -23,11 +23,12 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.Subsystems;
 import frc.robot.constants.TurretFeederConstants;
 
 public class TurretFeederSub extends SubsystemBase{
     /* Initial motor variables */
-    private final TalonFX motor1 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
+    private final TalonFX motor1 = new TalonFX(TurretFeederConstants.FEEDER_MOTOR_CANID);
     private final TalonFX motor2 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
    
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);;
@@ -53,7 +54,8 @@ public class TurretFeederSub extends SubsystemBase{
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    motor1.getConfigurator().apply(motorConfig);
+
+    //motor1.getConfigurator().apply(motorConfig);
     // Make motor2 follow motor1. Use motor1's device ID and align the motor signals.
     motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
         
@@ -74,22 +76,34 @@ public class TurretFeederSub extends SubsystemBase{
             }
     }
     public void setTargetAngle(Rotation2d angle) {
-       double gearRatio = 1.0; //TODO CHANGE THIS LATER
-    motor1.setControl(positionControl.withPosition(angle.getRotations() * gearRatio));
+        double gearRatio = 1.0; //TODO CHANGE THIS LATER
+        motor1.setControl(positionControl.withPosition(angle.getRotations() * gearRatio));
     }
     public void stop() {
         motor1.stopMotor();
         motor2.stopMotor();
     }
-    public void setSpeedFromAngular(AngularVelocity speed) {
-    // motor1.setControl(feederController1.withVelocity(speed));
-    // If using CTRE VelocityVoltage, it usually expects Rotations per Second
-    motor1.setControl(feederController1.withVelocity(speed.in(RotationsPerSecond)));
-
-    if (Robot.isSimulation()) {
-        simSpeedTarget = speed.in(RadiansPerSecond);
-    }
+    // Add to TurretFeederSub.java
+public double getSupplyCurrent() {
+    return motor1.getSupplyCurrent().getValueAsDouble();
 }
+    public void setSpeedFromAngular(AngularVelocity speed) {
+        // motor1.setControl(feederController1.withVelocity(speed));
+        // If using CTRE VelocityVoltage, it usually expects Rotations per Second
+        motor1.setControl(feederController1.withVelocity(speed.in(RotationsPerSecond)));
+
+        if (Robot.isSimulation()) {
+            simSpeedTarget = speed.in(RadiansPerSecond);
+        }
+    }
+
+    public void popFuel(LinearVelocity speed){
+        if (Subsystems.turretShooter.atspeed()){
+            setSpeed(speed);
+        } else {
+            stop();
+        }
+    }
 
 
     public LinearVelocity getSpeed() {
@@ -101,6 +115,7 @@ public class TurretFeederSub extends SubsystemBase{
     public void periodic() {
         LinearVelocity speeds = getSpeed();
         SmartDashboard.putNumber("TurretFeeder/motorSpeed", speeds.in(MetersPerSecond));
+        SmartDashboard.putBoolean("Turret/AtSpeed", Subsystems.turretShooter.atspeed());
     }
 
     

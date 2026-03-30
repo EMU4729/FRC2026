@@ -5,9 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "TopL to Ready"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "HOPPER ON"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake ON"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Modified Left Start"
+                }
+              }
+            ]
           }
         },
         {
@@ -21,43 +40,12 @@
                 }
               },
               {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "NOM3 vertical toptbot"
+                  "pathName": "Modified Left Return"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake OFF"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Return"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
           }
         }
       ]

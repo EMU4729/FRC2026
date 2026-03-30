@@ -23,8 +23,8 @@ public class TeleopProvider {
   private final SendableChooser<Command> chooser = new SendableChooser<>(); // pub for shuffle board
 
   private TeleopProvider() {
-    chooser.setDefaultOption("Disable Teleop", disableCommand);
-    chooser.addOption("Swerve Teleop", teleopSwerve);
+    chooser.setDefaultOption("Swerve Teleop", teleopSwerve);
+    chooser.addOption("Disable Teleop", disableCommand);
     chooser.addOption("Swerve Demo Teleop", teleopDemoSwerve);
 
     chooser.onChange(Subsystems.drive::setDefaultCommand);

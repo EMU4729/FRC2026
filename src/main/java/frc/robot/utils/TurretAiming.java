@@ -19,11 +19,9 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
-import frc.robot.constants.TurretConstants;
 import frc.robot.constants.AimingConstants.DistanceSample;
 import frc.robot.constants.AimingConstants.TurretState;
 
@@ -37,9 +35,8 @@ public class TurretAiming {
     public static TurretState calcState(List<DistanceSample> sampleList, Translation2d target){
 
         //1. Define Euclidean Geometry of the Target
-        Pose2d turretPose = getTurretPose2d();        
+        Pose2d turretPose = getTurretPose2d();
         Rotation2d targetYaw = target.minus(turretPose.getTranslation()).getAngle();
-
         Transform2d targetTransform = new Transform2d(turretPose, new Pose2d(target, new Rotation2d(targetYaw.getRadians())));
 
         Distance distToTarget = getDistance(targetTransform);
@@ -87,15 +84,6 @@ public class TurretAiming {
         
     }
 
-
-    public static boolean validTarget(Translation2d target){
-        Pose2d robotPose = Subsystems.nav.getPose();        
-        Rotation2d targetYaw = target.minus(robotPose.getTranslation()).getAngle().minus(robotPose.getRotation());
-        
-        Angle targetYawAng = Radians.of(targetYaw.getRadians());
-        return (TurretConstants.MinSlew.lte(targetYawAng) && TurretConstants.MaxSlew.gte(targetYawAng));
-    }
-
     private static Distance getDistance(Transform2d transform){
         return Meters.of(transform.getTranslation().getNorm());
     }
@@ -136,7 +124,6 @@ public class TurretAiming {
 
             double distance = tagToRobotTrans.getNorm();
             if (distance >= closestDistance) continue; 
-            if ( ! validTarget(tag.pose.getTranslation().toTranslation2d())) continue;
 
             // Calculate if the robot is actually in front of the tag
             Rotation2d angleToRobot = tagToRobotTrans.getAngle();

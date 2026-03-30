@@ -61,12 +61,12 @@ public class TurretAimAtTag extends Command {
         TurretState state = TurretAiming.calcState(AimingConstants.ShootingSamples, tagPos);
 
     // Rotate the robot so the front faces the target (simple-shooter mode)
-    Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
-        Rotation2d.fromRadians(state.turretAngle().in(Radians)));
+    //Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+    //    Rotation2d.fromRadians(state.turretAngle().in(Radians)));
 
     // Configure hood and shooter power as before
-    Subsystems.turretAiming.setHoodTarget(state.hoodAngle());
-    Subsystems.turretShooter.setSpeed(state.power());
+    //Subsystems.turretAiming.setHoodTarget(state.hoodAngle());
+    Subsystems.turretShooter.stop();
 
         super.execute();
     }
@@ -74,7 +74,7 @@ public class TurretAimAtTag extends Command {
     @Override
     public void end(boolean interrupted) {
         // Stop motion and motors when command ends
-        Subsystems.drive.setX();
+        //Subsystems.drive.setX();
         Subsystems.turretAiming.stop();
         Subsystems.turretFeeder.stop();
         Subsystems.turretShooter.stop();

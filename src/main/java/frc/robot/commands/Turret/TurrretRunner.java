@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.OI;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
@@ -37,7 +38,7 @@ public class TurrretRunner extends Command{
 
         // TODO Auto-generated method stub
         FieldArea fieldArea = getFieldArea();
-        if(OI.pilot.a().getAsBoolean()){
+        if(!OI.pilot.a().getAsBoolean()){
             CommandScheduler.getInstance().schedule(AimAt);
             SmartDashboard.putBoolean("Turret Inhibit", true);
             return;
@@ -45,18 +46,23 @@ public class TurrretRunner extends Command{
             SmartDashboard.putBoolean("Turret Inhibit", false);
         }
 
-        if (fieldArea == FieldArea.OurAlliance && OurHubActive()) {
+        boolean active = OurHubActive();
+        SmartDashboard.putBoolean("Turret/HubActive", active);
+        SmartDashboard.putString("Turret/Area", fieldArea.toString());
+
+        if (/*fieldArea == FieldArea.OurAlliance && */active) {
             CommandScheduler.getInstance().schedule(ShootAt);
             SmartDashboard.putString("Shooting Stage", "Shooting At Hub");
-
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
-            CommandScheduler.getInstance().schedule(PassTo);
+            //CommandScheduler.getInstance().schedule(PassTo);
+            CommandScheduler.getInstance().cancel(ShootAt);
+            CommandScheduler.getInstance().cancel(AimAt);
             SmartDashboard.putString("Shooting Stage", "Passing To Home");
             
         } else {
             //aim at tag
             CommandScheduler.getInstance().schedule(AimAt);
-            SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
+             SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
         }
 
 
@@ -150,7 +156,7 @@ public class TurrretRunner extends Command{
             return HubOrder.TBD;
         }
     }
-
+    
     enum HubOrder {
         UsFirst,
         ThemFirst,

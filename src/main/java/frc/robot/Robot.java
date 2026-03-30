@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (autoCommand != null) {
-      autoCommand.schedule();
+      CommandScheduler.getInstance().schedule(autoCommand);
     }
     DataLogManager.log("--- AUTO START ---");
     // Subsystems.drive.resetIntegral();
