@@ -30,7 +30,7 @@ public class PhotonBridge {
         VisionConstants.CAM_RES_WIDTH,
         VisionConstants.CAM_RES_HEIGHT,
         VisionConstants.CAM_DIAG_FOV);
-    camProps.setCalibError(0.25, 0.08);
+    camProps.setCalibError(0, 0);
     camProps.setFPS(45);
     camProps.setAvgLatencyMs(35);
     camProps.setLatencyStdDevMs(5);
