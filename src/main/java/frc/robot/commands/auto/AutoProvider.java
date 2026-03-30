@@ -43,8 +43,13 @@ public class AutoProvider {
     @SuppressWarnings("unused")
     final var _nav = Subsystems.nav;
     loadPathPlannerAuto("Right Long Auto", "Right Long Auto");
+    loadPathPlannerAuto("Right Long Defence Auto", "Right Long Defence Auto");
+    loadPathPlannerAuto("Right Short Auto", "Right Short Auto");
     loadPathPlannerAuto("Left Long Auto", "Left Long Auto");
-    loadPathPlannerAuto("New Auto", "New Auto");
+    loadPathPlannerAuto("Left Long Defence Auto", "Left Long Defence Auto");
+    loadPathPlannerAuto("Left Short Auto", "Left Short Auto");
+    loadPathPlannerAuto("Only Shoot", "Only Shoot");
+
 
 
    // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
