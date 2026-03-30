@@ -18,6 +18,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -110,13 +111,14 @@ public class SwerveModule {
             DriveConstants.TURNING_D)
         .apply(new FeedForwardConfig().kV(DriveConstants.TURNING_FF))
         .iZone(DriveConstants.TURNING_I_ZONE.in(Radians))
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
         .positionWrappingEnabled(true)
         .positionWrappingInputRange(DriveConstants.TURNING_ENCODER_POSITION_PID_MIN_INPUT,
             DriveConstants.TURNING_ENCODER_POSITION_PID_MAX_INPUT);
     turnMotorConfig.idleMode(IdleMode.kBrake);
 
     turnMotor = new SparkMax(moduleDetails.steerCANID(), MotorType.kBrushless);
-    turnMotor.configure(turnMotorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    turnMotor.configure(turnMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     turnController = turnMotor.getClosedLoopController();
     turnEncoder = turnMotor.getAbsoluteEncoder();
 
