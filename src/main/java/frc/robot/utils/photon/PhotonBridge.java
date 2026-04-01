@@ -44,11 +44,11 @@ public class PhotonBridge {
             camProps),
             
 
-        new PhotonCameraPoseEstimator(
-            VisionConstants.PHOTON_CAMERA_NAME[1],
-            VisionConstants.ROBOT_TO_CAMERA[1],
-            fieldLayout,
-            camProps)
+      //  new PhotonCameraPoseEstimator(
+      //      VisionConstants.PHOTON_CAMERA_NAME[1],
+      //      VisionConstants.ROBOT_TO_CAMERA[1],
+      //      fieldLayout,
+      //      camProps)
     };
 
     if (RobotBase.isSimulation()) {
