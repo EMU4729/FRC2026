@@ -57,7 +57,7 @@
       },
       "nextControl": {
         "x": 7.566191834679739,
-        "y": 1.2013165198308304
+        "y": 1.2013165198308302
       },
       "isLocked": false,
       "linkedName": null
@@ -70,6 +70,38 @@
       "prevControl": {
         "x": 7.572576760371179,
         "y": 0.6935418372452684
+      },
+      "nextControl": {
+        "x": 5.687050695960698,
+        "y": 0.7674429698871901
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.511096385542168,
+        "y": 1.9446750477620083
+      },
+      "prevControl": {
+        "x": 2.478313253012048,
+        "y": 0.1228795180722897
+      },
+      "nextControl": {
+        "x": 2.5241306054643515,
+        "y": 2.669001301984659
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.2885051628457056,
+        "y": 3.4339759036144573
+      },
+      "prevControl": {
+        "x": 2.5438795180722895,
+        "y": 3.084289156626505
       },
       "nextControl": null,
       "isLocked": false,
@@ -88,11 +120,34 @@
     {
       "waypointRelativePos": 2.949013157894738,
       "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 4.419607843137257,
+      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "HOPPER ON",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake ON",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "SHOOT HUB",
+      "waypointRelativePos": 6.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -103,7 +158,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.51424835287895
+    "rotation": -161.30101719581884
   },
   "reversed": false,
   "folder": "Left",
