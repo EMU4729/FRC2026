@@ -9,6 +9,12 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "Collect Depot Left"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "HOPPER ON"
@@ -19,12 +25,6 @@
                 "data": {
                   "name": "Intake ON"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Modified Left Start"
-                }
               }
             ]
           }
@@ -34,24 +34,12 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
-                  "pathName": "Modified Left Return"
+                  "pathName": "Depot To Shooting"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT HUB"
           }
         }
       ]
