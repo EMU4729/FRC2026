@@ -48,7 +48,7 @@ public class DriveConstants {
    */
   public static final LinearVelocity MAX_SPEED = MetersPerSecond.of(25);
   /** Max acceleration of robot in meters per second squared */
-  public static final LinearAcceleration MAX_ACCELERATION = MetersPerSecondPerSecond.of(1.5); // TODO check this
+  public static final LinearAcceleration MAX_ACCELERATION = MetersPerSecondPerSecond.of(15); // TODO check this
   /** Max (negative) deceleration of the robot */
   public static final LinearAcceleration MAX_DECELERATION = MAX_ACCELERATION.times(-1.5);
   /**

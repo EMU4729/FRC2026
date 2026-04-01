@@ -50,12 +50,7 @@ public class DriveSub extends SubsystemBase {
    
   }
 
-  public void driveAtAngle(ChassisSpeeds speeds, boolean fieldRelative, Rotation2d yawAngle) { // TODO
-    //Rotation2d currentYaw = Subsystems.nav.getHeadingR2D();
-    //Rotation2d err = currentYaw.minus(yawAngle);
-    //speeds.omegaRadiansPerSecond = holdYawPid.calculate(MathUtil.applyDeadband(err.getDegrees(), 5));
-    //drive(speeds, fieldRelative, true);
-  }
+  
 
   /**
    * drives the robot
