@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 //import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.util.datalog.DataLog;
@@ -127,14 +129,18 @@ public class NavigationSub extends SubsystemBase {
    */
   private void updateOdometry() {
     poseEstimator.update(Rotation2d.fromDegrees(imu.getAngle()), Subsystems.drive.getModulePositions());
-    // for (final var cam : photon.cams) {
-    //   cam.getEstimatedPose()
-    //       .ifPresent(
-    //         (visionResult) -> {
-    //         final var visionPose = visionResult.estimatedPose.toPose2d();
-    //         poseEstimator.addVisionMeasurement(visionPose, visionResult.timestampSeconds);
-    //       });
-    // }
+     for (final var cam : photon.cams) {
+       cam.getEstimatedPose()
+           .ifPresent(
+             (visionResult) -> {
+             final var visionPose = visionResult.estimatedPose.toPose2d();
+             poseEstimator.addVisionMeasurement(
+    visionPose,
+    visionResult.timestampSeconds,
+    VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10)) // tune these
+);
+           });
+     }
     
     
     //normaliseOdometry(); //broken

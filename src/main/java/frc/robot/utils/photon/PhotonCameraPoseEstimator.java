@@ -3,6 +3,7 @@ package frc.robot.utils.photon;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -112,6 +113,29 @@ public class PhotonCameraPoseEstimator {
           return getEstimatedPose(new Rotation3d());
     }
 
+    /**
+ * @return the fiducial ID of the best target currently visible, or -1 if none.
+ */
+public int getBestFiducialID() {
+    return getLatestResult()
+        .filter(PhotonPipelineResult::hasTargets)
+        .map(r -> r.getBestTarget().getFiducialId())
+        .orElse(-1);
+}
+
+/**
+ * @return all fiducial IDs currently visible, in order of best-to-worst target.
+ *         Empty list if no targets.
+ */
+public List<Integer> getVisibleFiducialIDs() {
+    return getLatestResult()
+        .filter(PhotonPipelineResult::hasTargets)
+        .map(r -> r.getTargets().stream()
+            .map(PhotonTrackedTarget::getFiducialId)
+            .collect(java.util.stream.Collectors.toList()))
+        .orElse(java.util.Collections.emptyList());
+}
+
     public Optional<EstimatedRobotPose> getEstimatedPose(Rotation3d turretAngle) {
     Optional<PhotonPipelineResult> latestResult = getLatestResult();
 
@@ -165,6 +189,32 @@ public class PhotonCameraPoseEstimator {
   public void reset() {
     reset(new Pose2d());
   }
+public double[] getBotPoseTargetSpace() {
+    return getLatestResult()
+        .filter(PhotonPipelineResult::hasTargets)
+        .map(result -> {
+            PhotonTrackedTarget target = result.getBestTarget();
+
+            // This is the transform FROM the tag TO the camera
+            Transform3d tagToCamera = target.getBestCameraToTarget().inverse();
+
+            // Compose with robotToCamera inverse to get tag -> robot
+            // i.e. where is the robot, from the tag's perspective
+            Transform3d tagToRobot = tagToCamera.plus(robotToCam.inverse());
+
+            Rotation3d rot = tagToRobot.getRotation();
+            return new double[] {
+                tagToRobot.getX(),
+                tagToRobot.getY(),
+                tagToRobot.getZ(),
+                Math.toDegrees(rot.getX()), // roll
+                Math.toDegrees(rot.getY()), // pitch
+                Math.toDegrees(rot.getZ())  // yaw
+            };
+        })
+        .orElse(null);
+}
+  
 
   public Optional<EstimatedRobotPose> filter(Optional<EstimatedRobotPose> OptPose){
     if (OptPose.isEmpty()) return OptPose;
