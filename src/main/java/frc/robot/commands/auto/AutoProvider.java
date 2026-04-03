@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems;
-import frc.robot.commands.ActivateHopperCommand;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.Turret.TurretShootAtHub;
 import frc.robot.commands.analysis.AngularSpeedAnalysis;
@@ -35,7 +34,7 @@ public class AutoProvider {
     chooser = new SendableChooser<>(); 
         NamedCommands.registerCommand("Intake ON", ActivateIntakeCommand.forAuto());
     NamedCommands.registerCommand("Intake OFF", ActivateIntakeCommand.forAutoOff());
-    NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());// pub for shuffle board
+    NamedCommands.registerCommand("HOPPER ON", Subsystems.hopper.runCommand(1).withTimeout(3));// pub for shuffle board
     NamedCommands.registerCommand("SHOOT HUB", TurretShootAtHub.forAuto());
 
     // This is here to ensure PathPlanner is configured before we attempt to call

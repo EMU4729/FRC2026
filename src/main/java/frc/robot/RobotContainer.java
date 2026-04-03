@@ -18,8 +18,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
-
-import frc.robot.commands.ActivateHopperCommand;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
 import frc.robot.commands.teleop.TeleopProvider;
@@ -80,7 +78,7 @@ public class RobotContainer {
     //OI.pilot.y().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
 
     // Bind pilot B (east) to the hopper activation command while held
-    //OI.pilot.b().whileTrue(new ActivateHopperCommand(HopperConstants.HOPPER_DEFAULT_SPEED));
+    OI.pilot.b().whileTrue(Subsystems.hopper.runCommand(1));
 
   
   }

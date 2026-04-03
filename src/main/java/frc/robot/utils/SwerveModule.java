@@ -95,7 +95,7 @@ public class SwerveModule {
     if (moduleDetails.invertDrive()) {
       driveMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     }
-    //driveMotor.getConfigurator().apply(driveMotorConfig);
+    driveMotor.getConfigurator().apply(driveMotorConfig);
 
     driveController = new VelocityVoltage(0).withFeedForward(DriveConstants.DRIVING_FF).withSlot(0);
 
@@ -116,7 +116,7 @@ public class SwerveModule {
         .positionWrappingInputRange(DriveConstants.TURNING_ENCODER_POSITION_PID_MIN_INPUT,
             DriveConstants.TURNING_ENCODER_POSITION_PID_MAX_INPUT);
 
-    turnMotorConfig.absoluteEncoder.positionConversionFactor(6.28);
+    turnMotorConfig.absoluteEncoder.positionConversionFactor(6.28).inverted(true);
     turnMotorConfig.idleMode(IdleMode.kBrake);
 
     turnMotor = new SparkMax(moduleDetails.steerCANID(), MotorType.kBrushless);

@@ -42,18 +42,19 @@ public class TurretShooterSub extends SubsystemBase{
     private double simSpeed = 0;
     private double simSpeedTarget = 0;
     private final double simAccel = 0.5;
+    private LinearVelocity targetSpeed;
     
     public TurretShooterSub(){
         TalonFXConfiguration motorConfig = new TalonFXConfiguration();
         motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         motorConfig.Feedback.SensorToMechanismRatio = 1;
         //unknown PID
-        motorConfig.Slot0.kP = 1;
+        motorConfig.Slot0.kP = 5;
         motorConfig.Slot0.kI = 0;
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        //motor1.getConfigurator().apply(motorConfig);
+        motor1.getConfigurator().apply(motorConfig);
 
         
         motor1Sim = motor1.getSimState();
@@ -72,8 +73,9 @@ public class TurretShooterSub extends SubsystemBase{
                 speed.in(MetersPerSecond) * ratio /wheelRadius.in(Meters));
 
         motor1.setControl(feederController1.withVelocity(aSpeed));
-        //motor2.setControl(feederController2.withVelocity(aSpeed));
 
+        //motor2.setControl(feederController2.withVelocity(aSpeed));
+        targetSpeed = speed;
         if (Robot.isSimulation()) {
             simSpeedTarget = aSpeed.in(RadiansPerSecond);
         }
@@ -90,7 +92,8 @@ public class TurretShooterSub extends SubsystemBase{
     }
 
     public boolean atspeed(){
-        if (getSpeed().gt(MetersPerSecond.of(18))){
+        if (targetSpeed == null) return false;
+        if (targetSpeed.minus(getSpeed()).in(MetersPerSecond) < 0.1) {
             return true;
         } else {
             return false;

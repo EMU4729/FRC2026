@@ -143,7 +143,7 @@ public class DriveConstants {
       1, // Drive motor CAN ID
       1, // Steer motor CAN ID
       Rotation2d.kCW_90deg, // offset relative to FL
-      false,
+      true,
       new Translation2d(WHEEL_BASE.div(2), TRACK_WIDTH.div(2)) // location rel to centre
   );
   public static final SwerveModuleDetails SWERVE_MODULE_FR = new SwerveModuleDetails(

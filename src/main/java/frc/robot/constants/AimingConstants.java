@@ -33,10 +33,12 @@ public class AimingConstants {
   public static final Translation2d Red_Hub = new Translation2d(11.9, 4.04);
     
 
+  // 0 - 1.2m away from goal -> 17 m/s power
   public static final List<DistanceSample> ShootingSamples = Arrays.asList(
-      new DistanceSample(MetersPerSecond.of(18), Degrees.of(80), Meters.of(0)),
-      new DistanceSample(MetersPerSecond.of(18), Degrees.of(45), Meters.of(20)),
-      new DistanceSample(MetersPerSecond.of(18), Degrees.of(45), Meters.of(100))
+      new DistanceSample(MetersPerSecond.of(17), Degrees.of(80), Meters.of(0)),
+      new DistanceSample(MetersPerSecond.of(17), Degrees.of(80), Meters.of(1.2)),
+      new DistanceSample(MetersPerSecond.of(17), Degrees.of(45), Meters.of(20)),
+      new DistanceSample(MetersPerSecond.of(17), Degrees.of(45), Meters.of(100))
     );
   public static final List<DistanceSample> PassingSamples = Arrays.asList(
       new DistanceSample(MetersPerSecond.of(0), Degrees.of(30), Meters.of(0)),

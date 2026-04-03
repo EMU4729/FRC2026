@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -14,6 +16,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -25,10 +28,10 @@ import frc.robot.constants.IntakeConstants;
 
 public class IntakeSub extends SubsystemBase {
   /* Init motor vars */
-  private final TalonFX motor1 = new TalonFX(IntakeConstants.INTAKE_MOTOR_1_CANID);
+  private final TalonFX intakeMotor = new TalonFX(IntakeConstants.INTAKE_MOTOR_1_CANID);
   private final VelocityVoltage feederController1;
 
-  private final TalonFX motor2 = new TalonFX(IntakeConstants.INTAKE_DEPLOY_MOTOR_CANID);
+  private final TalonFX pivotMotor = new TalonFX(IntakeConstants.INTAKE_DEPLOY_MOTOR_CANID);
   private final PositionVoltage feedercontroller2;
 
   private Angle extendTargetAngle = IntakeConstants.RETRACT_ANGLE;
@@ -47,6 +50,8 @@ public class IntakeSub extends SubsystemBase {
   private double simSpeedTarget2 = 0;
   private final double simAccel2 = 0.5;
 
+  private final SlewRateLimiter pivotPositionRateLimiter = new SlewRateLimiter(360);
+
 
   public IntakeSub() {
     TalonFXConfiguration motorConfig = new TalonFXConfiguration();
@@ -59,41 +64,45 @@ public class IntakeSub extends SubsystemBase {
     motorConfig.Slot0.kD = 0;
     motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    //motor1.getConfigurator().apply(motorConfig);
+    intakeMotor.getConfigurator().apply(motorConfig);
 
 
     feederController1 = new VelocityVoltage(0).withSlot(0);
 
 
-    motor1Sim = motor1.getSimState();
+    motor1Sim = intakeMotor.getSimState();
 
     TalonFXConfiguration motorDeployConfig = new TalonFXConfiguration();
     /* Setup MotorConfig */
-    motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    motorConfig.Feedback.SensorToMechanismRatio = 25;
+    motorDeployConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    motorDeployConfig.Feedback.SensorToMechanismRatio = 58;
     /* Untested PID values */
-    motorConfig.Slot0.kP = 1;
-    motorConfig.Slot0.kI = 0;
-    motorConfig.Slot0.kD = 0;
-    motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    motorDeployConfig.Slot0.kP = 15;
+    motorDeployConfig.Slot0.kI = 0;
+    motorDeployConfig.Slot0.kD = 0;
+    motorDeployConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    //motor2.getConfigurator().apply(motorConfig);
+    pivotMotor.getConfigurator().apply(motorDeployConfig);
 
 
     feedercontroller2 = new PositionVoltage(0).withSlot(0);
 
 
-    motor2Sim = motor2.getSimState();
+    motor2Sim = pivotMotor.getSimState();
   }
 
   public void setSpeed(LinearVelocity speed){
+    if (speed.in(MetersPerSecond) == 0) {
+      stop();
+      return;      
+    }
     //AngularVelocity aSpeed = RotationsPerSecond.of(
     //  speed.in(MetersPerSecond) * ratio / (2*Math.PI*wheelRadius));
     
     AngularVelocity aSpeed = RadiansPerSecond.of(
       speed.in(MetersPerSecond) * ratio / wheelRadius);
     
-    motor1.setControl(feederController1.withVelocity(aSpeed));
+    intakeMotor.setControl(feederController1.withVelocity(aSpeed));
     
     if (Robot.isSimulation()) {
       simSpeedTarget = aSpeed.in(RadiansPerSecond);
@@ -101,12 +110,11 @@ public class IntakeSub extends SubsystemBase {
   }
 
   public void stop(){
-    
-    motor1.setControl(new DutyCycleOut(0));
+    intakeMotor.setControl(new DutyCycleOut(0));
   }
 
   public LinearVelocity getSpeed() {
-    AngularVelocity aSpeed = motor1.getVelocity().getValue(); // in rotations per second
+    AngularVelocity aSpeed = intakeMotor.getVelocity().getValue(); // in rotations per second
     return MetersPerSecond.of(aSpeed.in(RotationsPerSecond) / ratio * (2*Math.PI*wheelRadius));
   }
 
@@ -130,7 +138,7 @@ public class IntakeSub extends SubsystemBase {
   public void periodic() {
     LinearVelocity speeds = getSpeed();
     SmartDashboard.putNumber("Intake/motorSpeed", speeds.in(MetersPerSecond));
-    motor2.setControl(feedercontroller2.withPosition(extendTargetAngle));
+    pivotMotor.setControl(feedercontroller2.withPosition(Degrees.of(pivotPositionRateLimiter.calculate(extendTargetAngle.in(Degrees)))));
   }
 
   @Override
