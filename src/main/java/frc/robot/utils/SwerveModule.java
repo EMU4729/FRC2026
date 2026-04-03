@@ -115,6 +115,8 @@ public class SwerveModule {
         .positionWrappingEnabled(true)
         .positionWrappingInputRange(DriveConstants.TURNING_ENCODER_POSITION_PID_MIN_INPUT,
             DriveConstants.TURNING_ENCODER_POSITION_PID_MAX_INPUT);
+
+    turnMotorConfig.absoluteEncoder.positionConversionFactor(6.28);
     turnMotorConfig.idleMode(IdleMode.kBrake);
 
     turnMotor = new SparkMax(moduleDetails.steerCANID(), MotorType.kBrushless);
