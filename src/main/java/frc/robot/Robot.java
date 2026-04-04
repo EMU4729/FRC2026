@@ -93,11 +93,13 @@ public class Robot extends TimedRobot {
     }
     DataLogManager.log("--- AUTO START ---");
     // Subsystems.drive.resetIntegral();
+    System.out.println(CommandScheduler.getInstance().isScheduled(autoCommand));
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    System.out.println(CommandScheduler.getInstance().isScheduled(robotContainer.getAutonomousCommand()));
   }
 
   @Override

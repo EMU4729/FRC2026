@@ -34,7 +34,7 @@ public class TurrretRunner extends Command{
 
     @Override
     public void execute() {
-        if (DriverStation.isDisabled()) return;
+        if (!DriverStation.isTeleopEnabled()) return;
 
         // TODO Auto-generated method stub
         FieldArea fieldArea = getFieldArea();
