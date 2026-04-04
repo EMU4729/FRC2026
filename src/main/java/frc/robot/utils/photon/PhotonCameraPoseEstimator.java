@@ -233,7 +233,7 @@ public double[] getBotPoseTargetSpace() {
     }
     if ( Math.abs(heightError) > heightTol) {
       LogFiltered.append("Height"); 
-      System.out.println("Height");
+      System.out.println("Height" +" "+ heightError);
       return Optional.empty();
     }
     if ( pose.estimatedPose.getX() < DriveConstants.FIELD_BOUNDS[0].getX() || 
