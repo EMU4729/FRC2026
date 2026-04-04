@@ -51,6 +51,7 @@ public class AutoProvider {
     loadPathPlannerAuto("Left Short Auto", "Left Short Auto");
     loadPathPlannerAuto("Collect Depot", "Collect Depot");
     loadPathPlannerAuto("Only Shoot", "Only Shoot");
+    loadPathPlannerAuto("test", "test");
 
 
 
