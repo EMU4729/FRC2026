@@ -80,7 +80,8 @@ public class RobotContainer {
     // Bind pilot B (east) to the hopper activation command while held
     OI.pilot.b().whileTrue(Subsystems.hopper.runCommand(1));
 
-  
+    OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
+                .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
   }
 
   /**

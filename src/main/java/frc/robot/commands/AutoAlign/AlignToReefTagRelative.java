@@ -49,8 +49,8 @@ tagID = Subsystems.nav.photon.getBestVisibleFiducialID();
 
   @Override
   public void execute() {
-  int currentID = Subsystems.nav.photon.getBestVisibleFiducialID();
-if (currentID != -1 && currentID == tagID) {
+    int currentID = Subsystems.nav.photon.getBestVisibleFiducialID();
+    if (currentID != -1 && currentID == tagID) {
       this.dontSeeTagTimer.reset();
 
       double[] postions = Subsystems.nav.photon.getBotPoseTargetSpace();

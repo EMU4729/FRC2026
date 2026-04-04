@@ -129,17 +129,17 @@ public class NavigationSub extends SubsystemBase {
    */
   private void updateOdometry() {
     poseEstimator.update(Rotation2d.fromDegrees(imu.getAngle()), Subsystems.drive.getModulePositions());
-     for (final var cam : photon.cams) {
-       cam.getEstimatedPose()
-           .ifPresent(
-             (visionResult) -> {
-             final var visionPose = visionResult.estimatedPose.toPose2d();
-             poseEstimator.addVisionMeasurement(
-    visionPose,
-    visionResult.timestampSeconds,
-    VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10)) // tune these
-);
-           });
+      for (final var cam : photon.cams) {
+        cam.getEstimatedPose()
+            .ifPresent(
+                (visionResult) -> {
+                    final var visionPose = visionResult.estimatedPose.toPose2d();
+                    poseEstimator.addVisionMeasurement(
+                    visionPose,
+                    visionResult.timestampSeconds,
+                    VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10)) // tune these
+                );
+        });
      }
     
     

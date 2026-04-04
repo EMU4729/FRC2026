@@ -6,13 +6,13 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 
 public class VisionConstants {
-  public static final String[] PHOTON_CAMERA_NAME = {"photon1", "photon2"};
+  public static final String[] PHOTON_CAMERA_NAME = {"photon2", "photon1"};
 
   // SIMULATION CONSTANTS
   // transform[translation[FB(f+),LR(l+),UD(u+)], rotation[R(r+),P(d+),Y(L+)]  
   public static final Transform3d[] ROBOT_TO_CAMERA = {
       new Transform3d(
-          new Translation3d(0.345-0.19,0.345-0.39,0.55),
+          new Translation3d(0.345-0.19, 0.345-0.39, 0.55),
           new Rotation3d(0, Math.toRadians(-10), 0)
       ),
       new Transform3d(

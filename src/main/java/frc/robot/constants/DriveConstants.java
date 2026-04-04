@@ -46,7 +46,7 @@ public class DriveConstants {
    * Right now, this is just set to a bit below the maxswerve module's free speed.
    * It should probably be changed.
    */
-  public static final LinearVelocity MAX_SPEED = MetersPerSecond.of(25);
+  public static final LinearVelocity MAX_SPEED = MetersPerSecond.of(4.88);
   /** Max acceleration of robot in meters per second squared */
   public static final LinearAcceleration MAX_ACCELERATION = MetersPerSecondPerSecond.of(15); // TODO check this
   /** Max (negative) deceleration of the robot */
@@ -59,10 +59,8 @@ public class DriveConstants {
   public static final AngularVelocity MAX_ANGULAR_SPEED = RadiansPerSecond
       .of(MAX_SPEED.in(MetersPerSecond) / DRIVEBASE_RADIUS.in(Meters));
   /** Max angular acceleration of robot in radians per second squared */
-  public static final AngularAcceleration MAX_ANGULAR_ACCELERATION = RadiansPerSecondPerSecond
-      .of(MAX_ANGULAR_SPEED.in(RadiansPerSecond) / 60 * 15);
-  public static final AngularAcceleration MAX_ANGULAR_DECELERATION = RadiansPerSecondPerSecond
-      .of(-(MAX_ANGULAR_SPEED.in(RadiansPerSecond) / 60 * 30));
+  public static final AngularAcceleration MAX_ANGULAR_ACCELERATION = RadiansPerSecondPerSecond.of(100);
+  public static final AngularAcceleration MAX_ANGULAR_DECELERATION = MAX_ANGULAR_ACCELERATION.times(-1.5);
 
   public static final PathConstraints PATH_CONSTRAINTS = new PathConstraints(
       MAX_SPEED, MAX_ACCELERATION,
@@ -106,7 +104,7 @@ public class DriveConstants {
   public static final double TURNING_I = 0.05;
   public static final double TURNING_D = 0.15;
   public static final double TURNING_FF = 0;
-  public static final Angle TURNING_I_ZONE = Degrees.of(15);
+  public static final Angle TURNING_I_ZONE = Degrees.of(25);
 
   // Auto Constants
   // TODO: Tune these
@@ -125,7 +123,7 @@ public class DriveConstants {
   public static DriveBaseFit PILOT_SETTINGS = new DriveBaseFit(
       new AxesFit().withOutputMinMax(0, 0.7).withPow(4).withDeadBand(0.1)
           .withLimiter(0.15).withBooster(1),
-      new AxesFit().withPow(3).withDeadBand(0.1).withLimiter(0.15));
+      new AxesFit().withOutputMinMax(0, 0.5).withPow(3).withDeadBand(0.1).withLimiter(0.15));
 
   /*
    * public static DriveBaseFit PILOT_DEMO_SETTINGS = DriveBaseFit.InitSwerveBot(

@@ -20,6 +20,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -89,6 +90,8 @@ public class IntakeSub extends SubsystemBase {
 
 
     motor2Sim = pivotMotor.getSimState();
+
+    setExtendAngle();
   }
 
   public void setSpeed(LinearVelocity speed){

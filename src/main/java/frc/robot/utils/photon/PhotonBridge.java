@@ -39,7 +39,7 @@ public class PhotonBridge {
         new PhotonCameraPoseEstimator(
             VisionConstants.PHOTON_CAMERA_NAME[0],
             VisionConstants.ROBOT_TO_CAMERA[0],
-            Optional.of(new Transform3d(new Translation3d(1.5, 0, 0), new Rotation3d(0,0,0))),
+            Optional.of(new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0,0,0))),
             fieldLayout,
             camProps),
             

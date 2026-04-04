@@ -233,6 +233,7 @@ public class SwerveModule {
     // target angle we can just stop the motors to prevent motor weirdness
     if (Math.abs(state.speedMetersPerSecond) < 0.001) {
       state.speedMetersPerSecond = 0;
+      desiredState.speedMetersPerSecond = 0;
       stop();
       if (Math.abs((state.angle.minus(getTurnRotation2d()).getRadians()) % 2 * Math.PI) < Math.PI / 16) { // ~11 degrees
         desiredState = state;

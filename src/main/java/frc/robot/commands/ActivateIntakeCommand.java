@@ -32,7 +32,6 @@ public class ActivateIntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        intake.setExtendAngle();
         intake.setSpeed(speed);
     }
 
@@ -42,7 +41,6 @@ public class ActivateIntakeCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setRetractedAngle();
         intake.setSpeed(MetersPerSecond.of(0));
     }
 

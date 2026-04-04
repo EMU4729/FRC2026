@@ -96,22 +96,7 @@ public class PhotonCameraPoseEstimator {
     return poseEstimator.getRobotToCameraTransform();
   }
 
-  /**
-   * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
-   * vision result. Should be called once per robot tick.
-   * 
-   * @return the new currently estimated pose
-   */
-
-    /**
-   * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
-   * vision result. Should be called once per robot tick.
-   * 
-   * @return the new currently estimated pose
-   */
-    public Optional<EstimatedRobotPose> getEstimatedPose() {
-          return getEstimatedPose(new Rotation3d());
-    }
+  
 
     /**
  * @return the fiducial ID of the best target currently visible, or -1 if none.
@@ -123,20 +108,35 @@ public int getBestFiducialID() {
         .orElse(-1);
 }
 
-/**
- * @return all fiducial IDs currently visible, in order of best-to-worst target.
- *         Empty list if no targets.
- */
-public List<Integer> getVisibleFiducialIDs() {
+  /**
+   * @return all fiducial IDs currently visible, in order of best-to-worst target.
+   *         Empty list if no targets.
+   */
+  public List<Integer> getVisibleFiducialIDs() {
     return getLatestResult()
         .filter(PhotonPipelineResult::hasTargets)
         .map(r -> r.getTargets().stream()
             .map(PhotonTrackedTarget::getFiducialId)
             .collect(java.util.stream.Collectors.toList()))
         .orElse(java.util.Collections.emptyList());
-}
+    }
 
-    public Optional<EstimatedRobotPose> getEstimatedPose(Rotation3d turretAngle) {
+  /**
+   * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
+   * vision result. Should be called once per robot tick.
+   * 
+   * @return the new currently estimated pose
+   */
+  public Optional<EstimatedRobotPose> getEstimatedPose() {
+        return getEstimatedPose(new Rotation3d());
+  }
+  /**
+   * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
+   * vision result. Should be called once per robot tick.
+   * 
+   * @return the new currently estimated pose
+   */
+  public Optional<EstimatedRobotPose> getEstimatedPose(Rotation3d turretAngle) {
     Optional<PhotonPipelineResult> latestResult = getLatestResult();
 
     if (latestResult.isEmpty()) return Optional.empty();
@@ -225,13 +225,15 @@ public double[] getBotPoseTargetSpace() {
         .toTranslation2d()
         .getDistance(currentPose.getTranslation());
     double heightError = pose.estimatedPose.getZ();
-
+    System.out.println(distanceError +" "+ distanceTol);
     if ( distanceError > distanceTol) {
       LogFiltered.append("Distance");
+      System.out.println("Distance");
       return Optional.empty();
     }
     if ( Math.abs(heightError) > heightTol) {
       LogFiltered.append("Height"); 
+      System.out.println("Height");
       return Optional.empty();
     }
     if ( pose.estimatedPose.getX() < DriveConstants.FIELD_BOUNDS[0].getX() || 
@@ -239,18 +241,22 @@ public double[] getBotPoseTargetSpace() {
         pose.estimatedPose.getY() <  DriveConstants.FIELD_BOUNDS[0].getY() ||
         pose.estimatedPose.getY() >  DriveConstants.FIELD_BOUNDS[1].getY()){
           LogFiltered.append("Field Bounds"); 
+          System.out.println("Field");
           return Optional.empty();
         }
     if ( Math.abs(pose.estimatedPose.getRotation().getX()) > rolTol.in(Radians)){
       LogFiltered.append("Roll");  
+          System.out.println("Roll");
       return Optional.empty();
     }
     if ( Math.abs(pose.estimatedPose.getRotation().getY()) > pitchTol.in(Radians)){
       LogFiltered.append("Pitch");
+          System.out.println("Pitch");
       return Optional.empty();
     }
 
     LogFiltered.append("Passed");
+          System.out.println("Passed");
     return OptPose;
   }
   public static void increaseTollerance(){

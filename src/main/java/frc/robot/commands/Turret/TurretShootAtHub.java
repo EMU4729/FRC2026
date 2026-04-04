@@ -69,7 +69,6 @@ public class TurretShootAtHub extends Command {
         Subsystems.turretAiming.setHoodTarget(hubCalc.hoodAngle());
         Subsystems.turretShooter.setSpeed(hubCalc.power());
         Subsystems.turretFeeder.popFuel(TurretFeederConstants.TARGET_SPEED);
-        Subsystems.intake.setShootExtendAngle();
 
         // ── ball detection via current spike ────────────────────────
         boolean ballDetected = Subsystems.turretFeeder.getSupplyCurrent()
@@ -97,7 +96,6 @@ public class TurretShootAtHub extends Command {
         Subsystems.turretAiming.stop();
         Subsystems.turretShooter.stop();
         Subsystems.turretFeeder.stop();
-        Subsystems.intake.setShootRetractAngle();
     }
 
     /**
