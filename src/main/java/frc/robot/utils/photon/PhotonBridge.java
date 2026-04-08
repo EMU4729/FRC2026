@@ -42,13 +42,12 @@ public class PhotonBridge {
             Optional.empty(),
             fieldLayout,
             camProps),
-            
 
-      //  new PhotonCameraPoseEstimator(
-      //      VisionConstants.PHOTON_CAMERA_NAME[1],
-      //      VisionConstants.ROBOT_TO_CAMERA[1],
-      //      fieldLayout,
-      //      camProps)
+        // new PhotonCameraPoseEstimator(
+        // VisionConstants.PHOTON_CAMERA_NAME[1],
+        // VisionConstants.ROBOT_TO_CAMERA[1],
+        // fieldLayout,
+        // camProps)
     };
 
     if (RobotBase.isSimulation()) {
@@ -61,28 +60,31 @@ public class PhotonBridge {
   }
 
   /**
- * @return the fiducial ID of the best target visible across all cameras,
- *         or -1 if nothing is seen.
- */
-public int getBestVisibleFiducialID() {
+   * @return the fiducial ID of the best target visible across all cameras,
+   *         or -1 if nothing is seen.
+   */
+  public int getBestVisibleFiducialID() {
     for (final var cam : cams) {
-        int id = cam.getBestFiducialID();
-        if (id != -1) return id;
+      int id = cam.getBestFiducialID();
+      if (id != -1)
+        return id;
     }
     return -1;
-}
+  }
 
-/**
- * Returns getBotPoseTargetSpace() from the first camera that has a visible target.
- * Returns null if no camera sees anything.
- */
-public double[] getBotPoseTargetSpace() {
+  /**
+   * Returns getBotPoseTargetSpace() from the first camera that has a visible
+   * target.
+   * Returns null if no camera sees anything.
+   */
+  public double[] getBotPoseTargetSpace() {
     for (final var cam : cams) {
-        double[] pose = cam.getBotPoseTargetSpace();
-        if (pose != null) return pose;
+      double[] pose = cam.getBotPoseTargetSpace();
+      if (pose != null)
+        return pose;
     }
     return null;
-}
+  }
 
   private Transform2d simError = new Transform2d();
 

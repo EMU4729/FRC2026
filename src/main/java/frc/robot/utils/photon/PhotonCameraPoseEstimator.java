@@ -26,6 +26,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems;
 import frc.robot.constants.DriveConstants;
 
@@ -35,10 +36,10 @@ public class PhotonCameraPoseEstimator {
   private final PhotonPoseEstimator poseEstimator;
 
   private static final double distanceTolBase = 0.2;
-  private static final double distanceTolStep = 0.002/2; // *50 for per second increase 
+  private static final double distanceTolStep = 0.002 / 2; // *50 for per second increase
   private static double distanceTol = distanceTolBase;
   private static final double heightTolBase = 0.2;
-  private static final double heightTolStep = 0/2;
+  private static final double heightTolStep = 0 / 2;
   private static double heightTol = heightTolBase;
   private final Transform3d robotToCam;
   private final Optional<Transform3d> turretToCam;
@@ -58,8 +59,8 @@ public class PhotonCameraPoseEstimator {
       Transform3d robotToCam,
       AprilTagFieldLayout fieldLayout,
       SimCameraProperties camProps) {
-        this(cameraName, robotToCam,Optional.empty(), fieldLayout, camProps);
-      }
+    this(cameraName, robotToCam, Optional.empty(), fieldLayout, camProps);
+  }
 
   public PhotonCameraPoseEstimator(
       String cameraName,
@@ -67,7 +68,7 @@ public class PhotonCameraPoseEstimator {
       Optional<Transform3d> turretToCam,
       AprilTagFieldLayout fieldLayout,
       SimCameraProperties camProps) {
-  
+
     DataLog datalog = DataLogManager.getLog();
     LogPoseX = new DoubleLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/X")));
     LogPoseY = new DoubleLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/Y")));
@@ -76,9 +77,9 @@ public class PhotonCameraPoseEstimator {
     LogTargets = new StringLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/Targets")));
     LogFiltered = new StringLogEntry(datalog, "PhotonPrediction/".concat(cameraName.concat("/FilterResult")));
 
-        this.robotToCam = robotToCam;
-        this.turretToCam = turretToCam;
-        
+    this.robotToCam = robotToCam;
+    this.turretToCam = turretToCam;
+
     cam = new PhotonCamera(cameraName);
     camSim = new PhotonCameraSim(cam, camProps);
     camSim.enableProcessedStream(RobotBase.isSimulation());
@@ -87,7 +88,7 @@ public class PhotonCameraPoseEstimator {
         fieldLayout,
         PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         robotToCam);
-      
+
     poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
   }
 
@@ -96,17 +97,15 @@ public class PhotonCameraPoseEstimator {
     return poseEstimator.getRobotToCameraTransform();
   }
 
-  
-
-    /**
- * @return the fiducial ID of the best target currently visible, or -1 if none.
- */
-public int getBestFiducialID() {
+  /**
+   * @return the fiducial ID of the best target currently visible, or -1 if none.
+   */
+  public int getBestFiducialID() {
     return getLatestResult()
         .filter(PhotonPipelineResult::hasTargets)
         .map(r -> r.getBestTarget().getFiducialId())
         .orElse(-1);
-}
+  }
 
   /**
    * @return all fiducial IDs currently visible, in order of best-to-worst target.
@@ -119,7 +118,7 @@ public int getBestFiducialID() {
             .map(PhotonTrackedTarget::getFiducialId)
             .collect(java.util.stream.Collectors.toList()))
         .orElse(java.util.Collections.emptyList());
-    }
+  }
 
   /**
    * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
@@ -128,8 +127,9 @@ public int getBestFiducialID() {
    * @return the new currently estimated pose
    */
   public Optional<EstimatedRobotPose> getEstimatedPose() {
-        return getEstimatedPose(new Rotation3d());
+    return getEstimatedPose(new Rotation3d());
   }
+
   /**
    * Updates the {@link PhotonPoseEstimator}'s pose estimation with the latest
    * vision result. Should be called once per robot tick.
@@ -139,8 +139,9 @@ public int getBestFiducialID() {
   public Optional<EstimatedRobotPose> getEstimatedPose(Rotation3d turretAngle) {
     Optional<PhotonPipelineResult> latestResult = getLatestResult();
 
-    if (latestResult.isEmpty()) return Optional.empty();
-    
+    if (latestResult.isEmpty())
+      return Optional.empty();
+
     Transform3d robotToCamTemp = robotToCam;
     if (turretToCam.isPresent()) {
       Transform3d rotationTransform = new Transform3d(new Translation3d(), turretAngle);
@@ -149,29 +150,32 @@ public int getBestFiducialID() {
     }
     poseEstimator.setRobotToCameraTransform(robotToCamTemp);
 
-
     Optional<EstimatedRobotPose> res = filter(log(latestResult.flatMap(poseEstimator::update)));
-    if (res.isEmpty()){increaseTollerance();}
-    else {decreaseTollerance();}
+    if (res.isEmpty()) {
+      increaseTollerance();
+    } else {
+      decreaseTollerance();
+    }
 
     return res;
   }
 
-  public double getDistanceTol(){
+  public double getDistanceTol() {
     return distanceTol;
   }
 
   private boolean wasConnected = true;
+
   /** @return the latest vision result from the camera */
   public Optional<PhotonPipelineResult> getLatestResult() {
     if (!cam.isConnected()) {
-      if(wasConnected){
-        //DataLogManager.log("PhotonBridge: Error: Camera not connected");
+      if (wasConnected) {
+        // DataLogManager.log("PhotonBridge: Error: Camera not connected");
       }
       return Optional.empty();
     } else {
-      if(!wasConnected){
-        //DataLogManager.log("PhotonBridge: Info: Camera reconnected");
+      if (!wasConnected) {
+        // DataLogManager.log("PhotonBridge: Info: Camera reconnected");
       }
     }
     wasConnected = cam.isConnected();
@@ -189,35 +193,36 @@ public int getBestFiducialID() {
   public void reset() {
     reset(new Pose2d());
   }
-public double[] getBotPoseTargetSpace() {
+
+  public double[] getBotPoseTargetSpace() {
     return getLatestResult()
         .filter(PhotonPipelineResult::hasTargets)
         .map(result -> {
-            PhotonTrackedTarget target = result.getBestTarget();
+          PhotonTrackedTarget target = result.getBestTarget();
 
-            // This is the transform FROM the tag TO the camera
-            Transform3d tagToCamera = target.getBestCameraToTarget().inverse();
+          // This is the transform FROM the tag TO the camera
+          Transform3d tagToCamera = target.getBestCameraToTarget().inverse();
 
-            // Compose with robotToCamera inverse to get tag -> robot
-            // i.e. where is the robot, from the tag's perspective
-            Transform3d tagToRobot = tagToCamera.plus(robotToCam.inverse());
+          // Compose with robotToCamera inverse to get tag -> robot
+          // i.e. where is the robot, from the tag's perspective
+          Transform3d tagToRobot = tagToCamera.plus(robotToCam.inverse());
 
-            Rotation3d rot = tagToRobot.getRotation();
-            return new double[] {
-                tagToRobot.getX(),
-                tagToRobot.getY(),
-                tagToRobot.getZ(),
-                Math.toDegrees(rot.getX()), // roll
-                Math.toDegrees(rot.getY()), // pitch
-                Math.toDegrees(rot.getZ())  // yaw
-            };
+          Rotation3d rot = tagToRobot.getRotation();
+          return new double[] {
+              tagToRobot.getX(),
+              tagToRobot.getY(),
+              tagToRobot.getZ(),
+              Math.toDegrees(rot.getX()), // roll
+              Math.toDegrees(rot.getY()), // pitch
+              Math.toDegrees(rot.getZ()) // yaw
+          };
         })
         .orElse(null);
-}
-  
+  }
 
-  public Optional<EstimatedRobotPose> filter(Optional<EstimatedRobotPose> OptPose){
-    if (OptPose.isEmpty()) return OptPose;
+  public Optional<EstimatedRobotPose> filter(Optional<EstimatedRobotPose> OptPose) {
+    if (OptPose.isEmpty())
+      return OptPose;
     EstimatedRobotPose pose = OptPose.get();
     Pose2d currentPose = Subsystems.nav.getPose();
     double distanceError = pose.estimatedPose
@@ -225,53 +230,55 @@ public double[] getBotPoseTargetSpace() {
         .toTranslation2d()
         .getDistance(currentPose.getTranslation());
     double heightError = pose.estimatedPose.getZ();
-    System.out.println(distanceError +" "+ distanceTol);
-    if ( distanceError > distanceTol) {
+    System.out.println(distanceError + " " + distanceTol);
+    if (distanceError > distanceTol) {
       LogFiltered.append("Distance");
       System.out.println("Distance");
       return Optional.empty();
     }
-    if ( Math.abs(heightError) > heightTol) {
-      LogFiltered.append("Height"); 
-      System.out.println("Height" +" "+ heightError);
+    if (Math.abs(heightError) > heightTol) {
+      LogFiltered.append("Height");
+      System.out.println("Height" + " " + heightError);
       return Optional.empty();
     }
-    if ( pose.estimatedPose.getX() < DriveConstants.FIELD_BOUNDS[0].getX() || 
-        pose.estimatedPose.getX() >  DriveConstants.FIELD_BOUNDS[1].getX() ||
-        pose.estimatedPose.getY() <  DriveConstants.FIELD_BOUNDS[0].getY() ||
-        pose.estimatedPose.getY() >  DriveConstants.FIELD_BOUNDS[1].getY()){
-          LogFiltered.append("Field Bounds"); 
-          System.out.println("Field");
-          return Optional.empty();
-        }
-    if ( Math.abs(pose.estimatedPose.getRotation().getX()) > rolTol.in(Radians)){
-      LogFiltered.append("Roll");  
-          System.out.println("Roll");
+    if (pose.estimatedPose.getX() < DriveConstants.FIELD_BOUNDS[0].getX() ||
+        pose.estimatedPose.getX() > DriveConstants.FIELD_BOUNDS[1].getX() ||
+        pose.estimatedPose.getY() < DriveConstants.FIELD_BOUNDS[0].getY() ||
+        pose.estimatedPose.getY() > DriveConstants.FIELD_BOUNDS[1].getY()) {
+      LogFiltered.append("Field Bounds");
+      System.out.println("Field");
       return Optional.empty();
     }
-    if ( Math.abs(pose.estimatedPose.getRotation().getY()) > pitchTol.in(Radians)){
+    if (Math.abs(pose.estimatedPose.getRotation().getX()) > rolTol.in(Radians)) {
+      LogFiltered.append("Roll");
+      System.out.println("Roll");
+      return Optional.empty();
+    }
+    if (Math.abs(pose.estimatedPose.getRotation().getY()) > pitchTol.in(Radians)) {
       LogFiltered.append("Pitch");
-          System.out.println("Pitch");
+      System.out.println("Pitch");
       return Optional.empty();
     }
 
     LogFiltered.append("Passed");
-          System.out.println("Passed");
+    System.out.println("Passed");
     return OptPose;
   }
-  public static void increaseTollerance(){
-    distanceTol = distanceTol+distanceTolStep;
-    heightTol   = heightTol+heightTolStep;
-    
-  }
-  public static void decreaseTollerance(){
-    distanceTol = Math.max(distanceTol-5*distanceTolStep, distanceTolBase);
-    heightTol   = Math.max(heightTol-5*heightTolStep, heightTolBase);
+
+  public static void increaseTollerance() {
+    distanceTol = distanceTol + distanceTolStep;
+    heightTol = heightTol + heightTolStep;
 
   }
 
-  private Optional<EstimatedRobotPose> log(Optional<EstimatedRobotPose> OptPose){
-    OptPose.ifPresent((pose)->{
+  public static void decreaseTollerance() {
+    distanceTol = Math.max(distanceTol - 5 * distanceTolStep, distanceTolBase);
+    heightTol = Math.max(heightTol - 5 * heightTolStep, heightTolBase);
+
+  }
+
+  private Optional<EstimatedRobotPose> log(Optional<EstimatedRobotPose> OptPose) {
+    OptPose.ifPresent((pose) -> {
       LogPoseX.append(pose.estimatedPose.getX());
       LogPoseY.append(pose.estimatedPose.getY());
       LogPoseZ.append(pose.estimatedPose.getZ());
@@ -279,8 +286,10 @@ public double[] getBotPoseTargetSpace() {
 
       String targets = "TargetIds:[";
       Boolean first = true;
-      for(PhotonTrackedTarget a : pose.targetsUsed){
-        if (!first){targets = targets.concat(", ");}
+      for (PhotonTrackedTarget a : pose.targetsUsed) {
+        if (!first) {
+          targets = targets.concat(", ");
+        }
         targets = targets.concat(Integer.toString(a.fiducialId));
         first = false;
       }

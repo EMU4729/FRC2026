@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.constants.HopperConstants;
@@ -40,8 +42,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     // NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
-    //NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
-    if(Robot.isSimulation()){
+    // NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
+    if (Robot.isSimulation()) {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
 
@@ -71,17 +73,22 @@ public class RobotContainer {
     OI.pilot.start()
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
-    
     OI.pilot.x().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(100)));
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
-    //OI.pilot.y().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
+    // OI.pilot.y().whileTrue(new
+    // ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
 
     // Bind pilot B (east) to the hopper activation command while held
-    OI.pilot.b().whileTrue(Subsystems.hopper.runCommand(1));
+    OI.pilot.b()
+        .whileTrue(new SequentialCommandGroup(
+            Subsystems.hopper.runCommand(1).withTimeout(0.3),
+            new WaitCommand(0.3))
+            .repeatedly());
+    // OI.pilot.a().whileTrue(Subsystems.hopper.runCommand(1));
 
     OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
-                .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
+        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
   }
 
   /**
