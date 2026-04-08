@@ -39,6 +39,54 @@
         "x": 7.641647931134258,
         "y": 5.276548104745371
       },
+      "nextControl": {
+        "x": 7.652932942708333,
+        "y": 6.583116247106482
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.0775,
+        "y": 7.416322222222221
+      },
+      "prevControl": {
+        "x": 7.841244444444444,
+        "y": 7.484533333333332
+      },
+      "nextControl": {
+        "x": 5.702694176500617,
+        "y": 7.401826969379703
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.232122222222222,
+        "y": 7.416322222222221
+      },
+      "prevControl": {
+        "x": 3.9629190231234506,
+        "y": 7.428502168903909
+      },
+      "nextControl": {
+        "x": 2.6474555555555552,
+        "y": 7.406577777777777
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.232122222222222,
+        "y": 4.912000000000001
+      },
+      "prevControl": {
+        "x": 2.7156666666666665,
+        "y": 5.525899999999999
+      },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
@@ -52,11 +100,34 @@
     {
       "waypointRelativePos": 1.3035978618421058,
       "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 3.5007874015747835,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "HOPPER ON",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake ON",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "SHOOT HUB",
+      "waypointRelativePos": 5.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -67,7 +138,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 89.81518658602972
+    "rotation": -29.999999999999996
   },
   "reversed": false,
   "folder": "Right",

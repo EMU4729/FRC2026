@@ -5,53 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TopL to Ready"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Return"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT HUB"
+            "pathName": "TopL to Ready"
           }
         }
       ]
