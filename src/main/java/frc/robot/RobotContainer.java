@@ -7,17 +7,23 @@ package frc.robot;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
+import java.util.List;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.constants.AimingConstants;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
 import frc.robot.commands.teleop.TeleopProvider;
@@ -40,8 +46,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     // NamedCommands.registerCommand("Intake ON", IntakeCommand.forAuto());
-    //NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
-    if(Robot.isSimulation()){
+    // NamedCommands.registerCommand("HOPPER ON", ActivateHopperCommand.forAuto());
+    if (Robot.isSimulation()) {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
 
@@ -63,6 +69,15 @@ public class RobotContainer {
     new Trigger(() -> DriverStation.isTeleop() && DriverStation.getMatchTime() <= 30).onTrue(
         Subsystems.led.runPattern(LEDPattern.solid(Color.kYellow).blink(Seconds.of(0.5))).withTimeout(2));
 
+    final var rumbleTimes = List.of(30 - 3, 55 - 3, 80 - 3, 105 - 3);
+    new Trigger(() -> DriverStation.isTeleop() && rumbleTimes.contains((int) DriverStation.getMatchTime()))
+        .onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> System.out.println("hewo")),
+            new InstantCommand(() -> OI.pilot.setRumble(RumbleType.kBothRumble, 0.5)),
+            new WaitCommand(0.5),
+            new InstantCommand(() -> OI.pilot.setRumble(RumbleType.kBothRumble, 0)),
+            new WaitCommand(0.5)).repeatedly().withTimeout(3));
+
     // +----------------+
     // | PILOT CONTROLS |
     // +----------------+
@@ -71,17 +86,17 @@ public class RobotContainer {
     OI.pilot.start()
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
-    
     OI.pilot.x().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(100)));
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
-    //OI.pilot.y().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
+    // OI.pilot.y().whileTrue(new
+    // ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
 
     // Bind pilot B (east) to the hopper activation command while held
     OI.pilot.b().whileTrue(Subsystems.hopper.runCommand(1));
 
     OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
-                .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
+        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
   }
 
   /**
