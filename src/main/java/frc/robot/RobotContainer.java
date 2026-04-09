@@ -69,14 +69,14 @@ public class RobotContainer {
     new Trigger(() -> DriverStation.isTeleop() && DriverStation.getMatchTime() <= 30).onTrue(
         Subsystems.led.runPattern(LEDPattern.solid(Color.kYellow).blink(Seconds.of(0.5))).withTimeout(2));
 
-    final var rumbleTimes = List.of(30 - 3, 55 - 3, 80 - 3, 105 - 3);
-    new Trigger(() -> DriverStation.isTeleop() && rumbleTimes.contains((int) DriverStation.getMatchTime()))
-        .onTrue(new SequentialCommandGroup(
-            new InstantCommand(() -> System.out.println("hewo")),
-            new InstantCommand(() -> OI.pilot.setRumble(RumbleType.kBothRumble, 0.5)),
-            new WaitCommand(0.5),
-            new InstantCommand(() -> OI.pilot.setRumble(RumbleType.kBothRumble, 0)),
-            new WaitCommand(0.5)).repeatedly().withTimeout(3));
+    // final var rumbleTimes = List.of(30 - 3, 55 - 3, 80 - 3, 105 - 3);
+    // new Trigger(() -> DriverStation.isTeleop() && rumbleTimes.contains((int)
+    // DriverStation.getMatchTime()))
+    // .onTrue(new SequentialCommandGroup(
+    // new InstantCommand(() -> OI.pilot.setRumble(RumbleType.kBothRumble, 0.5)),
+    // new WaitCommand(0.5),
+    // new InstantCommand(() -> OI.pilot.setRumble(RumbleType.kBothRumble, 0)),
+    // new WaitCommand(0.5)).repeatedly().withTimeout(3));
 
     // +----------------+
     // | PILOT CONTROLS |
