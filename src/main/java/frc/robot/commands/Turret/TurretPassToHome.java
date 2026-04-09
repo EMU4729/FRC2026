@@ -44,7 +44,7 @@ public class TurretPassToHome  extends Command{
 
 
     Subsystems.turretAiming.setHoodTarget(targetState.hoodAngle());
-    Subsystems.turretShooter.setSpeed(targetState.power());
+    //Subsystems.turretShooter.setSpeed(targetState.power());
         super.execute();
     }
 

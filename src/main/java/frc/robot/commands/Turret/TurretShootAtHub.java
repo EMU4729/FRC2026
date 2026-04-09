@@ -1,5 +1,9 @@
 package frc.robot.commands.Turret;
 
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+
 import java.util.Optional;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -7,15 +11,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.TurretConstants;
 import frc.robot.constants.AimingConstants.TurretState;
 import frc.robot.constants.TurretFeederConstants;
 import frc.robot.utils.TurretAiming;
 
 public class TurretShootAtHub extends Command {
+
+    public double testVel = 13;
+    public double testAng = 45;
 
     /** Amps above which we consider a ball to be passing through the feeder. */
     private static final double FEEDER_LOADED_CURRENT_AMPS = 5.0;
@@ -27,7 +36,7 @@ public class TurretShootAtHub extends Command {
     private static final double NO_BALL_TIMEOUT_SECONDS = 2.5;
 
     /** Minimum run time before the finish condition is armed. */
-    private static final double MIN_RUN_SECONDS = 0.5;
+    private static final double MIN_RUN_SECONDS = 13;
 
     private Translation2d ourHub = AimingConstants.Red_Hub;
 
@@ -39,6 +48,8 @@ public class TurretShootAtHub extends Command {
 
     public TurretShootAtHub() {
         addRequirements(Subsystems.turretAiming, Subsystems.turretFeeder, Subsystems.turretShooter);
+        SmartDashboard.putNumber("Turret/ShooterPow", testVel);
+        SmartDashboard.putNumber("Turret/ShooterAng", testAng);
     }
 
     @Override
@@ -58,17 +69,20 @@ public class TurretShootAtHub extends Command {
     @Override
     public void execute() {
 
-        TurretState HubCalc = TurretAiming.calcState(AimingConstants.ShootingSamples, ourHub);
         // Rotate robot to face the hub target instead of rotating the turret
-       // Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
-       //         Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
+        // Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
+        //         Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
 
         TurretState hubCalc = TurretAiming.calcState(AimingConstants.ShootingSamples, ourHub);
-
-
-        Subsystems.turretAiming.setHoodTarget(hubCalc.hoodAngle());
-        Subsystems.turretShooter.setSpeed(hubCalc.power());
+        
+        testAng = SmartDashboard.getNumber("Turret/ShooterAng", 0);
+        testVel = SmartDashboard.getNumber("Turret/ShooterPow", 0);
+        Subsystems.turretAiming.setHoodTarget(Degrees.of(testAng));
+        Subsystems.turretShooter.setSpeed(MetersPerSecond.of(testVel));    
+        //Subsystems.turretAiming.setHoodTarget(hubCalc.hoodAngle());
+        //Subsystems.turretShooter.setSpeed(hubCalc.power());
         Subsystems.turretFeeder.popFuel(TurretFeederConstants.TARGET_SPEED);
+
 
         // ── ball detection via current spike ────────────────────────
         boolean ballDetected = Subsystems.turretFeeder.getSupplyCurrent()
@@ -94,7 +108,7 @@ public class TurretShootAtHub extends Command {
         noBallTimer.stop();
 
         Subsystems.turretAiming.stop();
-        Subsystems.turretShooter.stop();
+        Subsystems.turretShooter.setSpeed(TurretConstants.ShooterIdleSpeed);
         Subsystems.turretFeeder.stop();
     }
 

@@ -49,21 +49,22 @@ public class TurrretRunner extends Command{
         boolean active = OurHubActive();
         SmartDashboard.putBoolean("Turret/HubActive", active);
         SmartDashboard.putString("Turret/Area", fieldArea.toString());
-
+        
         if (/*fieldArea == FieldArea.OurAlliance && */active) {
-            CommandScheduler.getInstance().schedule(ShootAt);
+            //CommandScheduler.getInstance().schedule(ShootAt);
             SmartDashboard.putString("Shooting Stage", "Shooting At Hub");
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
             //CommandScheduler.getInstance().schedule(PassTo);
-            CommandScheduler.getInstance().cancel(ShootAt);
-            CommandScheduler.getInstance().cancel(AimAt);
+            //CommandScheduler.getInstance().cancel(ShootAt);
+            //CommandScheduler.getInstance().cancel(AimAt);
             SmartDashboard.putString("Shooting Stage", "Passing To Home");
             
         } else {
             //aim at tag
-            CommandScheduler.getInstance().schedule(AimAt);
-             SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
+            //CommandScheduler.getInstance().schedule(AimAt);
+            SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
         }
+        CommandScheduler.getInstance().schedule(ShootAt);
 
 
     }

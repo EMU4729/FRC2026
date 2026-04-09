@@ -202,10 +202,10 @@ public class NavigationSub extends SubsystemBase {
 
   /** Zeroes the Drive heading of the robot returned by getDriveHeading to current angle. */
   public void zeroDriveHeading() {
-    IMURawOffset = Radians.of(0).minus(getIMUHeading());
+    IMURawOffset = Radians.of(Math.PI).minus(getIMUHeading());
   }
 
-  /** Zeroes the IMU heading of the robot. */
+  /** do not use: Zeroes the IMU heading of the robot. */
   public void zeroIMUHeading() {
     imu.reset();
   }

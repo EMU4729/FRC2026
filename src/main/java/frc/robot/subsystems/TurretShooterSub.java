@@ -42,19 +42,21 @@ public class TurretShooterSub extends SubsystemBase{
     private double simSpeed = 0;
     private double simSpeedTarget = 0;
     private final double simAccel = 0.5;
-    private LinearVelocity targetSpeed;
+    private LinearVelocity targetSpeed = MetersPerSecond.of(0);
     
     public TurretShooterSub(){
         TalonFXConfiguration motorConfig = new TalonFXConfiguration();
         motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         motorConfig.Feedback.SensorToMechanismRatio = 1;
         //unknown PID
-        motorConfig.Slot0.kP = 5;
-        motorConfig.Slot0.kI = 0;
+        motorConfig.Slot0.kP = 0.1;
+        motorConfig.Slot0.kI = 1;
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         motor1.getConfigurator().apply(motorConfig);
+        motor2.getConfigurator().apply(motorConfig);
+        motor3.getConfigurator().apply(motorConfig);
 
         
         motor1Sim = motor1.getSimState();
@@ -93,7 +95,8 @@ public class TurretShooterSub extends SubsystemBase{
 
     public boolean atspeed(){
         if (targetSpeed == null) return false;
-        if (targetSpeed.minus(getSpeed()).in(MetersPerSecond) < 0.1) {
+        if (targetSpeed.minus(getSpeed()).in(MetersPerSecond) < 0.1 && 
+                targetSpeed.gt(MetersPerSecond.of(6))) {
             return true;
         } else {
             return false;
@@ -104,6 +107,7 @@ public class TurretShooterSub extends SubsystemBase{
     public void periodic() {
         LinearVelocity speeds = getSpeed();
         SmartDashboard.putNumber("Turret/motorSpeed", speeds.in(MetersPerSecond));
+        SmartDashboard.putNumber("Turret/motorTargSpeed", targetSpeed.in(MetersPerSecond));
     }
 
     

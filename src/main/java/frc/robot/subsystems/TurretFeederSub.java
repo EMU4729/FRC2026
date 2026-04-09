@@ -84,9 +84,9 @@ public class TurretFeederSub extends SubsystemBase{
         motor2.stopMotor();
     }
     // Add to TurretFeederSub.java
-public double getSupplyCurrent() {
-    return motor1.getSupplyCurrent().getValueAsDouble();
-}
+    public double getSupplyCurrent() {
+        return motor1.getSupplyCurrent().getValueAsDouble();
+    }
     public void setSpeedFromAngular(AngularVelocity speed) {
         // motor1.setControl(feederController1.withVelocity(speed));
         // If using CTRE VelocityVoltage, it usually expects Rotations per Second

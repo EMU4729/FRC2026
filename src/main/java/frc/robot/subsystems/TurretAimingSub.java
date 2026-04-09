@@ -2,12 +2,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 import static edu.wpi.first.units.Units.Rotations;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -21,26 +23,28 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems;
 import frc.robot.constants.AimingConstants;
+import frc.robot.constants.DriveConstants;
 import frc.robot.constants.TurretConstants;
 
-public class TurretAimingSub extends SubsystemBase {   
-    //Hardwares
+public class TurretAimingSub extends SubsystemBase {
+    // Hardwares
     private final TalonFX slewMotor = new TalonFX(AimingConstants.SLEW_MOTOR_CANID);
-    private final TalonFX hoodMotor = new TalonFX(AimingConstants.HOOD_MOTOR_CANID); //TODO CHANGE THIS
+    private final TalonFX hoodMotor_1 = new TalonFX(AimingConstants.HOOD_MOTOR_CANID_1); // TODO CHANGE THIS
+    private final TalonFX hoodMotor_2 = new TalonFX(AimingConstants.HOOD_MOTOR_CANID_2); // TODO CHANGE THIS
 
     private final PositionVoltage slewController = new PositionVoltage(0).withSlot(0);
-    private final PositionVoltage hoodController = new PositionVoltage(0).withSlot(0);
+    private final PositionVoltage hoodController_1 = new PositionVoltage(0).withSlot(0);
+    private final PositionVoltage hoodController_2 = new PositionVoltage(0).withSlot(0);
 
     private Angle manualSlewTarget = Degrees.of(0);
     private Angle manualHoodTarget = Degrees.of(0);
 
-    //Simulation  
+    // Simulation
     private final TalonFXSimState slewMotorSim;
     private final TalonFXSimState hoodMotorSim;
-    
 
     public TurretAimingSub() {
-       // --- Turret Configuration ---
+        // --- Turret Configuration ---
         TalonFXConfiguration aimingConfig = new TalonFXConfiguration();
         aimingConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         aimingConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.25;
@@ -53,46 +57,62 @@ public class TurretAimingSub extends SubsystemBase {
         aimingConfig.Slot0.kD = TurretConstants.ROTATOR_D;
         aimingConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         //slewMotor.getConfigurator().apply(aimingConfig);
- 
 
-        TalonFXConfiguration hoodMotorConfig;
-        hoodMotorConfig = new TalonFXConfiguration();
-        hoodMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        hoodMotorConfig.Feedback.SensorToMechanismRatio = TurretConstants.hoodMotorRatio;
-        hoodMotorConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        hoodMotorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.25;
-        hoodMotorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        hoodMotorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -0.25;
-        hoodMotorConfig.Slot0.kP = TurretConstants.HOOD_P;
-        hoodMotorConfig.Slot0.kI = TurretConstants.HOOD_I;
-        hoodMotorConfig.Slot0.kD = TurretConstants.HOOD_D;
-        hoodMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        //hoodMotor.getConfigurator().apply(hoodMotorConfig);
+        TalonFXConfiguration hoodMotorConfig_1;
+        hoodMotorConfig_1 = new TalonFXConfiguration();
+        hoodMotorConfig_1.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        hoodMotorConfig_1.Feedback.SensorToMechanismRatio = TurretConstants.hoodMotorRatio;
+        hoodMotorConfig_1.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        hoodMotorConfig_1.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.25;
+        hoodMotorConfig_1.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        hoodMotorConfig_1.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+        hoodMotorConfig_1.Slot0.kP = TurretConstants.HOOD_P;
+        hoodMotorConfig_1.Slot0.kI = TurretConstants.HOOD_I;
+        hoodMotorConfig_1.Slot0.kD = TurretConstants.HOOD_D;
+        hoodMotorConfig_1.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        hoodMotor_1.getConfigurator().apply(hoodMotorConfig_1);
 
+        TalonFXConfiguration hoodMotorConfig_2;
+        hoodMotorConfig_2 = new TalonFXConfiguration();
+        hoodMotorConfig_2.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        hoodMotorConfig_2.Feedback.SensorToMechanismRatio = TurretConstants.hoodMotorRatio;
+        hoodMotorConfig_2.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        hoodMotorConfig_2.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.25;
+        hoodMotorConfig_2.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        hoodMotorConfig_2.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+        hoodMotorConfig_2.Slot0.kP = TurretConstants.HOOD_P;
+        hoodMotorConfig_2.Slot0.kI = TurretConstants.HOOD_I;
+        hoodMotorConfig_2.Slot0.kD = TurretConstants.HOOD_D;
+        hoodMotorConfig_2.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        hoodMotor_2.getConfigurator().apply(hoodMotorConfig_2);
 
         slewMotorSim = slewMotor.getSimState();
-        hoodMotorSim = hoodMotor.getSimState();
+        hoodMotorSim = hoodMotor_1.getSimState();
 
         setupSmartDash();
     }
 
     @Override
-    public void periodic() {        
+    public void periodic() {
         Angle calculatedTargetRot;
         Angle calculatedTargetHood;
 
         // 1. Determine Input Targets
         calculatedTargetRot = manualSlewTarget;
-            
+
         calculatedTargetHood = manualHoodTarget;
 
         slewMotor.setControl(
-            slewController
-                .withPosition(calculatedTargetRot));
+                slewController
+                        .withPosition(calculatedTargetRot));
 
-        hoodMotor.setControl(
-            hoodController
-                .withPosition(calculatedTargetHood));
+        hoodMotor_1.setControl(
+                hoodController_1
+                        .withPosition(calculatedTargetHood));
+
+        hoodMotor_2.setControl(
+                hoodController_2
+                        .withPosition(calculatedTargetHood));
 
         updateTelemetry(calculatedTargetRot);
     }
@@ -102,28 +122,31 @@ public class TurretAimingSub extends SubsystemBase {
     }
 
     public Angle getHoodAngle() {
-        return hoodMotor.getPosition().getValue();
+        return hoodMotor_1.getPosition().getValue();
     }
 
     /** sets the field relative yaw the turret should aim at */
-    public void setSlewTarget(Angle targetSlewAngle){
+    public void setSlewTarget(Angle targetSlewAngle) {
         this.manualSlewTarget = targetSlewAngle;
     }
 
-    public void setHoodTarget(Angle targetHoodAngle){
+    public void setHoodTarget(Angle targetHoodAngle) {
         this.manualHoodTarget = targetHoodAngle;
-    
-        hoodMotor.setControl(new PositionVoltage(targetHoodAngle.div(360)));
+        
+        hoodMotor_1.setControl(hoodController_1.withPosition(targetHoodAngle));
+        hoodMotor_2.setControl(hoodController_2.withPosition(targetHoodAngle));
+        System.out.println(targetHoodAngle);
     }
-
-    public void stop(){
-        //TODO
+    
+    public void stop() {
+        this.manualHoodTarget = Degrees.of(0);
+        // TODO
         slewMotor.stopMotor();
-        hoodMotor.stopMotor();
+        hoodMotor_1.setControl(hoodController_1.withPosition(Degrees.of(0)));
+        hoodMotor_2.setControl(hoodController_2.withPosition(Degrees.of(0)));
+        System.out.println("stop");
         // stops all movement
     }
-
-   
 
     private void updateTelemetry(Angle targetRot) {
         SmartDashboard.putNumber("Turret/Degrees", getTurretAngle().in(Degrees));
@@ -134,8 +157,7 @@ public class TurretAimingSub extends SubsystemBase {
         // Draw a "Beam" on Field2d
         Pose2d turretPointer = new Pose2d(
                 AimingConstants.robotToTurret.getTranslation(),
-                Rotation2d.fromRadians(-getTurretAngle().in(Radians))
-            );
+                Rotation2d.fromRadians(-getTurretAngle().in(Radians)));
         Subsystems.nav.drawFieldObject("Turret", turretPointer, true);
     }
 
@@ -148,15 +170,16 @@ public class TurretAimingSub extends SubsystemBase {
                 builder.addDoubleProperty("Rotator Angle (deg)", () -> getTurretAngle().in(Degrees), null);
                 builder.addDoubleProperty("Hood Angle (deg)", () -> getHoodAngle().in(Degrees), null);
                 builder.addDoubleProperty("Rotator Velocity", () -> slewMotor.getVelocity().getValueAsDouble(), null);
+                builder.addDoubleProperty("Hood Angle target", () -> slewMotor.getVelocity().getValueAsDouble(), null);
             }
         });
     }
 
-    
-  @Override
-  public void simulationPeriodic() {
-    // TODO: handle simulation (doesn't have whole module support like the swerve module)
-    slewMotorSim.setRawRotorPosition(manualSlewTarget.in(Rotations) / TurretConstants.rotatorMotorRatio);
-    hoodMotorSim.setRawRotorPosition(manualHoodTarget.in(Rotations) / TurretConstants.hoodMotorRatio);
-  }
+    @Override
+    public void simulationPeriodic() {
+        // TODO: handle simulation (doesn't have whole module support like the swerve
+        // module)
+        slewMotorSim.setRawRotorPosition(manualSlewTarget.in(Rotations) / TurretConstants.rotatorMotorRatio);
+        hoodMotorSim.setRawRotorPosition(manualHoodTarget.in(Rotations) / TurretConstants.hoodMotorRatio);
+    }
 }
