@@ -63,7 +63,7 @@ public class DriveSub extends SubsystemBase {
     if (fieldRelative) { // convert field rel speeds to robot rel
       speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, new Rotation2d(Subsystems.nav.getDriveHeading()));
     }
-
+    speeds.omegaRadiansPerSecond *= -1;
     if (accelerationLimit) {
       final var currentSpeeds = Subsystems.nav.getChassisSpeeds();
       speeds.vxMetersPerSecond = xLimiter.calculate(speeds.vxMetersPerSecond, currentSpeeds.vxMetersPerSecond);
