@@ -13,18 +13,6 @@
                 "data": {
                   "pathName": "Collect Depot Left"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
               }
             ]
           }

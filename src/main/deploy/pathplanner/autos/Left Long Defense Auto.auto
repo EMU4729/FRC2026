@@ -5,53 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Modified Left Start"
-                }
-              }
-            ]
+            "pathName": "Modified Left Start"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Modified Left Return"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT HUB"
+            "pathName": "Modified Left Return"
           }
         }
       ]

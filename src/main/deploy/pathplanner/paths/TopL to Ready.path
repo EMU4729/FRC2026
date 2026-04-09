@@ -48,12 +48,44 @@
     },
     {
       "anchor": {
-        "x": 6.355,
-        "y": 7.431
+        "x": 6.37422452850655,
+        "y": 7.145548368618896
       },
       "prevControl": {
-        "x": 6.368376047146484,
-        "y": 7.181358093736779
+        "x": 6.387600575653034,
+        "y": 6.895906462355675
+      },
+      "nextControl": {
+        "x": 6.360848481360067,
+        "y": 7.395190274882117
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.421840928819445,
+        "y": 7.515966796875
+      },
+      "prevControl": {
+        "x": 3.401423892703339,
+        "y": 7.765131691344975
+      },
+      "nextControl": {
+        "x": 3.4422579649355507,
+        "y": 7.266801902405025
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.2808444444444445,
+        "y": 4.775577777777778
+      },
+      "prevControl": {
+        "x": 3.2458173517605045,
+        "y": 4.52804373410275
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,11 +100,38 @@
     {
       "waypointRelativePos": 1.5135951661631297,
       "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.0362204724409003,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 3.5196850393700134,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "HOPPER ON",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake ON",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "SHOOT HUB",
+      "waypointRelativePos": 5.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 2.0,
@@ -83,7 +142,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.53119928561426
+    "rotation": -29.999999999999996
   },
   "reversed": false,
   "folder": "Left",

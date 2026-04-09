@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.454688508424183,
-        "y": 3.811513401396841
+        "x": 3.467,
+        "y": 3.889
       },
       "isLocked": false,
       "linkedName": null
@@ -20,18 +20,30 @@
         "y": 3.889232142857143
       },
       "prevControl": {
-        "x": 2.979311491575817,
-        "y": 3.966718741460302
+        "x": 2.967,
+        "y": 3.889232142857143
       },
       "nextControl": null,
       "isLocked": true,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "SHOOT HUB",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 2.0,
