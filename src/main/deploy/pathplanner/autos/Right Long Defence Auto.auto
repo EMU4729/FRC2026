@@ -5,47 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "HOPPER ON"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Defensive Right Start"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Defensive Right Return"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake ON"
-                }
-              }
-            ]
+            "pathName": "Defensive Right Start"
           }
         }
       ]

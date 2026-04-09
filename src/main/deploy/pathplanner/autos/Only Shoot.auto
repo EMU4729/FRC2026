@@ -9,12 +9,6 @@
           "data": {
             "pathName": "Only Shoot"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SHOOT HUB"
-          }
         }
       ]
     }
