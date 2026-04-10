@@ -30,8 +30,9 @@ public class TeleopDriveSwerve extends Command {
 
     double limiter = OI.pilot.getRightTriggerAxis();
     double booster = OI.pilot.getHID().getRightBumperButton() ? 1 : 0;
-    boolean fieldRelative = !OI.pilot.getHID().getLeftBumperButton();
-    
+    // boolean fieldRelative = !OI.pilot.getHID().getLeftBumperButton();
+    boolean fieldRelative = true;
+
     final var control = settings.fitSwerve(
         OI.pilot.getLeftY(),
         OI.pilot.getLeftX(),
@@ -39,23 +40,24 @@ public class TeleopDriveSwerve extends Command {
         booster,
         limiter);
 
-    SmartDashboard.putNumber("Controller/y",  OI.pilot.getLeftY());
-    SmartDashboard.putNumber("Controller/x",  OI.pilot.getLeftX());
-    SmartDashboard.putNumber("Controller/r",  -OI.pilot.getRightX());
+    SmartDashboard.putNumber("Controller/y", OI.pilot.getLeftY());
+    SmartDashboard.putNumber("Controller/x", OI.pilot.getLeftX());
+    SmartDashboard.putNumber("Controller/r", -OI.pilot.getRightX());
 
     var x = -control[0] * DriveConstants.MAX_SPEED.in(MetersPerSecond);
     var y = -control[1] * DriveConstants.MAX_SPEED.in(MetersPerSecond);
     var r = control[2] * DriveConstants.MAX_ANGULAR_SPEED.in(RadiansPerSecond);
 
     Optional<Alliance> alliance = DriverStation.getAlliance();
-    if(alliance.isPresent() && alliance.get().equals(Alliance.Red)){
-        x = -x;
-        y = -y;
-    };
+    if (alliance.isPresent() && alliance.get().equals(Alliance.Red)) {
+      x = -x;
+      y = -y;
+    }
+    ;
 
-    SmartDashboard.putNumber("Controller/xo",  x);
-    SmartDashboard.putNumber("Controller/yo",  y);
-    SmartDashboard.putNumber("Controller/ro",  r);
+    SmartDashboard.putNumber("Controller/xo", x);
+    SmartDashboard.putNumber("Controller/yo", y);
+    SmartDashboard.putNumber("Controller/ro", r);
 
     final var speeds = new ChassisSpeeds(x, y, r);
     Subsystems.drive.drive(speeds, fieldRelative, true);

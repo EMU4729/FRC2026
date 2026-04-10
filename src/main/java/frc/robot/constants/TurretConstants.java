@@ -15,8 +15,8 @@ public class TurretConstants {
     public static final double ROTATOR_I = 0;//TODO
     public static final double ROTATOR_D = 0;//TODO
     public static final double rotatorMotorRatio = 1;
-    public static final double HOOD_P = 10;
-    public static final double HOOD_I = 2;
+    public static final double HOOD_P = 25;
+    public static final double HOOD_I = 8;
     public static final double HOOD_D = 0;
     public static final double hoodMotorRatio = 15*(20/18);
 
