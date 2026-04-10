@@ -39,7 +39,7 @@ public class PhotonCameraPoseEstimator {
   private static final double distanceTolStep = 0.002 / 2; // *50 for per second increase
   private static double distanceTol = distanceTolBase;
   private static final double heightTolBase = 0.2;
-  private static final double heightTolStep = 0 / 2;
+  private static final double heightTolStep = 0.001 / 2;
   private static double heightTol = heightTolBase;
   private final Transform3d robotToCam;
   private final Optional<Transform3d> turretToCam;

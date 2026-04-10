@@ -24,7 +24,7 @@ import frc.robot.utils.TurretAiming;
 public class TurretShootAtHub extends Command {
 
     public double testVel = 13;
-    public double testAng = 45;
+    public double testAng = 0;
 
     /** Amps above which we consider a ball to be passing through the feeder. */
     private static final double FEEDER_LOADED_CURRENT_AMPS = 5.0;
@@ -40,8 +40,8 @@ public class TurretShootAtHub extends Command {
 
     private Translation2d ourHub = AimingConstants.Red_Hub;
 
-    private final Timer runTimer      = new Timer();
-    private final Timer noBallTimer   = new Timer();
+    private final Timer runTimer = new Timer();
+    private final Timer noBallTimer = new Timer();
 
     // Flipped to true when noBallTimer expires — checked by .until() in forAuto()
     private boolean done = false;
@@ -71,22 +71,20 @@ public class TurretShootAtHub extends Command {
 
         // Rotate robot to face the hub target instead of rotating the turret
         // Subsystems.drive.driveAtAngle(new ChassisSpeeds(0, 0, 0), true,
-        //         Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
+        // Rotation2d.fromRadians(HubCalc.turretAngle().in(Radians)));
 
         TurretState hubCalc = TurretAiming.calcState(AimingConstants.ShootingSamples, ourHub);
-        
+
         testAng = SmartDashboard.getNumber("Turret/ShooterAng", 0);
         testVel = SmartDashboard.getNumber("Turret/ShooterPow", 0);
-        Subsystems.turretAiming.setHoodTarget(Degrees.of(testAng));
-        Subsystems.turretShooter.setSpeed(MetersPerSecond.of(testVel));    
-        //Subsystems.turretAiming.setHoodTarget(hubCalc.hoodAngle());
-        //Subsystems.turretShooter.setSpeed(hubCalc.power());
+        //Subsystems.turretAiming.setHoodTarget(Degrees.of(testAng));
+        //Subsystems.turretShooter.setSpeed(MetersPerSecond.of(testVel));
+        Subsystems.turretAiming.setHoodTarget(hubCalc.hoodAngle());
+        Subsystems.turretShooter.setSpeed(hubCalc.power());
         Subsystems.turretFeeder.popFuel(TurretFeederConstants.TARGET_SPEED);
 
-
         // ── ball detection via current spike ────────────────────────
-        boolean ballDetected = Subsystems.turretFeeder.getSupplyCurrent()
-                               >= FEEDER_LOADED_CURRENT_AMPS;
+        boolean ballDetected = Subsystems.turretFeeder.getSupplyCurrent() >= FEEDER_LOADED_CURRENT_AMPS;
 
         if (ballDetected) {
             // Ball passing through — reset the silence window
@@ -99,8 +97,6 @@ public class TurretShootAtHub extends Command {
             done = true;
         }
     }
-
-   
 
     @Override
     public void end(boolean interrupted) {

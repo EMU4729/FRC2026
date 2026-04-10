@@ -89,7 +89,7 @@ public class RobotContainer {
     OI.pilot.start()
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
-    OI.pilot.x().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(100)));
+    OI.pilot.leftTrigger().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(2.5)));
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
     // OI.pilot.y().whileTrue(new
@@ -98,18 +98,19 @@ public class RobotContainer {
     // Bind pilot B (east) to the hopper activation command while held
 
     Command pulseHopperCommand = new SequentialCommandGroup(
-        Subsystems.hopper.runCommand(1).withTimeout(0.3),
-        new WaitCommand(0.3))
+        Subsystems.hopper.runCommand(1).withTimeout(0.2),
+        new WaitCommand(0.1))
         .repeatedly();
     OI.pilot.b().whileTrue(pulseHopperCommand);
-   
-   //THIS  BUTTON IS FOR SHOOTING, TAKE A LOOK AT TURRETRUNNER, FOR OTHER COOKED CONTROLS, FOR SHOOTING
-    OI.pilot.a().whileTrue(pulseHopperCommand);
 
-    OI.pilot.y()
+    // THIS BUTTON IS FOR SHOOTING, TAKE A LOOK AT TURRETRUNNER, FOR OTHER COOKED
+    // CONTROLS, FOR SHOOTING
+    OI.pilot.a().whileTrue(pulseHopperCommand);// and shoot
+
+    OI.pilot.leftBumper()
         .onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
-        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true))
-        .whileTrue(Subsystems.hopper.runCommand(1));
+        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
+    // .whileTrue(Subsystems.hopper.runCommand(1));
 
     // THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and
     // rotation.
@@ -121,7 +122,7 @@ public class RobotContainer {
     // OI.pilot.leftTrigger()
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
-    OI.pilot.povDown().whileTrue(new AutoAim());
+    OI.pilot.x().whileTrue(new AutoAim());
 
     // OI.pilot.rightTrigger()
     // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
