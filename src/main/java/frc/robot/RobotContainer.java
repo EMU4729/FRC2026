@@ -26,6 +26,7 @@ import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
+import frc.robot.commands.autoaim.AutoAim;
 import frc.robot.commands.teleop.TeleopProvider;
 
 /**
@@ -102,6 +103,8 @@ public class RobotContainer {
 
     OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
         .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
+
+    OI.pilot.povDown().whileTrue(new AutoAim());
   }
 
   /**
