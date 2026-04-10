@@ -36,6 +36,8 @@ public class TurrretRunner extends Command{
     public void execute() {
         if (!DriverStation.isTeleopEnabled()) return;
 
+        
+
         // TODO Auto-generated method stub
         FieldArea fieldArea = getFieldArea();
         if(!OI.pilot.a().getAsBoolean()){
@@ -46,12 +48,16 @@ public class TurrretRunner extends Command{
             SmartDashboard.putBoolean("Turret Inhibit", false);
         }
 
-        boolean active = OurHubActive();
-        SmartDashboard.putBoolean("Turret/HubActive", active);
+        boolean hubActive = OurHubActive();
+
+
+        SmartDashboard.putBoolean("Turret/HubActive", hubActive);
         SmartDashboard.putString("Turret/Area", fieldArea.toString());
         
-        if (/*fieldArea == FieldArea.OurAlliance && */active) {
+        if (/*fieldArea == FieldArea.OurAlliance && */hubActive) {
             //CommandScheduler.getInstance().schedule(ShootAt);
+            CommandScheduler.getInstance().cancel(PassTo);
+            CommandScheduler.getInstance().schedule(ShootAt);
             SmartDashboard.putString("Shooting Stage", "Shooting At Hub");
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
             //CommandScheduler.getInstance().schedule(PassTo);
@@ -60,10 +66,13 @@ public class TurrretRunner extends Command{
             SmartDashboard.putString("Shooting Stage", "Passing To Home");
             
         } else {
-            //aim at tag
-            //CommandScheduler.getInstance().schedule(AimAt);
-            SmartDashboard.putString("Shooting Stage", "Aiming at Tag");
-        }
+        // Hub is NOT active — hog fuel by shooting back into our side
+        // This redistributes fuel to our alliance zone so we vacuum it up
+        // when our hub becomes active again
+        CommandScheduler.getInstance().cancel(ShootAt);
+        CommandScheduler.getInstance().schedule(PassTo);
+        SmartDashboard.putString("Shooting Stage", "Hogging Fuel - Hub Inactive");
+    }
         CommandScheduler.getInstance().schedule(ShootAt);
 
 
