@@ -104,6 +104,8 @@ public class RobotContainer {
     OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
         .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
 
+//THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and rotation.
+
    //  OI.pilot.rightTrigger()
    //     .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
 //
