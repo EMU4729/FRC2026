@@ -28,6 +28,12 @@ public class TeleopDriveSwerve extends Command {
     if (!DriverStation.isTeleop())
       return;
 
+    boolean setX = OI.pilot.getHID().getYButton();
+    if (setX) {
+      Subsystems.drive.setX();
+      return;
+    }
+
     double limiter = OI.pilot.getRightTriggerAxis();
     double booster = OI.pilot.getHID().getRightBumperButton() ? 1 : 0;
     // boolean fieldRelative = !OI.pilot.getHID().getLeftBumperButton();
