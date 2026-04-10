@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -95,26 +96,30 @@ public class RobotContainer {
     // ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
 
     // Bind pilot B (east) to the hopper activation command while held
-    OI.pilot.b()
-        .whileTrue(new SequentialCommandGroup(
-            Subsystems.hopper.runCommand(1).withTimeout(0.3),
-            new WaitCommand(0.3))
-            .repeatedly());
-    // OI.pilot.a().whileTrue(Subsystems.hopper.runCommand(1));
 
-    OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
-        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
+    Command pulseHopperCommand = new SequentialCommandGroup(
+        Subsystems.hopper.runCommand(1).withTimeout(0.3),
+        new WaitCommand(0.3))
+        .repeatedly();
+    OI.pilot.b().whileTrue(pulseHopperCommand);
+   
+   //THIS  BUTTON IS FOR SHOOTING, TAKE A LOOK AT TURRETRUNNER, FOR OTHER COOKED CONTROLS, FOR SHOOTING
+    OI.pilot.a().whileTrue(pulseHopperCommand);
 
+    OI.pilot.y()
+        .onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
+        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true))
+        .whileTrue(Subsystems.hopper.runCommand(1));
 
-//THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and rotation.
+    // THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and
+    // rotation.
 
-   //  OI.pilot.rightTrigger()
-   //     .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
-//
-   // // Left score - hold Left Bumper  
-   // OI.pilot.leftTrigger()
-   //     .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
-  
+    // OI.pilot.rightTrigger()
+    // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
+    //
+    // // Left score - hold Left Bumper
+    // OI.pilot.leftTrigger()
+    // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
     OI.pilot.povDown().whileTrue(new AutoAim());
 
@@ -125,7 +130,6 @@ public class RobotContainer {
     // OI.pilot.leftTrigger()
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
   }
-
 
   /**
    * Use this to pass the teleop command to the main {@link Robot} class.
