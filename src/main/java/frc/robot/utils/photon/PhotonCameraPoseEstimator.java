@@ -260,8 +260,8 @@ public class PhotonCameraPoseEstimator {
       return Optional.empty();
     }
 
-    LogFiltered.append("Passed");
-    System.out.println("Passed");
+    // LogFiltered.append("Passed");
+    // System.out.println("Passed");
     return OptPose;
   }
 

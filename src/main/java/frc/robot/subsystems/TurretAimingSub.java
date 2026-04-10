@@ -135,7 +135,7 @@ public class TurretAimingSub extends SubsystemBase {
         
         hoodMotor_1.setControl(hoodController_1.withPosition(targetHoodAngle));
         hoodMotor_2.setControl(hoodController_2.withPosition(targetHoodAngle));
-        System.out.println(targetHoodAngle);
+       // System.out.println(targetHoodAngle);
     }
     
     public void stop() {

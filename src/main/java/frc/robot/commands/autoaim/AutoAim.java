@@ -41,7 +41,7 @@ public class AutoAim extends Command {
   @Override
   public void execute() {
     final var targetTransform = TurretAiming.getTargetTransform(hubPosition);
-    System.out.println(targetTransform.toString());
+   // System.out.println(targetTransform.toString());
     final var error = targetTransform.getRotation().getRadians();
     final var out = turnController.calculate(error);
     // System.out.println(out);
