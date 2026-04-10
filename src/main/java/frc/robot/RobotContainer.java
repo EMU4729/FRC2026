@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.AutoAlign.AlignToReefTagRelative;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
@@ -105,6 +106,13 @@ public class RobotContainer {
         .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
 
     OI.pilot.povDown().whileTrue(new AutoAim());
+
+    // OI.pilot.rightTrigger()
+    // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
+    //
+    // // Left score - hold Left Bumper
+    // OI.pilot.leftTrigger()
+    // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
   }
 
   /**
