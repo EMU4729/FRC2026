@@ -27,6 +27,7 @@ import frc.robot.commands.AutoAlign.AlignToReefTagRelative;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
+import frc.robot.commands.autoaim.AutoAim;
 import frc.robot.commands.teleop.TeleopProvider;
 
 /**
@@ -104,6 +105,7 @@ public class RobotContainer {
     OI.pilot.y().onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
         .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
 
+
 //THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and rotation.
 
    //  OI.pilot.rightTrigger()
@@ -112,7 +114,18 @@ public class RobotContainer {
    // // Left score - hold Left Bumper  
    // OI.pilot.leftTrigger()
    //     .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
-  } 
+  
+
+    OI.pilot.povDown().whileTrue(new AutoAim());
+
+    // OI.pilot.rightTrigger()
+    // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
+    //
+    // // Left score - hold Left Bumper
+    // OI.pilot.leftTrigger()
+    // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
+  }
+
 
   /**
    * Use this to pass the teleop command to the main {@link Robot} class.
