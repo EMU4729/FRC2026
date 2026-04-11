@@ -48,6 +48,8 @@ public class HopperSub extends SubsystemBase {
 		// motor.getConfigurator().apply(cfg);
 		motor.setInverted(true);
 		motor.setNeutralMode(NeutralMode.Brake);
+
+		setDefaultCommand(runCommand(1));
 	}
 
 	public void setDutyCycle(double dutyCycle) {
