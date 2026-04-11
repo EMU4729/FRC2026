@@ -86,7 +86,7 @@ public class NavigationSub extends SubsystemBase {
           },
           new PPHolonomicDriveController(
               DriveConstants.AUTO_TRANSLATION_PID,
-              DriveConstants.AUTO_ROTATION_PID),
+              (Robot.isReal() ? DriveConstants.AUTO_ROTATION_PID : DriveConstants.AUTO_ROTATION_PID_sim)),
           config,
           () -> {
             // Boolean supplier that controls when the path will be mirrored for the red

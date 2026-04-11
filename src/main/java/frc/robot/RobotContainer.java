@@ -98,7 +98,7 @@ public class RobotContainer {
     // Bind pilot B (east) to the hopper activation command while held
 
     Command pulseHopperCommand = new SequentialCommandGroup(
-        Subsystems.hopper.runCommand(1).withTimeout(0.2),
+        Subsystems.hopper.runCommand(1).withTimeout(0.2).withName("hopper pulse"),
         new WaitCommand(0.1))
         .repeatedly();
     OI.pilot.b().whileTrue(pulseHopperCommand);
@@ -109,8 +109,8 @@ public class RobotContainer {
 
     OI.pilot.leftBumper()
         .onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
-        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
-    // .whileTrue(Subsystems.hopper.runCommand(1));
+        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true))
+        .whileTrue(pulseHopperCommand);
 
     // THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and
     // rotation.

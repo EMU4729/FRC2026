@@ -34,7 +34,7 @@ public class AutoProvider {
     chooser = new SendableChooser<>(); 
         NamedCommands.registerCommand("Intake ON", ActivateIntakeCommand.forAuto());
     NamedCommands.registerCommand("Intake OFF", ActivateIntakeCommand.forAutoOff());
-    NamedCommands.registerCommand("HOPPER ON", Subsystems.hopper.runCommand(1).withTimeout(3));// pub for shuffle board
+    NamedCommands.registerCommand("HOPPER ON", Subsystems.hopper.runCommand(1).withTimeout(3).withName("hopper 3s"));// pub for shuffle board
     NamedCommands.registerCommand("SHOOT HUB", TurretShootAtHub.forAuto());
 
     // This is here to ensure PathPlanner is configured before we attempt to call

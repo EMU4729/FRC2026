@@ -230,15 +230,12 @@ public class PhotonCameraPoseEstimator {
         .toTranslation2d()
         .getDistance(currentPose.getTranslation());
     double heightError = pose.estimatedPose.getZ();
-    System.out.println(distanceError + " " + distanceTol);
     if (distanceError > distanceTol) {
       LogFiltered.append("Distance");
-      System.out.println("Distance");
       return Optional.empty();
     }
     if (Math.abs(heightError) > heightTol) {
       LogFiltered.append("Height");
-      System.out.println("Height" + " " + heightError);
       return Optional.empty();
     }
     if (pose.estimatedPose.getX() < DriveConstants.FIELD_BOUNDS[0].getX() ||
@@ -246,22 +243,18 @@ public class PhotonCameraPoseEstimator {
         pose.estimatedPose.getY() < DriveConstants.FIELD_BOUNDS[0].getY() ||
         pose.estimatedPose.getY() > DriveConstants.FIELD_BOUNDS[1].getY()) {
       LogFiltered.append("Field Bounds");
-      System.out.println("Field");
       return Optional.empty();
     }
     if (Math.abs(pose.estimatedPose.getRotation().getX()) > rolTol.in(Radians)) {
       LogFiltered.append("Roll");
-      System.out.println("Roll");
       return Optional.empty();
     }
     if (Math.abs(pose.estimatedPose.getRotation().getY()) > pitchTol.in(Radians)) {
       LogFiltered.append("Pitch");
-      System.out.println("Pitch");
       return Optional.empty();
     }
 
-    // LogFiltered.append("Passed");
-    // System.out.println("Passed");
+    LogFiltered.append("Passed");
     return OptPose;
   }
 

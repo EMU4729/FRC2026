@@ -17,7 +17,7 @@ public class LEDSubsystem extends SubsystemBase {
     leds.setLength(LEDConstants.STRING_LENGTH);
     leds.start();
 
-    setDefaultCommand(runPattern(LEDPattern.rainbow(255, 128).scrollAtRelativeSpeed(Hertz.of(1))));
+    setDefaultCommand(runPattern(LEDPattern.rainbow(255, 128).scrollAtRelativeSpeed(Hertz.of(1))).withName("leds"));
   }
 
   /**

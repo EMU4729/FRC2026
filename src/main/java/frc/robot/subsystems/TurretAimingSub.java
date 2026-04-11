@@ -135,7 +135,6 @@ public class TurretAimingSub extends SubsystemBase {
         
         hoodMotor_1.setControl(hoodController_1.withPosition(targetHoodAngle));
         hoodMotor_2.setControl(hoodController_2.withPosition(targetHoodAngle));
-       // System.out.println(targetHoodAngle);
     }
     
     public void stop() {
@@ -144,7 +143,6 @@ public class TurretAimingSub extends SubsystemBase {
         slewMotor.stopMotor();
         hoodMotor_1.setControl(hoodController_1.withPosition(Degrees.of(0)));
         hoodMotor_2.setControl(hoodController_2.withPosition(Degrees.of(0)));
-        System.out.println("stop");
         // stops all movement
     }
 
