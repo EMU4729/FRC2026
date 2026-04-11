@@ -53,8 +53,8 @@ public class TurretShooterSub extends SubsystemBase{
         motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         motorConfig.Feedback.SensorToMechanismRatio = 1;
         //unknown PID
-        motorConfig.Slot0.kP = 0.1;
-        motorConfig.Slot0.kI = 1;
+        motorConfig.Slot0.kP = 0.3;
+        motorConfig.Slot0.kI = 1.2;
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 

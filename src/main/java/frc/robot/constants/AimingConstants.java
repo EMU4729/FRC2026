@@ -38,7 +38,7 @@ public class AimingConstants {
     // 0 - 1.2m away from goal -> 17 m/s power
     public static final List<DistanceSample> ShootingSamples = Arrays.asList(
             new DistanceSample(MetersPerSecond.of(13), Degrees.of(0), Meters.of(0 + 0.5969)),
-            new DistanceSample(MetersPerSecond.of(17), Degrees.of(20), Meters.of(0.975 + 0.5969)),
+            new DistanceSample(MetersPerSecond.of(17.1), Degrees.of(20), Meters.of(0.975 + 0.5969)),
             new DistanceSample(MetersPerSecond.of(17), Degrees.of(25), Meters.of(2.43 + 0.5969)),
             new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(25), Meters.of(3.1)),
             new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(30), Meters.of(3.34 + 0.5969)),
