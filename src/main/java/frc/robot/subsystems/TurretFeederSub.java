@@ -101,7 +101,7 @@ public class TurretFeederSub extends SubsystemBase{
 
     public void popFuel(LinearVelocity speed){
         if (Subsystems.turretShooter.atspeed()){
-            if(feedStartDelay.hasElapsed(0.75)){
+            if(feedStartDelay.hasElapsed(1.5)){
                 setSpeed(speed);
             }
         } else {
