@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
 import java.util.List;
+import java.util.function.Function;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
@@ -143,23 +145,8 @@ public class RobotContainer {
     // OI.pilot.leftTrigger()
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
-    OI.pilot.povLeft().whileTrue(
-        new SequentialCommandGroup(
-            new InstantCommand(() -> {
-              final var currentIntakeAngleOffset = SmartDashboard.getNumber("Intake/Angle_Offset",
-                  Subsystems.intake.angleOffset);
-              SmartDashboard.putNumber("Intake/Angle_Offset", currentIntakeAngleOffset + 5);
-            }),
-            new WaitCommand(0.3)).repeatedly());
-
-    OI.pilot.povRight().whileTrue(
-        new SequentialCommandGroup(
-            new InstantCommand(() -> {
-              final var currentIntakeAngleOffset = SmartDashboard.getNumber("Intake/Angle_Offset",
-                  Subsystems.intake.angleOffset);
-              SmartDashboard.putNumber("Intake/Angle_Offset", currentIntakeAngleOffset - 5);
-            }),
-            new WaitCommand(0.3)).repeatedly());
+    OI.pilot.povLeft().whileTrue(Subsystems.intake.adjustAngleOffsetCommand(5));
+    OI.pilot.povRight().whileTrue(Subsystems.intake.adjustAngleOffsetCommand(-5));
   }
 
   /**

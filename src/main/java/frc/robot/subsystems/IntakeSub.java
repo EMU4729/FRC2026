@@ -21,7 +21,11 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.constants.IntakeConstants;
 
@@ -156,6 +160,15 @@ public class IntakeSub extends SubsystemBase {
       pivotPositionRateLimiter.calculate(0);
     }
 
+  }
+
+  public Command adjustAngleOffsetCommand(int by) {
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          final var currentIntakeAngleOffset = SmartDashboard.getNumber("Intake/Angle_Offset", angleOffset);
+          SmartDashboard.putNumber("Intake/Angle_Offset", currentIntakeAngleOffset + by);
+        }),
+        new WaitCommand(0.3)).repeatedly();
   }
 
   @Override
