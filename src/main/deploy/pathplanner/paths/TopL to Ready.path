@@ -120,19 +120,19 @@
     {
       "name": "HOPPER ON",
       "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
+      "endWaypointRelativePos": 3.9463299131807728,
       "command": null
     },
     {
       "name": "Intake ON",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 4.033149171270702,
       "command": null
     },
     {
       "name": "SHOOT HUB",
-      "waypointRelativePos": 5.0,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 4.64877663772689,
+      "endWaypointRelativePos": 5.0,
       "command": null
     }
   ],

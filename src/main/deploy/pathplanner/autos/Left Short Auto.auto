@@ -9,6 +9,25 @@
           "data": {
             "pathName": "TopL to Ready"
           }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "SHOOT HUB"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SHOOT HUB"
+          }
         }
       ]
     }

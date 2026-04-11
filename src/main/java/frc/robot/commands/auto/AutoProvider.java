@@ -1,5 +1,7 @@
 package frc.robot.commands.auto;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.Optional;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -32,10 +34,10 @@ public class AutoProvider {
 
   private AutoProvider() {
     chooser = new SendableChooser<>(); 
-        NamedCommands.registerCommand("Intake ON", ActivateIntakeCommand.forAuto());
-    NamedCommands.registerCommand("Intake OFF", ActivateIntakeCommand.forAutoOff());
+        NamedCommands.registerCommand("Intake ON", new ActivateIntakeCommand(MetersPerSecond.of(999)));
+    //NamedCommands.registerCommand("Intake OFF", new ActivateIntakeCommand(MetersPerSecond.of(0)));
     NamedCommands.registerCommand("HOPPER ON", Subsystems.hopper.runCommand(1).withTimeout(3).withName("hopper 3s"));// pub for shuffle board
-    NamedCommands.registerCommand("SHOOT HUB", TurretShootAtHub.forAuto());
+    NamedCommands.registerCommand("SHOOT HUB", new TurretShootAtHub());
 
     // This is here to ensure PathPlanner is configured before we attempt to call
     // anything AutoBuilder-related, since static classes are lazily constructed.
@@ -52,6 +54,7 @@ public class AutoProvider {
     loadPathPlannerAuto("Collect Depot", "Collect Depot");
     loadPathPlannerAuto("Only Shoot", "Only Shoot");
     loadPathPlannerAuto("test", "test");
+    chooser.addOption("only shoot fr fr", new TurretShootAtHub());
 
 
 
