@@ -81,9 +81,8 @@ public class RobotContainer {
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
     OI.pilot.leftTrigger().or(OI.copilot.leftTrigger())
-        .whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(3.5)))
-        .whileTrue(Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));
-
+        .whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(3.5)));
+       
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
     // OI.pilot.y().whileTrue(new
     // ActivateIntakeCommand(MetersPerSecond.of(MOTOR_SPEED)));
@@ -91,13 +90,11 @@ public class RobotContainer {
     // Bind pilot B (east) to the hopper activation command while held
 
     OI.pilot.b().or(OI.copilot.b()).whileTrue(
-        Subsystems.hopper.pulseCommand(-1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper reverse"));
+        Subsystems.hopper.runCommand(-1));
 
     // THIS BUTTON IS FOR SHOOTING, TAKE A LOOK AT TURRETRUNNER, FOR OTHER COOKED
     // CONTROLS, FOR SHOOTING
-    OI.pilot.a().or(OI.copilot.a())
-        .whileTrue(
-            Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));// and
+
                                                                                                           // shoot
 
     OI.pilot.leftBumper().or(OI.copilot.leftBumper())
@@ -117,10 +114,8 @@ public class RobotContainer {
 
     // OI.pilot.x().whileTrue(new AutoAim());
 
-    OI.pilot.povUp().or(OI.copilot.povUp()).whileTrue(new TurretShootAtDist(Meters.of(1.23)))
-        .whileTrue(Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));
-    OI.pilot.povDown().or(OI.copilot.povDown()).whileTrue(new TurretShootAtDist(Meters.of(3.1)))
-        .whileTrue(Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));
+    OI.pilot.povUp().or(OI.copilot.povUp()).whileTrue(new TurretShootAtDist(Meters.of(1.23)));
+    OI.pilot.povDown().or(OI.copilot.povDown()).whileTrue(new TurretShootAtDist(Meters.of(3.1)));
 
     // OI.pilot.rightTrigger()
     // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
