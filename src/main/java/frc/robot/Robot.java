@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
   public Robot() {
-    DataLogManager.start(); //Starts logging to a plugged in usb stick
+    DataLogManager.start(); // Starts logging to a plugged in usb stick
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
@@ -58,8 +58,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    
-    LogFrameIdx.append(FrameIdx); //dont remove, used for finding the start of a frame in the log file
+    LogFrameIdx.append(FrameIdx); // dont remove, used for finding the start of a frame in the log file
     FrameIdx++;
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
@@ -85,6 +84,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Subsystems.intake.setRetractedAngle();
+
     autoCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

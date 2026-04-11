@@ -54,8 +54,10 @@ public class IntakeSub extends SubsystemBase {
   private double simSpeed2 = 0;
   private double simSpeedTarget2 = 0;
   private final double simAccel2 = 0.5;
+  private boolean firstExtension = true;
 
-  private final SlewRateLimiter pivotPositionRateLimiter = new SlewRateLimiter(360);
+  private final SlewRateLimiter pivotPositionRateLimiter = new SlewRateLimiter(120);
+  private final SlewRateLimiter initialPivotRateLimiter = new SlewRateLimiter(50);
 
   public IntakeSub() {
     TalonFXConfiguration motorConfig = new TalonFXConfiguration();
@@ -80,7 +82,7 @@ public class IntakeSub extends SubsystemBase {
     motorDeployConfig.Feedback.SensorToMechanismRatio = 58;
     /* tested PID values */
     motorDeployConfig.Slot0.kP = 20;
-    motorDeployConfig.Slot0.kI = 5;
+    motorDeployConfig.Slot0.kI = 8;
     motorDeployConfig.Slot0.kD = 0;
     motorDeployConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
@@ -151,11 +153,23 @@ public class IntakeSub extends SubsystemBase {
     SmartDashboard.putNumber("Intake/motorSpeed", speeds.in(MetersPerSecond));
 
     if (DriverStation.isEnabled()) {
+      // if (firstExtension) {
+      // pivotMotor.setControl(
+      // feedercontroller2.withPosition(Degrees.of(
+      // initialPivotRateLimiter.calculate(
+      // extendTargetAngle.in(Degrees)
+      // + angleOffset))));
+      // if (pivotMotor.getPosition().getValue().in(Degrees) <= -50) {
+      // firstExtension = false;
+      // pivotPositionRateLimiter.reset(pivotMotor.getPosition().getValue().in(Degrees));
+      // }
+      // } else {
       pivotMotor.setControl(
           feedercontroller2.withPosition(Degrees.of(
               pivotPositionRateLimiter.calculate(
                   extendTargetAngle.in(Degrees)
                       + angleOffset))));
+      // }
     } else {
       pivotPositionRateLimiter.calculate(0);
     }
@@ -168,7 +182,7 @@ public class IntakeSub extends SubsystemBase {
           final var currentIntakeAngleOffset = SmartDashboard.getNumber("Intake/Angle_Offset", angleOffset);
           SmartDashboard.putNumber("Intake/Angle_Offset", currentIntakeAngleOffset + by);
         }),
-        new WaitCommand(0.3)).repeatedly();
+        new WaitCommand(0.1)).repeatedly();
   }
 
   @Override

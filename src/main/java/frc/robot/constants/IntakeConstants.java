@@ -1,6 +1,7 @@
 package frc.robot.constants;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
 
 import edu.wpi.first.units.measure.Angle;
 
@@ -9,5 +10,5 @@ public class IntakeConstants {
     public static final int INTAKE_DEPLOY_MOTOR_CANID = 7;
     public static final Angle EXTEND_ANGLE = Degrees.of(-150);
     public static final Angle SHOOT_ANGLE = Degrees.of(-130);
-    public static final Angle RETRACT_ANGLE = Degrees.of(-10);
+    public static final Angle RETRACT_ANGLE = Degrees.of(-50);
 }

@@ -8,32 +8,17 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
-import java.util.List;
-import java.util.function.Function;
-
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
-import frc.robot.commands.AutoAlign.AlignToReefTagRelative;
 import frc.robot.commands.Turret.TurretShootAtDist;
-import frc.robot.constants.AimingConstants;
-import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
-import frc.robot.commands.autoaim.AutoAim;
 import frc.robot.commands.teleop.TeleopProvider;
 
 /**
@@ -92,16 +77,12 @@ public class RobotContainer {
 
     // --- Manual Controls ---
 
-  Command pulseHopperCommand = new SequentialCommandGroup(
-        Subsystems.hopper.runCommand(1).withTimeout(0.2).withName("hopper pulse"),
-        new WaitCommand(0.1))
-        .repeatedly();
-
-    OI.pilot.start()
+    OI.pilot.start().or(OI.copilot.start())
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
-    OI.pilot.leftTrigger().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(2.5)))
-      .whileTrue(pulseHopperCommand);
+    OI.pilot.leftTrigger().or(OI.copilot.leftTrigger())
+        .whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(3.5)))
+        .whileTrue(Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
     // OI.pilot.y().whileTrue(new
@@ -109,17 +90,20 @@ public class RobotContainer {
 
     // Bind pilot B (east) to the hopper activation command while held
 
-    
-    OI.pilot.b().whileTrue(pulseHopperCommand);
+    OI.pilot.b().or(OI.copilot.b()).whileTrue(
+        Subsystems.hopper.pulseCommand(-1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper reverse"));
 
     // THIS BUTTON IS FOR SHOOTING, TAKE A LOOK AT TURRETRUNNER, FOR OTHER COOKED
     // CONTROLS, FOR SHOOTING
-    OI.pilot.a().whileTrue(pulseHopperCommand);// and shoot
+    OI.pilot.a().or(OI.copilot.a())
+        .whileTrue(
+            Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));// and
+                                                                                                          // shoot
 
-    OI.pilot.leftBumper()
+    OI.pilot.leftBumper().or(OI.copilot.leftBumper())
         .onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
         .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
-        //.whileTrue(pulseHopperCommand);
+    // .whileTrue(pulseHopperCommand);
 
     // THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and
     // rotation.
@@ -131,12 +115,12 @@ public class RobotContainer {
     // OI.pilot.leftTrigger()
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
-    OI.pilot.x().whileTrue(new AutoAim());
-    OI.pilot.povUp().whileTrue(new TurretShootAtDist(Meters.of(1.23)))
-    .whileTrue(pulseHopperCommand);
-    OI.pilot.povDown().whileTrue(new TurretShootAtDist(Meters.of(3.1
-    )))
-    .whileTrue(pulseHopperCommand);
+    // OI.pilot.x().whileTrue(new AutoAim());
+
+    OI.pilot.povUp().or(OI.copilot.povUp()).whileTrue(new TurretShootAtDist(Meters.of(1.23)))
+        .whileTrue(Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));
+    OI.pilot.povDown().or(OI.copilot.povDown()).whileTrue(new TurretShootAtDist(Meters.of(3.1)))
+        .whileTrue(Subsystems.hopper.pulseCommand(1, Seconds.of(0.2), Seconds.of(0.1)).withName("hopper pulse"));
 
     // OI.pilot.rightTrigger()
     // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
@@ -145,8 +129,8 @@ public class RobotContainer {
     // OI.pilot.leftTrigger()
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
-    OI.pilot.povLeft().whileTrue(Subsystems.intake.adjustAngleOffsetCommand(5));
-    OI.pilot.povRight().whileTrue(Subsystems.intake.adjustAngleOffsetCommand(-5));
+    OI.pilot.povLeft().or(OI.copilot.povLeft()).whileTrue(Subsystems.intake.adjustAngleOffsetCommand(5));
+    OI.pilot.povRight().or(OI.copilot.povRight()).whileTrue(Subsystems.intake.adjustAngleOffsetCommand(-5));
   }
 
   /**

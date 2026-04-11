@@ -16,16 +16,20 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.constants.HopperConstants;
 
 /**
  * Hopper subsystem: controls a single motor that expands/contracts the hopper.
- * Implementation follows the style of IntakeSub/TurretFeederSub with a VelocityVoltage controller
+ * Implementation follows the style of IntakeSub/TurretFeederSub with a
+ * VelocityVoltage controller
  * and a small sim helper.
  */
 public class HopperSub extends SubsystemBase {
@@ -54,12 +58,18 @@ public class HopperSub extends SubsystemBase {
 		return this.startEnd(() -> setDutyCycle(dutyCycle), () -> setDutyCycle(0));
 	}
 
+	public Command pulseCommand(double dutyCycle, Time onDuration, Time offDuration) {
+		return new SequentialCommandGroup(
+				runCommand(dutyCycle).withTimeout(onDuration),
+				new WaitCommand(offDuration)).repeatedly();
+	}
+
 	@Override
 	public void simulationPeriodic() {
 		// if (simSpeed > simSpeedTarget) {
-		// 	simSpeed -= simAccel;
+		// simSpeed -= simAccel;
 		// } else if (simSpeed < simSpeedTarget) {
-		// 	simSpeed += simAccel;
+		// simSpeed += simAccel;
 		// }
 
 		// motorSim.setRotorVelocity(simSpeed);

@@ -60,7 +60,7 @@ public class AutoProvider {
     loadPathPlannerAuto("Collect Depot", "Collect Depot");
     loadPathPlannerAuto("Only Shoot", "Only Shoot");
     loadPathPlannerAuto("test", "test");
-    chooser.addOption("only shoot fr fr", new TurretShootAtDist(Meters.of(0)));
+    chooser.addOption("only shoot fr fr", new TurretShootAtDist(Meters.of(1.23)));
 
     // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
     // loadPathPlannerAuto("Right Starting Position", "Right Starting Position");
