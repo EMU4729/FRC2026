@@ -63,6 +63,7 @@ public class TurretShootAtDist extends Command {
         runTimer.restart();
         noBallTimer.restart();
         done = false;
+        System.out.println("Command started");
     }
 
     @Override
@@ -105,6 +106,8 @@ public class TurretShootAtDist extends Command {
         Subsystems.turretAiming.stop();
         Subsystems.turretShooter.setSpeed(TurretConstants.ShooterIdleSpeed);
         Subsystems.turretFeeder.stop();
+
+        System.out.println("Command has ended");
     }
 
     /**

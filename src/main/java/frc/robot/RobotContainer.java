@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ActivateIntakeCommand;
 import frc.robot.commands.AutoAlign.AlignToReefTagRelative;
+import frc.robot.commands.Turret.TurretShootAtDist;
 import frc.robot.constants.AimingConstants;
 import frc.robot.constants.HopperConstants;
 import frc.robot.commands.auto.AutoProvider;
@@ -86,10 +88,17 @@ public class RobotContainer {
     // +----------------+
 
     // --- Manual Controls ---
+
+  Command pulseHopperCommand = new SequentialCommandGroup(
+        Subsystems.hopper.runCommand(1).withTimeout(0.2).withName("hopper pulse"),
+        new WaitCommand(0.1))
+        .repeatedly();
+
     OI.pilot.start()
         .onTrue(new InstantCommand(Subsystems.nav::zeroDriveHeading, Subsystems.drive));
 
-    OI.pilot.leftTrigger().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(2.5)));
+    OI.pilot.leftTrigger().whileTrue(new ActivateIntakeCommand(MetersPerSecond.of(2.5)))
+      .whileTrue(pulseHopperCommand);
 
     // Bind pilot Y (north) to IntakeCommand (mirror behavior in Turret package)
     // OI.pilot.y().whileTrue(new
@@ -97,10 +106,7 @@ public class RobotContainer {
 
     // Bind pilot B (east) to the hopper activation command while held
 
-    Command pulseHopperCommand = new SequentialCommandGroup(
-        Subsystems.hopper.runCommand(1).withTimeout(0.2).withName("hopper pulse"),
-        new WaitCommand(0.1))
-        .repeatedly();
+    
     OI.pilot.b().whileTrue(pulseHopperCommand);
 
     // THIS BUTTON IS FOR SHOOTING, TAKE A LOOK AT TURRETRUNNER, FOR OTHER COOKED
@@ -109,8 +115,8 @@ public class RobotContainer {
 
     OI.pilot.leftBumper()
         .onTrue(new InstantCommand(() -> Subsystems.intake.setRetractedAngle()))
-        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true))
-        .whileTrue(pulseHopperCommand);
+        .onFalse(new InstantCommand(() -> Subsystems.intake.setExtendAngle()).ignoringDisable(true));
+        //.whileTrue(pulseHopperCommand);
 
     // THIS IS A REFURBISHED 2025 CODE, FOR 2026. It aligns, both translation and
     // rotation.
@@ -123,6 +129,10 @@ public class RobotContainer {
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
     OI.pilot.x().whileTrue(new AutoAim());
+    OI.pilot.povUp().whileTrue(new TurretShootAtDist(Meters.of(1)))
+    .whileTrue(pulseHopperCommand);
+    OI.pilot.povDown().whileTrue(new TurretShootAtDist(Meters.of(5)))
+    .whileTrue(pulseHopperCommand);
 
     // OI.pilot.rightTrigger()
     // .whileTrue(new AlignToReefTagRelative(true, Subsystems.drive));
