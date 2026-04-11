@@ -1,5 +1,6 @@
 package frc.robot.commands.auto;
 
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Subsystems;
 import frc.robot.commands.ActivateIntakeCommand;
+import frc.robot.commands.Turret.TurretShootAtDist;
 import frc.robot.commands.Turret.TurretShootAtHub;
 import frc.robot.commands.analysis.AngularSpeedAnalysis;
 import frc.robot.commands.analysis.LateralSpeedAnalysis;
@@ -33,10 +35,14 @@ public class AutoProvider {
   private final SendableChooser<Command> chooser;
 
   private AutoProvider() {
-    chooser = new SendableChooser<>(); 
-        NamedCommands.registerCommand("Intake ON", new ActivateIntakeCommand(MetersPerSecond.of(999)));
-    //NamedCommands.registerCommand("Intake OFF", new ActivateIntakeCommand(MetersPerSecond.of(0)));
-    NamedCommands.registerCommand("HOPPER ON", Subsystems.hopper.runCommand(1).withTimeout(3).withName("hopper 3s"));// pub for shuffle board
+    chooser = new SendableChooser<>();
+    NamedCommands.registerCommand("Intake ON", new ActivateIntakeCommand(MetersPerSecond.of(999)));
+    // NamedCommands.registerCommand("Intake OFF", new
+    // ActivateIntakeCommand(MetersPerSecond.of(0)));
+    NamedCommands.registerCommand("HOPPER ON", Subsystems.hopper.runCommand(1).withTimeout(3).withName("hopper 3s"));// pub
+                                                                                                                     // for
+                                                                                                                     // shuffle
+                                                                                                                     // board
     NamedCommands.registerCommand("SHOOT HUB", new TurretShootAtHub());
 
     // This is here to ensure PathPlanner is configured before we attempt to call
@@ -54,26 +60,22 @@ public class AutoProvider {
     loadPathPlannerAuto("Collect Depot", "Collect Depot");
     loadPathPlannerAuto("Only Shoot", "Only Shoot");
     loadPathPlannerAuto("test", "test");
-    chooser.addOption("only shoot fr fr", new TurretShootAtHub());
+    chooser.addOption("only shoot fr fr", new TurretShootAtDist(Meters.of(0)));
 
+    // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
+    // loadPathPlannerAuto("Right Starting Position", "Right Starting Position");
+    // loadPathPlannerAuto("Mid Starting Position", "Mid Starting Position");
+    // loadPathPlannerAuto("Newtest", "Newtest");
 
-
-   // loadPathPlannerAuto("Left Starting Position", "Left Starting Position");
-   // loadPathPlannerAuto("Right Starting Position", "Right Starting Position");
-   // loadPathPlannerAuto("Mid Starting Position", "Mid Starting Position");
-   // loadPathPlannerAuto("Newtest", "Newtest");
-
-   // chooser.addOption(
-   //     "Pathfind to Pose Test",
-   //     AutoBuilderFix.pathfindToPose(new Pose2d(1, 1, Rotation2d.k180deg), DriveConstants.PATH_CONSTRAINTS));
-   // chooser.addOption("Lateral Speed Analysis", new LateralSpeedAnalysis());
-   // chooser.addOption("Angular Speed Analysis", new AngularSpeedAnalysis());
-   // chooser.addOption("System Test", Subsystems.drive.testFunction());
+    // chooser.addOption(
+    // "Pathfind to Pose Test",
+    // AutoBuilderFix.pathfindToPose(new Pose2d(1, 1, Rotation2d.k180deg),
+    // DriveConstants.PATH_CONSTRAINTS));
+    // chooser.addOption("Lateral Speed Analysis", new LateralSpeedAnalysis());
+    // chooser.addOption("Angular Speed Analysis", new AngularSpeedAnalysis());
+    // chooser.addOption("System Test", Subsystems.drive.testFunction());
 
     SmartDashboard.putData("Auto Chooser", chooser);
-
-
-
 
   }
 

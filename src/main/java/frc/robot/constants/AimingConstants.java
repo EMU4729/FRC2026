@@ -15,55 +15,57 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 
 public class AimingConstants {
-  public static final int SLEW_MOTOR_CANID = 8;
-  public static final int HOOD_MOTOR_CANID_1 = 10;
-  public static final int HOOD_MOTOR_CANID_2 = 11;
+    public static final int SLEW_MOTOR_CANID = 8;
+    public static final int HOOD_MOTOR_CANID_1 = 10;
+    public static final int HOOD_MOTOR_CANID_2 = 11;
 
-  public static final Transform2d robotToTurret = new Transform2d(0.3, 0.3, new Rotation2d(0));
+    public static final Transform2d robotToTurret = new Transform2d(0.3, 0.3, new Rotation2d(0));
 
-  public static final Translation2d[] RED_Alliance_BOUNDS = { new Translation2d(12.79, 0),
-      new Translation2d(16.54, 8.07) };
-  public static final Translation2d[] BLUE_Alliance_BOUNDS = { new Translation2d(0, 0), new Translation2d(3.75, 8.07) };
-  public static final Translation2d[] NEUTRAL_BOUNDS = { new Translation2d(5.5, 0), new Translation2d(11.04, 8.07) };
+    public static final Translation2d[] RED_Alliance_BOUNDS = { new Translation2d(12.79, 0),
+            new Translation2d(16.54, 8.07) };
+    public static final Translation2d[] BLUE_Alliance_BOUNDS = { new Translation2d(0, 0),
+            new Translation2d(3.75, 8.07) };
+    public static final Translation2d[] NEUTRAL_BOUNDS = { new Translation2d(5.5, 0), new Translation2d(11.04, 8.07) };
 
-  public static final Translation2d[] Blue_Pass_To_Targets = { new Translation2d(2.5, 1.25),
-      new Translation2d(2.5, 6.75) };
-  public static final Translation2d[] Red_Pass_To_Targets = { new Translation2d(14.04, 6.75),
-      new Translation2d(14.04, 1.25) };
+    public static final Translation2d[] Blue_Pass_To_Targets = { new Translation2d(2.5, 1.25),
+            new Translation2d(2.5, 6.75) };
+    public static final Translation2d[] Red_Pass_To_Targets = { new Translation2d(14.04, 6.75),
+            new Translation2d(14.04, 1.25) };
 
-  public static final Translation2d Blue_Hub = new Translation2d(4.64, 4.04);
-  public static final Translation2d Red_Hub = new Translation2d(11.9, 4.04);
+    public static final Translation2d Blue_Hub = new Translation2d(4.64, 4.04);
+    public static final Translation2d Red_Hub = new Translation2d(11.9, 4.04);
 
-  // 0 - 1.2m away from goal -> 17 m/s power
-  public static final List<DistanceSample> ShootingSamples = Arrays.asList(
-      new DistanceSample(MetersPerSecond.of(13), Degrees.of(0), Meters.of(0)),
-      new DistanceSample(MetersPerSecond.of(17), Degrees.of(20), Meters.of(0.975)),
-      new DistanceSample(MetersPerSecond.of(17), Degrees.of(25), Meters.of(2.43)),
-      new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(30), Meters.of(3.34)),
-      new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(30), Meters.of(50)));
-  public static final List<DistanceSample> PassingSamples = Arrays.asList(
-      new DistanceSample(MetersPerSecond.of(0), Degrees.of(30), Meters.of(0)),
-      new DistanceSample(MetersPerSecond.of(20), Degrees.of(45), Meters.of(20)),
-      new DistanceSample(MetersPerSecond.of(20), Degrees.of(45), Meters.of(100)));
+    // 0 - 1.2m away from goal -> 17 m/s power
+    public static final List<DistanceSample> ShootingSamples = Arrays.asList(
+            new DistanceSample(MetersPerSecond.of(13), Degrees.of(0), Meters.of(0 + 0.5969)),
+            new DistanceSample(MetersPerSecond.of(17), Degrees.of(20), Meters.of(0.975 + 0.5969)),
+            new DistanceSample(MetersPerSecond.of(17), Degrees.of(25), Meters.of(2.43 + 0.5969)),
+            new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(25), Meters.of(3.1)),
+            new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(30), Meters.of(3.34 + 0.5969)),
+            new DistanceSample(MetersPerSecond.of(17.25), Degrees.of(30), Meters.of(50 + 0.5969)));
+    public static final List<DistanceSample> PassingSamples = Arrays.asList(
+            new DistanceSample(MetersPerSecond.of(0), Degrees.of(30), Meters.of(0)),
+            new DistanceSample(MetersPerSecond.of(20), Degrees.of(45), Meters.of(20)),
+            new DistanceSample(MetersPerSecond.of(20), Degrees.of(45), Meters.of(100)));
 
-  public static record DistanceSample(
-      LinearVelocity power,
-      Angle hoodAngle,
+    public static record DistanceSample(
+            LinearVelocity power,
+            Angle hoodAngle,
 
-      Distance distance) {
+            Distance distance) {
 
-    public TurretState toTurretState(Angle turretAngle) {
-      return new TurretState(turretAngle, this.power(), this.hoodAngle);
+        public TurretState toTurretState(Angle turretAngle) {
+            return new TurretState(turretAngle, this.power(), this.hoodAngle);
+        }
+
     }
 
-  }
+    public static record TurretState(
+            Angle turretAngle,
+            LinearVelocity power,
+            Angle hoodAngle) {
 
-  public static record TurretState(
-      Angle turretAngle,
-      LinearVelocity power,
-      Angle hoodAngle) {
+    }
 
-  }
-
-  public static final double TimerOffset = 2;
+    public static final double TimerOffset = 2;
 }

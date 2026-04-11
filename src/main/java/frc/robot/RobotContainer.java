@@ -130,9 +130,10 @@ public class RobotContainer {
     // .whileTrue(new AlignToReefTagRelative(false, Subsystems.drive));
 
     OI.pilot.x().whileTrue(new AutoAim());
-    OI.pilot.povUp().whileTrue(new TurretShootAtDist(Meters.of(1)))
+    OI.pilot.povUp().whileTrue(new TurretShootAtDist(Meters.of(1.23)))
     .whileTrue(pulseHopperCommand);
-    OI.pilot.povDown().whileTrue(new TurretShootAtDist(Meters.of(5)))
+    OI.pilot.povDown().whileTrue(new TurretShootAtDist(Meters.of(3.1
+    )))
     .whileTrue(pulseHopperCommand);
 
     // OI.pilot.rightTrigger()

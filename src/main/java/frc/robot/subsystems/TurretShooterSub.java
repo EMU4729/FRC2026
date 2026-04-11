@@ -18,6 +18,8 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -29,6 +31,8 @@ public class TurretShooterSub extends SubsystemBase{
     private final TalonFX motor3 = new TalonFX(TurretConstants.SHOOTER_MOTOR_3_CANID);
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);
     //private final VelocityVoltage feederController2 = new VelocityVoltage(0).withSlot(0);
+
+    private Timer atSpeedStayOn = new Timer();
     
 
     private final Distance wheelRadius = Inches.of(2); // meters, unknown at the moment
@@ -64,6 +68,8 @@ public class TurretShooterSub extends SubsystemBase{
         motor3Sim = motor3.getSimState();
         motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Opposed));
         motor3.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Opposed));
+        
+        atSpeedStayOn.start();
 
         stop();
     }
@@ -95,11 +101,13 @@ public class TurretShooterSub extends SubsystemBase{
 
     public boolean atspeed(){
         if (targetSpeed == null) return false;
-        if (targetSpeed.minus(getSpeed()).in(MetersPerSecond) < 0.1 && 
+        if (targetSpeed.minus(getSpeed()).in(MetersPerSecond) < 0.5 && 
                 targetSpeed.gt(MetersPerSecond.of(6))) {
+            atSpeedStayOn.reset();
             return true;
         } else {
-            return false;
+
+            return !atSpeedStayOn.hasElapsed(0.5);
         }
     }
 

@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -42,6 +43,7 @@ public class HopperSub extends SubsystemBase {
 		// cfg.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 		// motor.getConfigurator().apply(cfg);
 		motor.setInverted(true);
+		motor.setNeutralMode(NeutralMode.Brake);
 	}
 
 	public void setDutyCycle(double dutyCycle) {

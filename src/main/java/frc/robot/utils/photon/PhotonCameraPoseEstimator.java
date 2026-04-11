@@ -26,6 +26,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems;
 import frc.robot.constants.DriveConstants;
@@ -53,6 +54,8 @@ public class PhotonCameraPoseEstimator {
   private DoubleLogEntry LogPoseYaw;
   private StringLogEntry LogTargets;
   private StringLogEntry LogFiltered;
+
+  private final Field2d visionField = new Field2d();
 
   public PhotonCameraPoseEstimator(
       String cameraName,
@@ -90,6 +93,7 @@ public class PhotonCameraPoseEstimator {
         robotToCam);
 
     poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
+    SmartDashboard.putData("photon2 field", visionField);
   }
 
   /** @return the robot to camera transform for this camera */
@@ -224,6 +228,7 @@ public class PhotonCameraPoseEstimator {
     if (OptPose.isEmpty())
       return OptPose;
     EstimatedRobotPose pose = OptPose.get();
+    visionField.setRobotPose(pose.estimatedPose.toPose2d());
     Pose2d currentPose = Subsystems.nav.getPose();
     double distanceError = pose.estimatedPose
         .getTranslation()

@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -32,9 +33,10 @@ public class TurretFeederSub extends SubsystemBase{
     private final TalonFX motor2 = new TalonFX(TurretFeederConstants.TURRENT_MOTOR_1_CANID);
    
     private final VelocityVoltage feederController1 = new VelocityVoltage(0).withSlot(0);;
-   private final PositionVoltage positionControl = new PositionVoltage(0);
+    private final PositionVoltage positionControl = new PositionVoltage(0);
 
     private final Distance wheelRadius = Meters.of(1/100); // meters, unknown at the moment
+    private Timer feedStartDelay = new Timer();
 
     //sim
     private final double ratio = 1; 
@@ -54,7 +56,7 @@ public class TurretFeederSub extends SubsystemBase{
         motorConfig.Slot0.kD = 0;
         motorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-
+        feedStartDelay.start();
     //motor1.getConfigurator().apply(motorConfig);
     // Make motor2 follow motor1. Use motor1's device ID and align the motor signals.
     motor2.setControl(new Follower(motor1.getDeviceID(), MotorAlignmentValue.Aligned));
@@ -99,8 +101,11 @@ public class TurretFeederSub extends SubsystemBase{
 
     public void popFuel(LinearVelocity speed){
         if (Subsystems.turretShooter.atspeed()){
-            setSpeed(speed);
+            if(feedStartDelay.hasElapsed(0.75)){
+                setSpeed(speed);
+            }
         } else {
+            feedStartDelay.reset();
             stop();
         }
     }

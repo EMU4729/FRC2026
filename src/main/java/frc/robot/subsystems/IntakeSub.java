@@ -51,7 +51,7 @@ public class IntakeSub extends SubsystemBase {
   private double simSpeedTarget2 = 0;
   private final double simAccel2 = 0.5;
 
-  private final SlewRateLimiter pivotPositionRateLimiter = new SlewRateLimiter(240);
+  private final SlewRateLimiter pivotPositionRateLimiter = new SlewRateLimiter(360);
 
   public IntakeSub() {
     TalonFXConfiguration motorConfig = new TalonFXConfiguration();
@@ -88,8 +88,6 @@ public class IntakeSub extends SubsystemBase {
     motor2Sim = pivotMotor.getSimState();
 
     SmartDashboard.putNumber("Intake/Angle_Offset", angleOffset);
-
-    setExtendAngle();
   }
 
   public void setSpeed(LinearVelocity speed) {

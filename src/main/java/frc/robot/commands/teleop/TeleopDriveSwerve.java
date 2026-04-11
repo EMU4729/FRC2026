@@ -28,14 +28,14 @@ public class TeleopDriveSwerve extends Command {
     if (!DriverStation.isTeleop())
       return;
 
-      /*
-       * Set X wheel position. DIsabled, due to unwilling to change drivebase.
-       */
-   // boolean setX = OI.pilot.getHID().getYButton();
-   // if (setX) {
-   //   Subsystems.drive.setX();
-   //   return;
-   // }
+    /*
+     * Set X wheel position. DIsabled, due to unwilling to change drivebase.
+     */
+    // boolean setX = OI.pilot.getHID().getYButton();
+    // if (setX) {
+    // Subsystems.drive.setX();
+    // return;
+    // }
 
     double limiter = OI.pilot.getRightTriggerAxis();
     double booster = OI.pilot.getHID().getRightBumperButton() ? 1 : 0;
@@ -45,7 +45,7 @@ public class TeleopDriveSwerve extends Command {
     final var control = settings.fitSwerve(
         OI.pilot.getLeftY(),
         OI.pilot.getLeftX(),
-        -OI.pilot.getRightX(),
+        OI.pilot.getRightX(),
         booster,
         limiter);
 
