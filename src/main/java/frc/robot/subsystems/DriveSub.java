@@ -75,25 +75,32 @@ public class DriveSub extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (logRateCounter < 10) {
-      logRateCounter++;
-      return;
-    } // log every 200ms
-    else {
-      logRateCounter = 0;
-    }
+    if   (logRateCounter < 10) {logRateCounter++; return;} //log every 200ms
+    else                       {logRateCounter = 0;}
     log();
+    
+    // if (logRateCounter < 10) {
+    //   logRateCounter++;
+    //   return;
+    // } // log every 200ms
+    // else {
+    //   logRateCounter = 0;
+    // }
+    // log();
   }
 
   /**
    * Sets the wheels into an X formation to prevent movement.
+   * virtual seped to bypass swevremodulestate safety feature on zero speed.
    */
-  public void setX() {
-    frontLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    frontRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
-  }
+//   public void setX() {
+// double virtualSpeed = 0.0011; 
+
+//     frontLeft.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(45)));
+//     frontRight.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(-45)));
+//     backLeft.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(135)));
+//     backRight.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(-135)));
+//   }
 
   /**
    * Sets the desired swerve module states.
