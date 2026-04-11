@@ -39,7 +39,8 @@ public class TurrretRunner extends Command{
         // TODO Auto-generated method stub
         FieldArea fieldArea = getFieldArea();
         if(!OI.pilot.a().getAsBoolean()){
-            CommandScheduler.getInstance().schedule(AimAt);
+          //]\[CommandScheduler.getInstance().schedule(AimAt);
+            CommandScheduler.getInstance().cancel(ShootAt);
             SmartDashboard.putBoolean("Turret Inhibit", true);
             return;
         } else {
@@ -56,7 +57,7 @@ public class TurrretRunner extends Command{
         } else if (fieldArea == FieldArea.Neutral || fieldArea == FieldArea.TheirAlliance) {
             //CommandScheduler.getInstance().schedule(PassTo);
             //CommandScheduler.getInstance().cancel(ShootAt);
-            //CommandScheduler.getInstance().cancel(AimAt);
+            // CommandScheduler.getInstance().cancel(AimAt);
             SmartDashboard.putString("Shooting Stage", "Passing To Home");
             
         } else {

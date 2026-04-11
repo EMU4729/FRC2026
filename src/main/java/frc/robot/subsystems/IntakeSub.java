@@ -37,8 +37,8 @@ public class IntakeSub extends SubsystemBase {
 
   private final double wheelRadius = 1.65 / 100; // m
   private final double ratio = 5; // input | output
-  
-  private double angleOffset = 0;
+
+  public double angleOffset = 0;
 
   /* Init Motor Sim Vars */
   private final TalonFXSimState motor1Sim;
@@ -88,7 +88,6 @@ public class IntakeSub extends SubsystemBase {
     motor2Sim = pivotMotor.getSimState();
 
     SmartDashboard.putNumber("Intake/Angle_Offset", angleOffset);
-
 
     setExtendAngle();
   }
@@ -152,12 +151,9 @@ public class IntakeSub extends SubsystemBase {
     if (DriverStation.isEnabled()) {
       pivotMotor.setControl(
           feedercontroller2.withPosition(Degrees.of(
-                pivotPositionRateLimiter.calculate(
-                    extendTargetAngle.in(Degrees)
-                    + angleOffset
-                )
-            ))
-      );
+              pivotPositionRateLimiter.calculate(
+                  extendTargetAngle.in(Degrees)
+                      + angleOffset))));
     } else {
       pivotPositionRateLimiter.calculate(0);
     }

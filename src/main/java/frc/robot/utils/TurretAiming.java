@@ -51,7 +51,7 @@ public class TurretAiming {
                 interpolatedSample.hoodAngle());
     }
 
-    private static DistanceSample interpolateDistance(List<DistanceSample> sampleList, Distance distance) {
+    public static DistanceSample interpolateDistance(List<DistanceSample> sampleList, Distance distance) {
         // TODO
         double targetMeters = distance.in(Meters);
 
