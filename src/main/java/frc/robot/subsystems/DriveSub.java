@@ -87,12 +87,15 @@ public class DriveSub extends SubsystemBase {
 
   /**
    * Sets the wheels into an X formation to prevent movement.
+   * virtual seped to bypass swevremodulestate safety feature on zero speed.
    */
   public void setX() {
-    frontLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
-    frontRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backLeft.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-    backRight.setDesiredState(new OptimisedSwerveModuleState(0, Rotation2d.fromDegrees(45)));
+double virtualSpeed = 0.0011; 
+
+    frontLeft.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(45)));
+    frontRight.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(-45)));
+    backLeft.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(135)));
+    backRight.setDesiredState(new OptimisedSwerveModuleState(virtualSpeed, Rotation2d.fromDegrees(-135)));
   }
 
   /**
